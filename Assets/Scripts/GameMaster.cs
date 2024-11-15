@@ -23,6 +23,9 @@ public class GameMaster : MonoBehaviour
         SetCurrentPlayer(1);
     }
 
+    public Unit[] GetUnits() => units;
+    public Tile[] GetTiles() => tiles;
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))

@@ -8,10 +8,19 @@ public class Unit : MonoBehaviour
     [SerializeField] float hoverAmount = 0.1f;
     [SerializeField] Color highlightColor = Color.yellow;
     [SerializeField] float moveSpeed = 5f;
-    [SerializeField] int tileSpeed = 1;     // How many tiles the unit moves per turn
+    [SerializeField] int travelRange = 1;     // How many tiles the unit moves per turn
+
+    [SerializeField] int attackRange = 1;
+
+    private List<Unit> enemiesInRange = new();
 
     public bool hasMoved;
+    public bool hasAttacked;
     public bool selected;
+
+    private GameObject attackIndicator;
+    private SpriteRenderer aiSR;
+    private bool attackable = false;
 
     private Color defaultColor;
 
@@ -29,6 +38,8 @@ public class Unit : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         defaultScale = transform.localScale;
         defaultColor = spriteRenderer.color;
+        attackIndicator = transform.Find("AttackIndicator").gameObject;
+        aiSR = attackIndicator.GetComponent<SpriteRenderer>();
     }
 
     void Update()
@@ -53,10 +64,8 @@ public class Unit : MonoBehaviour
                 gm.DeselectUnit();
                 selected = true;
                 gm.SelectUnit(this);
-                if (!hasMoved)
-                {
-                    GetWalkableTiles();
-                }
+                GetEnemiesInRange();
+                GetWalkableTiles();
             }
         }
     }
@@ -91,6 +100,7 @@ public class Unit : MonoBehaviour
             yield return null;
         }
         hasMoved = true;
+        GetEnemiesInRange();
     }
 
     void OnMouseEnter()
@@ -121,12 +131,39 @@ public class Unit : MonoBehaviour
         {
             float distanceX = Mathf.Abs(tile.transform.position.x - transform.position.x);
             float distanceY = Mathf.Abs(tile.transform.position.y - transform.position.y);
-            if (distanceX + distanceY <= tileSpeed)
+            if (distanceX + distanceY <= travelRange)
             {
                 if (tile.IsClear())
                 {
                     tile.Highlight();
                     walkableTiles.Add(tile);
+                }
+            }
+        }
+    }
+
+    void ClearEnemies()
+    {
+        foreach (Unit unit in enemiesInRange)
+        {
+                // #TODO
+        }
+    }
+
+    void GetEnemiesInRange()
+    {
+        enemiesInRange.Clear();
+        if (hasAttacked) return;
+
+        foreach (Unit unit in gm.GetUnits())
+        {
+            if (unit.playerID != playerID)
+            {
+                float distanceX = Mathf.Abs(unit.transform.position.x - transform.position.x);
+                float distanceY = Mathf.Abs(unit.transform.position.y - transform.position.y);
+                if (distanceX + distanceY <= attackRange)
+                {
+                    enemiesInRange.Add(unit);
                 }
             }
         }

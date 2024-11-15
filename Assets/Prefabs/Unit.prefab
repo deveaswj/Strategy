@@ -74,7 +74,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1560342307
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 2114faf3d420642469f43e8302d46891, type: 3}
   m_Color: {r: 0.795, g: 0.795, b: 0.795, a: 1}
@@ -144,11 +144,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48013bdfb1bdc7742b5feb918a20060f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerID: 0
   hoverAmount: 0.2
   highlightColor: {r: 1, g: 1, b: 1, a: 1}
-  selected: 0
-  tileSpeed: 2
+  moveSpeed: 5
+  travelRange: 1
+  attackRange: 1
   hasMoved: 0
+  hasAttacked: 0
+  selected: 0
 --- !u!1 &5700393306668320220
 GameObject:
   m_ObjectHideFlags: 0
@@ -160,7 +164,7 @@ GameObject:
   - component: {fileID: 1769100475993217009}
   - component: {fileID: 1363180904599719531}
   m_Layer: 3
-  m_Name: SelectionIndicator
+  m_Name: AttackIndicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -219,11 +223,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1520175227
-  m_SortingLayer: 1
-  m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 5096dff634dcb3642a5c5c5480bb8c2b, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_SortingLayerID: 1560342307
+  m_SortingLayer: 4
+  m_SortingOrder: 2
+  m_Sprite: {fileID: 21300000, guid: a1a94c21e175b984eb16e060c67f7798, type: 3}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

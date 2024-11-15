@@ -13,8 +13,8 @@ public class Tile : MonoBehaviour
 
     private SpriteRenderer sr;
     private Vector3 defaultScale;
-    private GameObject si;
-    private SpriteRenderer sisr;
+    private GameObject selectionIndicator;
+    private SpriteRenderer siSR;
 
     GameMaster gm;
     bool isWalkable = false;
@@ -26,14 +26,14 @@ public class Tile : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
         defaultScale = transform.localScale;
         defaultColor = sr.color;
-        si = transform.Find("SelectionIndicator").gameObject;
-        sisr = si.GetComponent<SpriteRenderer>();
+        selectionIndicator = transform.Find("SelectionIndicator").gameObject;
+        siSR = selectionIndicator.GetComponent<SpriteRenderer>();
     }
 
     void Update()
     {
         sr.color = isWalkable ? highlightColor : defaultColor;
-        sisr.enabled = isMouseOver;
+        siSR.enabled = isMouseOver;
     }
 
     public void SetMouseOver(bool mouseOver)
