@@ -4,56 +4,94 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-    private SpriteRenderer spriteRenderer;
-
-    [SerializeField] float hoverAmount = 0.1f;
+    // [SerializeField] float hoverAmount = 0.1f;
     [SerializeField] LayerMask obstacleLayer;
     [SerializeField] Color hoverColor;
-    [SerializeField] Color highlightColor;
+    [SerializeField] Color highlightColor = Color.yellow;
+    [SerializeField] float isClearRadius = 0.2f;
     private Color defaultColor;
 
+    private SpriteRenderer sr;
     private Vector3 defaultScale;
+    private GameObject si;
+    private SpriteRenderer sisr;
 
     GameMaster gm;
     bool isWalkable = false;
+    bool isMouseOver = false;
 
-    // Start is called before the first frame update
     void Start()
     {
         gm = FindObjectOfType<GameMaster>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        sr = GetComponent<SpriteRenderer>();
         defaultScale = transform.localScale;
-        defaultColor = spriteRenderer.color;
+        defaultColor = sr.color;
+        si = transform.Find("SelectionIndicator").gameObject;
+        sisr = si.GetComponent<SpriteRenderer>();
     }
 
-    void OnMouseEnter()
+    void Update()
     {
-        transform.localScale += Vector3.one * hoverAmount;
-        spriteRenderer.color = hoverColor;
+        sr.color = isWalkable ? highlightColor : defaultColor;
+        sisr.enabled = isMouseOver;
     }
+
+    public void SetMouseOver(bool mouseOver)
+    {
+        isMouseOver = mouseOver;
+    }
+
+    public void HandleMouseClick()
+    {
+        if (isWalkable)
+        {
+            if (gm == null) gm = FindObjectOfType<GameMaster>();
+            if (gm == null) Debug.LogError("GameMaster not found");
+
+            Unit selectedUnit = gm.GetSelectedUnit();
+            if (selectedUnit != null)
+            {
+                selectedUnit.MoveToTile(this);
+            }
+        }
+    }
+
+    // void OnMouseEnter()
+    // {
+    //     // transform.localScale += Vector3.one * hoverAmount;
+    //     // spriteRenderer.color = hoverColor;
+    //     isMouseOver = true;
+    // }
 
     void OnMouseExit()
     {
-        transform.localScale = defaultScale;
-        spriteRenderer.color = isWalkable ? highlightColor : defaultColor;
+        // transform.localScale = defaultScale;
+        // spriteRenderer.color = isWalkable ? highlightColor : defaultColor;
+        isMouseOver = false;
     }
 
     public bool IsClear()
     {
-        return !Physics2D.OverlapCircle(transform.position, 0.2f, obstacleLayer);
+        return !Physics2D.OverlapCircle(transform.position, isClearRadius, obstacleLayer);
     }
 
     public void Highlight()
     {
         Debug.Log("Highlight tile: " + gameObject.name);
-        spriteRenderer.color = highlightColor;
+        // spriteRenderer.color = highlightColor;
         isWalkable = true;
     }
 
     public void Reset()
     {
         Debug.Log("Reset tile: " + gameObject.name);
-        spriteRenderer.color = defaultColor;
+        // spriteRenderer.color = defaultColor;
         isWalkable = false;
+    }
+
+    // draw a gizmo matching the OverlapCircle of IsClear
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.DrawWireSphere(transform.position, isClearRadius);
     }
 }
