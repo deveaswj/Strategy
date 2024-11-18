@@ -55,3 +55,6 @@ TagManager:
   - name: Units
     uniqueID: 1560342307
     locked: 0
+  - name: Damage
+    uniqueID: 231477405
+    locked: 0

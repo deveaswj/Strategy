@@ -9,11 +9,22 @@ public class Unit : MonoBehaviour
     [SerializeField] Color highlightColor = Color.yellow;
     [SerializeField] float moveSpeed = 5f;
     [SerializeField] int travelRange = 1;     // How many tiles the unit moves per turn
-
     [SerializeField] int attackRange = 1;
+
+    [Header("Stats")]
+    [SerializeField] int maxHealth = 5;
+    [SerializeField] int attackDamage = 1;  // damage to deal when initiating attack
+    [SerializeField] int counterDamage = 1;  // damage to deal when counter-attacking
+    [SerializeField] int armorValue = 0;    // damage reduction when defending
+
+    [Header("Effects")]
+    [SerializeField] DamageIcon damageIconPrefab;
+
+    private int health;
 
     private List<Unit> enemiesInRange = new();
 
+    [Header("Public")]
     public bool hasMoved = false;
     public bool hasAttacked = false;
     public bool selected = false;
@@ -29,12 +40,18 @@ public class Unit : MonoBehaviour
 
     GameMaster gm;
 
-    private List<Tile> walkableTiles = new List<Tile>();
+    private List<Tile> walkableTiles;
 
+
+    void Awake()
+    {
+        walkableTiles = new();
+        gm = FindObjectOfType<GameMaster>();
+        health = maxHealth;
+    }
 
     void Start()
     {
-        gm = FindObjectOfType<GameMaster>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         defaultScale = transform.localScale;
         defaultColor = spriteRenderer.color;
@@ -64,20 +81,36 @@ public class Unit : MonoBehaviour
 
         ClearEnemies();
 
-        if (selected)
+        if (playerID == gm.CurrentPlayer)
         {
-            selected = false;
-            gm.DeselectUnit();
+            // this unit is friendly
+            if (selected)
+            {
+                selected = false;
+                gm.DeselectUnit();
+            }
+            else
+            {
+                if (playerID == gm.CurrentPlayer)
+                {
+                    gm.DeselectUnit();
+                    selected = true;
+                    gm.SelectUnit(this);
+                    GetEnemiesInRange();
+                    GetWalkableTiles();
+                }
+            }
         }
         else
         {
-            if (playerID == gm.CurrentPlayer)
+            // this unit is enemy
+            if (attackable)
             {
-                gm.DeselectUnit();
-                selected = true;
-                gm.SelectUnit(this);
-                GetEnemiesInRange();
-                GetWalkableTiles();
+                // attack if we can
+                Unit selectedUnit = gm.GetSelectedUnit();
+                if (selectedUnit == null) return;
+                if (selectedUnit.hasAttacked) return;
+                gm.AttackUnit(this);
             }
         }
     }
@@ -176,6 +209,7 @@ public class Unit : MonoBehaviour
 
         foreach (Unit unit in gm.GetUnits())
         {
+            if (unit == null) continue;
             if (unit.playerID != playerID)
             {
                 float distanceX = Mathf.Abs(unit.transform.position.x - transform.position.x);
@@ -188,4 +222,53 @@ public class Unit : MonoBehaviour
             }
         }
     }
+
+    public void Attack(Unit target)
+    {
+        if (target.attackable)
+        {
+            Debug.Log(gameObject.name + " attacks " + target.name + " ...");
+            target.TakeDamage(attackDamage);
+            hasAttacked = true;
+        }
+        else
+        {
+            Debug.Log(gameObject.name + " can't attack " + target.name + "!");
+        }
+    }
+
+    public void CounterAttack(Unit target)
+    {
+        Debug.Log(gameObject.name + " counters " + target.name + " ...");
+        target.TakeDamage(counterDamage);
+    }
+
+    void TakeDamage(int damage = 0)
+    {
+        damage = Mathf.Max(damage - armorValue, 0);
+        health -= damage;
+        //
+        // #TODO: show DamageIcon at this object's location with damage value
+        Debug.Log("... " + gameObject.name + " takes " + damage + " damage!");
+
+        DamageIcon dmg = Instantiate(damageIconPrefab, transform.position, Quaternion.identity);
+        dmg.ShowDamage(damage);
+
+        //
+        if (health <= 0)
+        {
+            Die();
+        }
+        // every hit takes out 1 armor
+        if (armorValue > 0) armorValue--;
+        Debug.Log(gameObject.name + " has " + armorValue + " armor left!");
+    }
+
+    void Die()
+    {
+        Debug.Log(gameObject.name + " dies!");
+        gameObject.SetActive(false);
+        Destroy(gameObject);
+    }
+
 }

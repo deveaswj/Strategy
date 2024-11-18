@@ -102,4 +102,18 @@ public class GameMaster : MonoBehaviour
             selectedUnit = null;
         }
     }
+
+    public void AttackUnit(Unit target)
+    {
+        if (selectedUnit != null)
+        {
+            if (target != null && target.attackable)
+            {
+                selectedUnit.Attack(target);
+
+                if (target == null) return;     // null if target unit died
+                target.CounterAttack(selectedUnit);
+            }
+        }
+    }
 }

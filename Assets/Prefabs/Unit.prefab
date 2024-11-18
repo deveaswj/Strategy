@@ -150,6 +150,11 @@ MonoBehaviour:
   moveSpeed: 5
   travelRange: 3
   attackRange: 2
+  maxHealth: 5
+  attackDamage: 1
+  counterDamage: 1
+  armorValue: 0
+  damageIconPrefab: {fileID: 2340956460900129625, guid: 61c88f7fcbd78364bb17643b21a32967, type: 3}
   hasMoved: 0
   hasAttacked: 0
   selected: 0
