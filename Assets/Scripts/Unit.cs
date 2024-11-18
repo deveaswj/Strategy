@@ -247,21 +247,23 @@ public class Unit : MonoBehaviour
     {
         damage = Mathf.Max(damage - armorValue, 0);
         health -= damage;
-        //
-        // #TODO: show DamageIcon at this object's location with damage value
         Debug.Log("... " + gameObject.name + " takes " + damage + " damage!");
+        ShowDamage(damage);
 
-        DamageIcon dmg = Instantiate(damageIconPrefab, transform.position, Quaternion.identity);
-        dmg.ShowDamage(damage);
+        // every hit takes out 1 armor
+        if (armorValue > 0) armorValue--;
+        Debug.Log(gameObject.name + " has " + armorValue + " armor left!");
 
-        //
         if (health <= 0)
         {
             Die();
         }
-        // every hit takes out 1 armor
-        if (armorValue > 0) armorValue--;
-        Debug.Log(gameObject.name + " has " + armorValue + " armor left!");
+    }
+
+    void ShowDamage(int damage)
+    {
+        DamageIcon dmg = Instantiate(damageIconPrefab, transform.position, Quaternion.identity);
+        dmg.ShowDamage(damage);
     }
 
     void Die()

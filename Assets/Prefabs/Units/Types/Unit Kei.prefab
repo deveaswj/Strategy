@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &7864842929299790093
+--- !u!1001 &8710202464892820613
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -8,10 +8,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: -6445893663157460783, guid: 00504ce9cffd64f48a5ad14057f86302, type: 3}
-      propertyPath: playerID
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 945976345540408888, guid: 00504ce9cffd64f48a5ad14057f86302, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -22,7 +18,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 945976345540408888, guid: 00504ce9cffd64f48a5ad14057f86302, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 945976345540408888, guid: 00504ce9cffd64f48a5ad14057f86302, type: 3}
       propertyPath: m_LocalRotation.w
@@ -54,12 +50,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1691782146070012353, guid: 00504ce9cffd64f48a5ad14057f86302, type: 3}
       propertyPath: m_Name
-      value: Player 1
+      value: Lorry Variant
       objectReference: {fileID: 0}
-    - target: {fileID: 1691782146070012353, guid: 00504ce9cffd64f48a5ad14057f86302, type: 3}
-      propertyPath: m_TagString
-      value: Player 1
-      objectReference: {fileID: 0}
+    - target: {fileID: 3292928078926835514, guid: 00504ce9cffd64f48a5ad14057f86302, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: b86e58a535914814899d877b1bf729fb, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
