@@ -77,9 +77,7 @@ public class GameMaster : MonoBehaviour
     {
         foreach (Unit unit in units)
         {
-            unit.ClearWalkableTiles();
-            unit.selected = false;
-            unit.hasMoved = false;
+            unit.Reset();
         }
     }
 

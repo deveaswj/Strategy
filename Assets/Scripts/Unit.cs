@@ -14,13 +14,13 @@ public class Unit : MonoBehaviour
 
     private List<Unit> enemiesInRange = new();
 
-    public bool hasMoved;
-    public bool hasAttacked;
-    public bool selected;
+    public bool hasMoved = false;
+    public bool hasAttacked = false;
+    public bool selected = false;
+    public bool attackable = false;
 
     private GameObject attackIndicator;
     private SpriteRenderer aiSR;
-    private bool attackable = false;
 
     private Color defaultColor;
 
@@ -45,12 +45,24 @@ public class Unit : MonoBehaviour
     void Update()
     {
         spriteRenderer.color = selected ? highlightColor : defaultColor;
+        aiSR.enabled = attackable;
+    }
+
+    public void Reset()
+    {
+        ClearWalkableTiles();
+        hasMoved = false;
+        hasAttacked = false;
+        selected = false;
+        attackable = false;
     }
 
     public void HandleMouseClick()
     {
         if (gm == null) gm = FindObjectOfType<GameMaster>();
         if (gm == null) Debug.LogError("GameMaster not found");
+
+        ClearEnemies();
 
         if (selected)
         {
@@ -100,6 +112,7 @@ public class Unit : MonoBehaviour
             yield return null;
         }
         hasMoved = true;
+        ClearEnemies();
         GetEnemiesInRange();
     }
 
@@ -144,9 +157,15 @@ public class Unit : MonoBehaviour
 
     void ClearEnemies()
     {
+        ResetAttackables();
+        enemiesInRange.Clear();
+    }
+
+    void ResetAttackables()
+    {
         foreach (Unit unit in enemiesInRange)
         {
-                // #TODO
+            unit.attackable = false;
         }
     }
 
@@ -164,6 +183,7 @@ public class Unit : MonoBehaviour
                 if (distanceX + distanceY <= attackRange)
                 {
                     enemiesInRange.Add(unit);
+                    unit.attackable = true;
                 }
             }
         }

@@ -148,11 +148,12 @@ MonoBehaviour:
   hoverAmount: 0.2
   highlightColor: {r: 1, g: 1, b: 1, a: 1}
   moveSpeed: 5
-  travelRange: 1
-  attackRange: 1
+  travelRange: 3
+  attackRange: 2
   hasMoved: 0
   hasAttacked: 0
   selected: 0
+  attackable: 0
 --- !u!1 &5700393306668320220
 GameObject:
   m_ObjectHideFlags: 0
