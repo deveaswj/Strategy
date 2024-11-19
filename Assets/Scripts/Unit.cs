@@ -151,12 +151,12 @@ public class Unit : MonoBehaviour
 
     void OnMouseEnter()
     {
-        transform.localScale += Vector3.one * hoverAmount;
+        // transform.localScale += Vector3.one * hoverAmount;
     }
 
     void OnMouseExit()
     {
-        transform.localScale = defaultScale;
+        // transform.localScale = defaultScale;
     }
 
     public void ClearWalkableTiles()
