@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum PlayerID { None, Player1, Player2 };
 
@@ -9,6 +11,8 @@ public class GameMaster : MonoBehaviour
     [SerializeField] GameObject selectedUnitSquare;
     private Unit selectedUnit;
 
+    [SerializeField] TextMeshProUGUI turnText;
+
     public PlayerID CurrentPlayer { get { return currentPlayer; } }
     private PlayerID currentPlayer = PlayerID.Player1;
     private int playerTurn = 1;
@@ -16,10 +20,14 @@ public class GameMaster : MonoBehaviour
     private Unit[] units;
     private Tile[] tiles;
 
+    Dictionary<PlayerID, Player> players = new();
+
     void Start()
     {
         units = FindObjectsOfType<Unit>();
         tiles = FindObjectsOfType<Tile>();
+
+        LoadPlayers();
         SetCurrentPlayer(1);
     }
 
@@ -28,6 +36,7 @@ public class GameMaster : MonoBehaviour
 
     void Update()
     {
+        turnText.text = "Player " + playerTurn + "'s turn";
         if (Input.GetKeyDown(KeyCode.Space))
         {
             EndTurn();
@@ -44,6 +53,28 @@ public class GameMaster : MonoBehaviour
         }
     }
 
+    void LoadPlayers()
+    {
+        // find components of type Player and add them to the dictionary
+        Player[] playerObjects = FindObjectsOfType<Player>();
+        foreach (Player player in playerObjects)
+        {
+            PlayerID playerID = player.PlayerID;
+            if (playerID == PlayerID.None)
+            {
+                Debug.LogError("Player with ID 'None' found! " + player.name);
+            }
+            else if (players.ContainsKey(playerID))
+            {
+                Debug.LogError("Player with ID " + playerID + " already exists in the dictionary!");
+            }
+            else
+            {
+                players.Add(playerID, player);
+            }
+        }
+    }
+
     public void SetCurrentPlayer(int playerNumber)
     {
         playerTurn = playerNumber;
@@ -56,12 +87,33 @@ public class GameMaster : MonoBehaviour
         SetCurrentPlayer(newPlayer);
     }
 
+    public Player GetPlayer() => GetPlayer(currentPlayer);
+    public Player GetPlayer(PlayerID playerID) => players[playerID];
+    public Player GetPlayer(int playerNumber) => players[(playerNumber == 1) ? PlayerID.Player1 : PlayerID.Player2];
+
+    public void GrantIncome() => GrantIncome(currentPlayer);
+    public void GrantIncome(PlayerID playerID)
+    {
+        // get the current player's units
+        Player player = GetPlayer(playerID);
+        GameObject playerUnits = player.Units;
+        IncomeGenerator[] incomeGenerators = playerUnits.GetComponentsInChildren<IncomeGenerator>();
+
+        int currencyThisTurn = 0;
+        foreach (IncomeGenerator incomeGenerator in incomeGenerators)
+        {
+            currencyThisTurn += incomeGenerator.GetIncome();
+        }
+        player.AddCurrency(currencyThisTurn);
+    }
+
     public void EndTurn()
     {
         DeselectUnit();
         ResetUnits();
         ResetTiles();
         SwitchPlayer();
+        GrantIncome();
     }
 
     void ResetTiles()

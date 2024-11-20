@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Unit : MonoBehaviour
 {
     [SerializeField] PlayerID playerID;
-    [SerializeField] float hoverAmount = 0.1f;
+    [SerializeField] float hoverAmount = 1.1f;
     [SerializeField] Color highlightColor = Color.yellow;
     [SerializeField] float moveSpeed = 5f;
     [SerializeField] int travelRange = 1;     // How many tiles the unit moves per turn
@@ -19,6 +21,10 @@ public class Unit : MonoBehaviour
 
     [Header("Effects")]
     [SerializeField] DamageIcon damageIconPrefab;
+
+    [Header("Boss")]
+    [SerializeField] bool isBoss = false;
+    TextMeshProUGUI bossHealthText;
 
     private int health;
 
@@ -39,27 +45,31 @@ public class Unit : MonoBehaviour
     private Vector3 defaultScale;
 
     GameMaster gm;
+    public PlayerID PlayerID => playerID;
 
     private List<Tile> walkableTiles;
 
 
-    void Awake()
+    protected void Awake()
     {
         walkableTiles = new();
         gm = FindObjectOfType<GameMaster>();
         health = maxHealth;
+        if (hoverAmount < 1) hoverAmount += 1;
+        // GameObject bossHealthObject = GameObject.FindGameObjectWithTag("P")
     }
 
-    void Start()
+    protected void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         defaultScale = transform.localScale;
         defaultColor = spriteRenderer.color;
         attackIndicator = transform.Find("AttackIndicator").gameObject;
         aiSR = attackIndicator.GetComponent<SpriteRenderer>();
+        UpdateBossHealth();
     }
 
-    void Update()
+    protected void Update()
     {
         spriteRenderer.color = selected ? highlightColor : defaultColor;
         aiSR.enabled = attackable;
@@ -149,14 +159,14 @@ public class Unit : MonoBehaviour
         GetEnemiesInRange();
     }
 
-    void OnMouseEnter()
+    protected void OnMouseEnter()
     {
-        // transform.localScale += Vector3.one * hoverAmount;
+        transform.localScale *= hoverAmount;
     }
 
-    void OnMouseExit()
+    protected void OnMouseExit()
     {
-        // transform.localScale = defaultScale;
+        transform.localScale = defaultScale;
     }
 
     public void ClearWalkableTiles()
@@ -249,6 +259,7 @@ public class Unit : MonoBehaviour
         health -= damage;
         Debug.Log("... " + gameObject.name + " takes " + damage + " damage!");
         ShowDamage(damage);
+        UpdateBossHealth();
 
         // every hit takes out 1 armor
         if (armorValue > 0) armorValue--;
@@ -271,6 +282,15 @@ public class Unit : MonoBehaviour
         Debug.Log(gameObject.name + " dies!");
         gameObject.SetActive(false);
         Destroy(gameObject);
+    }
+
+    public void UpdateBossHealth()
+    {
+        if (isBoss)
+        {
+            // gm.
+        }
+        // bossHealthText.text = health.ToString();
     }
 
 }

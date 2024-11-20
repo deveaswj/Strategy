@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Player 1
   - Player 2
+  - Health UI
+  - Currency UI
   layers:
   - Default
   - TransparentFX
@@ -54,6 +56,9 @@ TagManager:
     locked: 0
   - name: Units
     uniqueID: 1560342307
+    locked: 0
+  - name: Explosion
+    uniqueID: 1030408553
     locked: 0
   - name: Damage
     uniqueID: 231477405
