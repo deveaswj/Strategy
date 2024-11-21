@@ -56,6 +56,7 @@ public class UIManager : MonoBehaviour
 
     public void SetHealth(PlayerID playerID, int health)
     {
+        Debug.Log("UI: SetHealth for " + playerID + " to " + health);
         PlayerUI playerUI = GetPlayerUI(playerID);
         if (playerUI == null) return;
         playerUI.SetHealth(health);
@@ -63,6 +64,7 @@ public class UIManager : MonoBehaviour
 
     public void SetCurrency(PlayerID playerID, int currency)
     {
+        Debug.Log("UI: SetCurrency for " + playerID + " to " + currency);
         PlayerUI playerUI = playerUIs[playerID];
         if (playerUI == null) return;
         playerUI.SetCurrency(currency);

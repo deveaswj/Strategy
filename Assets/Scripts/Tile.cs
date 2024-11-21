@@ -77,15 +77,13 @@ public class Tile : MonoBehaviour
 
     public void Highlight()
     {
-        Debug.Log("Highlight tile: " + gameObject.name);
-        // spriteRenderer.color = highlightColor;
+        // Debug.Log("Highlight tile: " + gameObject.name);
         isWalkable = true;
     }
 
-    public void Reset()
+    public void ResetTile()
     {
-        Debug.Log("Reset tile: " + gameObject.name);
-        // spriteRenderer.color = defaultColor;
+        // Debug.Log("Reset tile: " + gameObject.name);
         isWalkable = false;
     }
 

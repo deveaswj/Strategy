@@ -24,7 +24,6 @@ public class Unit : MonoBehaviour
 
     [Header("Boss")]
     [SerializeField] bool isBoss = false;
-    TextMeshProUGUI bossHealthText;
 
     private int health;
 
@@ -47,6 +46,8 @@ public class Unit : MonoBehaviour
     GameMaster gm;
     public PlayerID PlayerID => playerID;
 
+    private ExplosionPoolManager explosionPoolManager;
+
     private List<Tile> walkableTiles;
 
 
@@ -56,7 +57,7 @@ public class Unit : MonoBehaviour
         gm = FindObjectOfType<GameMaster>();
         health = maxHealth;
         if (hoverAmount < 1) hoverAmount += 1;
-        // GameObject bossHealthObject = GameObject.FindGameObjectWithTag("P")
+        explosionPoolManager = FindObjectOfType<ExplosionPoolManager>();
     }
 
     protected void Start()
@@ -75,7 +76,7 @@ public class Unit : MonoBehaviour
         aiSR.enabled = attackable;
     }
 
-    public void Reset()
+    public void ResetUnit()
     {
         ClearWalkableTiles();
         hasMoved = false;
@@ -173,7 +174,7 @@ public class Unit : MonoBehaviour
     {
         foreach (Tile tile in walkableTiles)
         {
-            tile.Reset();
+            tile.ResetTile();
         }
         walkableTiles.Clear();
     }
@@ -279,18 +280,26 @@ public class Unit : MonoBehaviour
 
     void Die()
     {
+        Explode();
         Debug.Log(gameObject.name + " dies!");
         gameObject.SetActive(false);
         Destroy(gameObject);
+    }
+
+    void Explode()
+    {
+        PlayExplosion explosion = explosionPoolManager.GetExplosion();
+        explosion.transform.position = transform.position;
+        explosion.Explode();
     }
 
     public void UpdateBossHealth()
     {
         if (isBoss)
         {
-            // gm.
+            Debug.Log("Updating " + playerID + " boss health: " + health);
+            gm.SetHealth(health, playerID);
         }
-        // bossHealthText.text = health.ToString();
     }
 
 }

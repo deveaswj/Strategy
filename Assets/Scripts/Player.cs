@@ -21,12 +21,14 @@ public class Player : MonoBehaviour
 
     public void SetHealth(int newHealth)
     {
+        Debug.Log("Player " + playerID + " health: " + newHealth);
         health = newHealth;
         OnHealthChanged?.Invoke(playerID, health);
     }
 
     public void SetCurrency(int newCurrency)
     {
+        Debug.Log("Player " + playerID + " currency: " + newCurrency);
         currency = newCurrency;
         OnCurrencyChanged?.Invoke(playerID, currency);
     }

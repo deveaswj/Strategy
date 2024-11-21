@@ -22,13 +22,16 @@ public class GameMaster : MonoBehaviour
 
     Dictionary<PlayerID, Player> players = new();
 
+    void Awake()
+    {
+        LoadPlayers();
+        SetCurrentPlayer(1);
+    }
+
     void Start()
     {
         units = FindObjectsOfType<Unit>();
         tiles = FindObjectsOfType<Tile>();
-
-        LoadPlayers();
-        SetCurrentPlayer(1);
     }
 
     public Unit[] GetUnits() => units;
@@ -62,14 +65,15 @@ public class GameMaster : MonoBehaviour
             PlayerID playerID = player.PlayerID;
             if (playerID == PlayerID.None)
             {
-                Debug.LogError("Player with ID 'None' found! " + player.name);
+                Debug.LogError("LoadPlayers: Player with ID 'None' found! " + player.name);
             }
             else if (players.ContainsKey(playerID))
             {
-                Debug.LogError("Player with ID " + playerID + " already exists in the dictionary!");
+                Debug.LogError("LoadPlayers: Player with ID " + playerID + " is already in the dictionary!");
             }
             else
             {
+                Debug.Log("LoadPlayers: Adding player with ID " + playerID);
                 players.Add(playerID, player);
             }
         }
@@ -88,8 +92,22 @@ public class GameMaster : MonoBehaviour
     }
 
     public Player GetPlayer() => GetPlayer(currentPlayer);
-    public Player GetPlayer(PlayerID playerID) => players[playerID];
-    public Player GetPlayer(int playerNumber) => players[(playerNumber == 1) ? PlayerID.Player1 : PlayerID.Player2];
+    public Player GetPlayer(PlayerID playerID)
+    {
+        if (!players.TryGetValue(playerID, out Player player))
+        {
+            Debug.LogError("GetPlayer: Player with ID " + playerID + " not found in the dictionary!");
+            return null;
+        }
+        Debug.Log("GetPlayer: Returning player with ID " + playerID);
+        return player;
+    }
+    public Player GetPlayer(int playerNumber)
+    {
+        if (playerNumber == 1) return GetPlayer(PlayerID.Player1);
+        if (playerNumber == 2) return GetPlayer(PlayerID.Player2);
+        return null;
+    }
 
     public void GrantIncome() => GrantIncome(currentPlayer);
     public void GrantIncome(PlayerID playerID)
@@ -107,6 +125,12 @@ public class GameMaster : MonoBehaviour
         player.AddCurrency(currencyThisTurn);
     }
 
+    public void SetHealth(int health, PlayerID playerID) => GetPlayer(playerID).SetHealth(health);
+    public void SetHealth(int health) => GetPlayer().SetHealth(health);
+    public void SetCurrency(int currency, PlayerID playerID) => GetPlayer(playerID).SetCurrency(currency);
+    public void SetCurrency(int currency) => GetPlayer().SetCurrency(currency);
+
+
     public void EndTurn()
     {
         DeselectUnit();
@@ -120,7 +144,7 @@ public class GameMaster : MonoBehaviour
     {
         foreach (Tile tile in tiles)
         {
-            tile.Reset();
+            tile.ResetTile();
             tile.SetMouseOver(false);
         }
     }
@@ -129,7 +153,7 @@ public class GameMaster : MonoBehaviour
     {
         foreach (Unit unit in units)
         {
-            unit.Reset();
+            unit.ResetUnit();
         }
     }
 

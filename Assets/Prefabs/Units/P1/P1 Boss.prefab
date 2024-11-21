@@ -16,6 +16,10 @@ PrefabInstance:
       propertyPath: isBoss
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 923066281123713339, guid: c285a46f6b555484ca4871a0e3a801f8, type: 3}
+      propertyPath: playerID
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2838462111037802450, guid: c285a46f6b555484ca4871a0e3a801f8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
