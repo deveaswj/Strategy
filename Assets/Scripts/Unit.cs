@@ -184,7 +184,7 @@ public class Unit : MonoBehaviour
         if (hasMoved) return;
 
         walkableTiles.Clear();
-        foreach (Tile tile in FindObjectsOfType<Tile>())
+        foreach (Tile tile in gm.GetTiles())
         {
             float distanceX = Mathf.Abs(tile.transform.position.x - transform.position.x);
             float distanceY = Mathf.Abs(tile.transform.position.y - transform.position.y);
@@ -218,7 +218,7 @@ public class Unit : MonoBehaviour
         enemiesInRange.Clear();
         if (hasAttacked) return;
 
-        foreach (Unit unit in gm.GetUnits())
+        foreach (Unit unit in gm.GetEnemyUnits())
         {
             if (unit == null) continue;
             if (unit.playerID != playerID)

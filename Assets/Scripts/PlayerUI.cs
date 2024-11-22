@@ -7,7 +7,7 @@ using TMPro;
 public class PlayerUI : MonoBehaviour
 {
     [SerializeField] PlayerID playerID;
-    [SerializeField] Image avatarImage;
+    [SerializeField] Button menuButton;
     [SerializeField] TextMeshProUGUI healthText;
     [SerializeField] TextMeshProUGUI currencyText;
 

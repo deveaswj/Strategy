@@ -50,7 +50,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1691782146070012353, guid: 00504ce9cffd64f48a5ad14057f86302, type: 3}
       propertyPath: m_Name
-      value: Van Variant
+      value: Unit Van
       objectReference: {fileID: 0}
     - target: {fileID: 3292928078926835514, guid: 00504ce9cffd64f48a5ad14057f86302, type: 3}
       propertyPath: m_Sprite
@@ -59,5 +59,26 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1691782146070012353, guid: 00504ce9cffd64f48a5ad14057f86302, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2777958700555940988}
   m_SourcePrefab: {fileID: 100100000, guid: 00504ce9cffd64f48a5ad14057f86302, type: 3}
+--- !u!1 &1535656414789918590 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1691782146070012353, guid: 00504ce9cffd64f48a5ad14057f86302, type: 3}
+  m_PrefabInstance: {fileID: 159268358850854591}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2777958700555940988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1535656414789918590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a95f77be842142c41948c75a2a39335b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  incomePerTurn: 10

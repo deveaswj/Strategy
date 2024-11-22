@@ -38,6 +38,10 @@ public class Tile : MonoBehaviour
 
     public void SetMouseOver(bool mouseOver)
     {
+        if (mouseOver && !isMouseOver)
+        {
+            // set gm's active tile to this tile
+        }
         isMouseOver = mouseOver;
     }
 

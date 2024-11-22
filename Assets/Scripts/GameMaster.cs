@@ -2,9 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public enum PlayerID { None, Player1, Player2 };
+
+public enum GameInputMode { None, Idle, UnitActive, PlaceNewUnit };
+// None -- should never be used
+// Idle -- select unit, buy new unit, or end turn
+//      Buy Unit: Yes
+//      Select:   Yes
+//      End Turn: Yes
+// UnitActive -- unit selected -- use it, select something else, deselect it, or end turn
+//      Buy Unit: No
+//      Select:   Yes
+//      End Turn: Yes
+// PlaceNewUnit -- place new unit -- cannot do anything else until done
+//      Buy Unit: No
+//      Select:   No
+//      End Turn: No
 
 public class GameMaster : MonoBehaviour
 {
@@ -12,6 +27,7 @@ public class GameMaster : MonoBehaviour
     private Unit selectedUnit;
 
     [SerializeField] TextMeshProUGUI turnText;
+    [SerializeField] GameObject centerTile;
 
     public PlayerID CurrentPlayer { get { return currentPlayer; } }
     private PlayerID currentPlayer = PlayerID.Player1;
@@ -21,6 +37,8 @@ public class GameMaster : MonoBehaviour
     private Tile[] tiles;
 
     Dictionary<PlayerID, Player> players = new();
+
+    GameInputMode gameInputMode = GameInputMode.None;
 
     void Awake()
     {
@@ -32,19 +50,84 @@ public class GameMaster : MonoBehaviour
     {
         units = FindObjectsOfType<Unit>();
         tiles = FindObjectsOfType<Tile>();
+        GrantIncome();
+        gameInputMode = GameInputMode.Idle;
     }
 
-    public Unit[] GetUnits() => units;
+    public Unit[] GetUnits() => players[currentPlayer].GetUnits();
+    public Unit[] GetUnits(PlayerID playerID) => players[playerID].GetUnits();
+
+    // get units of all players that are not the current player
+    public Unit[] GetEnemyUnits() => GetEnemyUnits(currentPlayer);
+    public Unit[] GetEnemyUnits(PlayerID playerID)
+    {
+        PlayerID otherPlayer = (playerID == PlayerID.Player1) ? PlayerID.Player2 : PlayerID.Player1;
+        return players[otherPlayer].GetUnits();
+    }
+
     public Tile[] GetTiles() => tiles;
 
     void Update()
     {
         turnText.text = "Player " + playerTurn + "'s turn";
-        if (Input.GetKeyDown(KeyCode.Space))
+
+        // if (gameInputMode == GameInputMode.Idle)
+        // {
+        //     if (Input.GetKeyDown(KeyCode.Space))
+        //     {
+        //         EndTurn();
+        //     }
+        // }
+
+        UpdateSelectionUI();
+    }
+
+    void OnSubmit()
+    {
+        // End Turn (if idle)
+        if (gameInputMode == GameInputMode.Idle)
         {
             EndTurn();
         }
+    }
 
+    void OnCancel()
+    {
+        if (gameInputMode == GameInputMode.UnitActive)
+        {
+            DeselectUnit();
+        }
+        else if (gameInputMode == GameInputMode.PlaceNewUnit)
+        {
+            // CancelNewUnitPlacement();
+        }
+    }
+
+    void OnSelectNext()
+    {
+        // Select Next/Prev behavior:
+        // If no unit is selected, select the active player's first unit
+        // If a unit is selected, select the active player's next or previous unit
+        if (selectedUnit == null)
+        {
+            //
+        }
+
+        bool shiftModifier = Keyboard.current.shiftKey.isPressed;
+        if (shiftModifier)
+        {
+            // Select Previous
+            Debug.Log("Select Previous");
+        }
+        else
+        {
+            // Select Next
+            Debug.Log("Select Next");
+        }
+    }
+
+    void UpdateSelectionUI()
+    {
         if (selectedUnit != null)
         {
             selectedUnitSquare.SetActive(true);
