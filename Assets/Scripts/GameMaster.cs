@@ -33,7 +33,6 @@ public class GameMaster : MonoBehaviour
     private PlayerID currentPlayer = PlayerID.Player1;
     private int playerTurn = 1;
 
-    private Unit[] units;
     private Tile[] tiles;
 
     Dictionary<PlayerID, Player> players = new();
@@ -48,7 +47,6 @@ public class GameMaster : MonoBehaviour
 
     void Start()
     {
-        units = FindObjectsOfType<Unit>();
         tiles = FindObjectsOfType<Tile>();
         GrantIncome();
         gameInputMode = GameInputMode.Idle;
@@ -234,7 +232,7 @@ public class GameMaster : MonoBehaviour
 
     void ResetUnits()
     {
-        foreach (Unit unit in units)
+        foreach (Unit unit in FindObjectsOfType<Unit>())
         {
             unit.ResetUnit();
         }

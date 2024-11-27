@@ -15,8 +15,9 @@ public class Unit : MonoBehaviour
 
     [Header("Stats")]
     [SerializeField] int maxHealth = 5;
-    [SerializeField] int attackDamage = 1;  // damage to deal when initiating attack
-    [SerializeField] int counterDamage = 1;  // damage to deal when counter-attacking
+    [SerializeField] int meleeDamage = 1;   // damage to deal when initiating melee attack
+    [SerializeField] int rangedDamage = 1;  // damage to deal when initiating ranged attack
+    [SerializeField] int counterRange = 1;  // halve counter-damage if outside this range
     [SerializeField] int armorValue = 0;    // damage reduction when defending
 
     [Header("Effects")]
@@ -34,6 +35,7 @@ public class Unit : MonoBehaviour
     public bool hasAttacked = false;
     public bool selected = false;
     public bool attackable = false;
+    public float attackableRange = 0;
 
     private GameObject attackIndicator;
     private SpriteRenderer aiSR;
@@ -210,6 +212,7 @@ public class Unit : MonoBehaviour
         foreach (Unit unit in enemiesInRange)
         {
             unit.attackable = false;
+            unit.attackableRange = 0;
         }
     }
 
@@ -225,12 +228,32 @@ public class Unit : MonoBehaviour
             {
                 float distanceX = Mathf.Abs(unit.transform.position.x - transform.position.x);
                 float distanceY = Mathf.Abs(unit.transform.position.y - transform.position.y);
-                if (distanceX + distanceY <= attackRange)
+                float unitDistance = distanceX + distanceY;
+                if (unitDistance <= attackRange)
                 {
                     enemiesInRange.Add(unit);
                     unit.attackable = true;
+                    unit.attackableRange = unitDistance;
                 }
             }
+        }
+    }
+
+    public int GetAttackDamageByDistance(float distance)
+    {
+        // return melee if distance is 1
+        if (distance == 1) return meleeDamage;
+        // if distance is greater than counterRange, return half rangedDamage (or 1 at minimum)
+        // else return full rangedDamage
+        if (distance > counterRange)
+        {
+            // return half rangedDamage -- rounded, but at least 1
+            return Mathf.Max(Mathf.RoundToInt(rangedDamage * 0.5f), 1);
+        }
+        else
+        {
+            // return full rangedDamage
+            return rangedDamage;
         }
     }
 
@@ -238,7 +261,9 @@ public class Unit : MonoBehaviour
     {
         if (target.attackable)
         {
-            Debug.Log(gameObject.name + " attacks " + target.name + " ...");
+            // check target's attackableRange to determine damage
+            int attackDamage = GetAttackDamageByDistance(target.attackableRange);
+            Debug.Log(gameObject.name + " attacks " + target.name + " for " + attackDamage + " ...");
             target.TakeDamage(attackDamage);
             hasAttacked = true;
         }
@@ -250,7 +275,9 @@ public class Unit : MonoBehaviour
 
     public void CounterAttack(Unit target)
     {
-        Debug.Log(gameObject.name + " counters " + target.name + " ...");
+        // check our own attackableRange to determine damage
+        int counterDamage = GetAttackDamageByDistance(attackableRange);
+        Debug.Log(gameObject.name + " counters " + target.name + " for " + counterDamage  + " ...");
         target.TakeDamage(counterDamage);
     }
 
@@ -262,7 +289,7 @@ public class Unit : MonoBehaviour
         ShowDamage(damage);
         UpdateBossHealth();
 
-        // every hit takes out 1 armor
+        // every hit takes out 1 armor, regardless of damage taken
         if (armorValue > 0) armorValue--;
         Debug.Log(gameObject.name + " has " + armorValue + " armor left!");
 
