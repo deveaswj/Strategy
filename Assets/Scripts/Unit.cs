@@ -7,18 +7,21 @@ using UnityEngine.UI;
 public class Unit : MonoBehaviour
 {
     [SerializeField] PlayerID playerID;
-    [SerializeField] float hoverAmount = 1.1f;
-    [SerializeField] Color highlightColor = Color.yellow;
-    [SerializeField] float moveSpeed = 5f;
-    [SerializeField] int travelRange = 1;     // How many tiles the unit moves per turn
-    [SerializeField] int attackRange = 1;
 
     [Header("Stats")]
     [SerializeField] int maxHealth = 5;
+    [SerializeField] int travelRange = 1;     // How many tiles the unit moves per turn
+    [SerializeField] bool isRoadgoing = false;
+    [SerializeField] int attackRange = 1;
     [SerializeField] int meleeDamage = 1;   // damage to deal when initiating melee attack
     [SerializeField] int rangedDamage = 1;  // damage to deal when initiating ranged attack
     [SerializeField] int counterRange = 1;  // halve counter-damage if outside this range
     [SerializeField] int armorValue = 0;    // damage reduction when defending
+
+    [Header("UI")]
+    [SerializeField] float hoverAmount = 1.1f;
+    [SerializeField] Color highlightColor = Color.yellow;
+    [SerializeField] float moveSpeed = 5f;
 
     [Header("Effects")]
     [SerializeField] DamageIcon damageIconPrefab;

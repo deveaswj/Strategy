@@ -8,6 +8,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -6445893663157460783, guid: 00504ce9cffd64f48a5ad14057f86302, type: 3}
+      propertyPath: maxHealth
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: -6445893663157460783, guid: 00504ce9cffd64f48a5ad14057f86302, type: 3}
+      propertyPath: meleeDamage
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -6445893663157460783, guid: 00504ce9cffd64f48a5ad14057f86302, type: 3}
+      propertyPath: counterRange
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 945976345540408888, guid: 00504ce9cffd64f48a5ad14057f86302, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -50,7 +62,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1691782146070012353, guid: 00504ce9cffd64f48a5ad14057f86302, type: 3}
       propertyPath: m_Name
-      value: Bot Variant
+      value: Unit Bot
       objectReference: {fileID: 0}
     - target: {fileID: 3292928078926835514, guid: 00504ce9cffd64f48a5ad14057f86302, type: 3}
       propertyPath: m_Sprite

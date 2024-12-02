@@ -9,6 +9,7 @@ public class Tile : MonoBehaviour
     [SerializeField] Color hoverColor;
     [SerializeField] Color highlightColor = Color.yellow;
     [SerializeField] float isClearRadius = 0.2f;
+    [SerializeField] bool isRoadTile = false;
     private Color defaultColor;
 
     private SpriteRenderer sr;
@@ -73,6 +74,8 @@ public class Tile : MonoBehaviour
         // spriteRenderer.color = isWalkable ? highlightColor : defaultColor;
         isMouseOver = false;
     }
+
+    public bool IsRoadTile() => isRoadTile;
 
     public bool IsClear()
     {
