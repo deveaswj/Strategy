@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 public enum PlayerID { None, Player1, Player2 };
 
-public enum GameInputMode { None, Idle, UnitActive, PlaceNewUnit };
+public enum GameInputMode { None, Idle, UnitActive, PlaceNewUnit, GameOver };
 // None -- should never be used
 // Idle -- select unit, buy new unit, or end turn
 //      Buy Unit: Yes
@@ -32,6 +32,8 @@ public class GameMaster : MonoBehaviour
     public PlayerID CurrentPlayer { get { return currentPlayer; } }
     private PlayerID currentPlayer = PlayerID.Player1;
     private int playerTurn = 1;
+
+    PlayerID winningPlayer = PlayerID.None;
 
     private Tile[] tiles;
 
@@ -79,6 +81,22 @@ public class GameMaster : MonoBehaviour
 
         UpdateSelectionUI();
     }
+
+    public void GameOver(PlayerID playerID)
+    {
+        gameInputMode = GameInputMode.GameOver;
+        winningPlayer = playerID;
+        StartCoroutine(GameOverRoutine());
+    }
+
+    IEnumerator GameOverRoutine()
+    {
+        // Pause for 1 second
+        // then show the Game Over canvas
+        yield return new WaitForSeconds(1.0f);
+
+    }
+
 
     void OnSubmit()
     {
@@ -254,8 +272,7 @@ public class GameMaster : MonoBehaviour
         if (selectedUnit != null)
         {
             Debug.Log("Deselecting unit: " + selectedUnit.name);
-            selectedUnit.ClearWalkableTiles();
-            selectedUnit.selected = false;
+            selectedUnit.Deselect();
             selectedUnit = null;
         }
     }

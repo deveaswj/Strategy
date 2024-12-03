@@ -4,6 +4,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum UnitTravelType { None, RoadOnly, RoadPrefer, Offroad };
+// RoadOnly: can only move on roads
+// RoadPrefer: Movement penalty when offroad
+// Offroad: No movement penalty
+
 public class Unit : MonoBehaviour
 {
     [SerializeField] PlayerID playerID;
@@ -11,9 +16,11 @@ public class Unit : MonoBehaviour
     [Header("Stats")]
     [SerializeField] int maxHealth = 5;
     [SerializeField] int travelRange = 1;     // How many tiles the unit moves per turn
-    [SerializeField] bool isRoadgoing = false;
+    [SerializeField] UnitTravelType travelType = UnitTravelType.RoadPrefer;
     [SerializeField] int attackRange = 1;
+    [Tooltip("Damage when attacking from 1 tile away")]
     [SerializeField] int meleeDamage = 1;   // damage to deal when initiating melee attack
+    [Tooltip("Damage when attacking from 2+ tiles away")]
     [SerializeField] int rangedDamage = 1;  // damage to deal when initiating ranged attack
     [SerializeField] int counterRange = 1;  // halve counter-damage if outside this range
     [SerializeField] int armorValue = 0;    // damage reduction when defending
@@ -79,6 +86,18 @@ public class Unit : MonoBehaviour
     {
         spriteRenderer.color = selected ? highlightColor : defaultColor;
         aiSR.enabled = attackable;
+    }
+
+    public void Deselect()
+    {
+        ClearEnemies();
+        ClearWalkableTiles();
+        selected = false;
+    }
+
+    void OnDisable()
+    {
+        Deselect();
     }
 
     public void ResetUnit()
@@ -175,7 +194,7 @@ public class Unit : MonoBehaviour
         transform.localScale = defaultScale;
     }
 
-    public void ClearWalkableTiles()
+    void ClearWalkableTiles()
     {
         foreach (Tile tile in walkableTiles)
         {
@@ -298,6 +317,10 @@ public class Unit : MonoBehaviour
 
         if (health <= 0)
         {
+            if (isBoss)
+            {
+                gm.GameOver(playerID);
+            }
             Die();
         }
     }

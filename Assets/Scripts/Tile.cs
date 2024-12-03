@@ -9,7 +9,14 @@ public class Tile : MonoBehaviour
     [SerializeField] Color hoverColor;
     [SerializeField] Color highlightColor = Color.yellow;
     [SerializeField] float isClearRadius = 0.2f;
-    [SerializeField] bool isRoadTile = false;
+
+    [Header("Roads")]
+    [SerializeField] bool isRoad = false;
+    [SerializeField] bool roadNorth = false;
+    [SerializeField] bool roadSouth = false;
+    [SerializeField] bool roadEast = false;
+    [SerializeField] bool roadWest = false;
+
     private Color defaultColor;
 
     private SpriteRenderer sr;
@@ -75,7 +82,7 @@ public class Tile : MonoBehaviour
         isMouseOver = false;
     }
 
-    public bool IsRoadTile() => isRoadTile;
+    public bool IsRoadTile() => (roadNorth || roadSouth || roadEast || roadWest);
 
     public bool IsClear()
     {

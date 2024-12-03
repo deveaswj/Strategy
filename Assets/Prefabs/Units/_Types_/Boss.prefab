@@ -17,6 +17,10 @@ PrefabInstance:
       value: 30
       objectReference: {fileID: 0}
     - target: {fileID: -6445893663157460783, guid: 00504ce9cffd64f48a5ad14057f86302, type: 3}
+      propertyPath: travelType
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -6445893663157460783, guid: 00504ce9cffd64f48a5ad14057f86302, type: 3}
       propertyPath: meleeDamage
       value: 5
       objectReference: {fileID: 0}
@@ -79,5 +83,26 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1691782146070012353, guid: 00504ce9cffd64f48a5ad14057f86302, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2339144308948401472}
   m_SourcePrefab: {fileID: 100100000, guid: 00504ce9cffd64f48a5ad14057f86302, type: 3}
+--- !u!1 &4413137157214048299 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1691782146070012353, guid: 00504ce9cffd64f48a5ad14057f86302, type: 3}
+  m_PrefabInstance: {fileID: 3045829973304406506}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2339144308948401472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4413137157214048299}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a95f77be842142c41948c75a2a39335b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  incomePerTurn: 10

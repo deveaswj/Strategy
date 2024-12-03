@@ -17,6 +17,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -6445893663157460783, guid: 00504ce9cffd64f48a5ad14057f86302, type: 3}
+      propertyPath: travelType
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -6445893663157460783, guid: 00504ce9cffd64f48a5ad14057f86302, type: 3}
       propertyPath: attackRange
       value: 1
       objectReference: {fileID: 0}
