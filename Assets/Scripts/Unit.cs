@@ -12,6 +12,7 @@ public enum UnitTravelType { None, RoadOnly, RoadPrefer, Offroad };
 public class Unit : MonoBehaviour
 {
     [SerializeField] PlayerID playerID;
+    [SerializeField] UnitStats unitStats;
 
     [Header("Stats")]
     [SerializeField] int maxHealth = 5;
@@ -186,6 +187,7 @@ public class Unit : MonoBehaviour
 
     protected void OnMouseEnter()
     {
+        if (!gm.IsMousable()) return;
         transform.localScale *= hoverAmount;
     }
 

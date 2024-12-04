@@ -4,9 +4,12 @@ public class MouseHandler : MonoBehaviour
 {
     [SerializeField] LayerMask unitLayer; // Set this to the Unit layer in the Inspector
     [SerializeField] LayerMask tileLayer; // Set this to the Tile layer in the Inspector
+    [SerializeField] GameMaster gm;
 
     private void Update()
     {
+        if (!gm.IsMousable()) return;
+
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Unit unit = GetUnit(mousePosition);
         Tile tile = GetTile(mousePosition);

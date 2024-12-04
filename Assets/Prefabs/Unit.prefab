@@ -145,20 +145,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerID: 0
+  unitStats: {fileID: 0}
+  maxHealth: 5
+  travelRange: 3
+  travelType: 2
+  attackRange: 2
+  meleeDamage: 1
+  rangedDamage: 1
+  counterRange: 1
+  armorValue: 0
   hoverAmount: 1.2
   highlightColor: {r: 1, g: 1, b: 1, a: 1}
   moveSpeed: 5
-  travelRange: 3
-  attackRange: 2
-  maxHealth: 5
-  attackDamage: 1
-  counterDamage: 1
-  armorValue: 0
   damageIconPrefab: {fileID: 2340956460900129625, guid: 61c88f7fcbd78364bb17643b21a32967, type: 3}
+  isBoss: 0
   hasMoved: 0
   hasAttacked: 0
   selected: 0
   attackable: 0
+  attackableRange: 0
 --- !u!1 &5700393306668320220
 GameObject:
   m_ObjectHideFlags: 0

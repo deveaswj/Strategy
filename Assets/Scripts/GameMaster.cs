@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 public enum PlayerID { None, Player1, Player2 };
 
-public enum GameInputMode { None, Idle, UnitActive, PlaceNewUnit, GameOver };
+public enum GameInputMode { None, Idle, UnitActive, BuyNewUnit, PlaceNewUnit, GameOver };
 // None -- should never be used
 // Idle -- select unit, buy new unit, or end turn
 //      Buy Unit: Yes
@@ -39,7 +39,9 @@ public class GameMaster : MonoBehaviour
 
     Dictionary<PlayerID, Player> players = new();
 
-    GameInputMode gameInputMode = GameInputMode.None;
+    [SerializeField] GameInputMode gameInputMode = GameInputMode.Idle;
+
+    public GameInputMode GameInputMode { get { return gameInputMode; } }
 
     void Awake()
     {
@@ -51,7 +53,8 @@ public class GameMaster : MonoBehaviour
     {
         tiles = FindObjectsOfType<Tile>();
         GrantIncome();
-        gameInputMode = GameInputMode.Idle;
+        // gameInputMode = GameInputMode.Idle;
+        // gameInputMode = GameInputMode.BuyNewUnit;
     }
 
     public Unit[] GetUnits() => players[currentPlayer].GetUnits();
@@ -97,6 +100,18 @@ public class GameMaster : MonoBehaviour
 
     }
 
+    public bool IsMousable()
+    {
+        return (gameInputMode == GameInputMode.Idle 
+        || gameInputMode == GameInputMode.UnitActive
+        || gameInputMode == GameInputMode.PlaceNewUnit);
+    }
+
+
+    void ShowStoreUI()
+    {
+    // gameInputMode = GameInputMode.PlaceNewUnit;
+    }
 
     void OnSubmit()
     {

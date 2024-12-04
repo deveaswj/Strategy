@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 639196f508552134b96737a6539f2634, type: 3}
+  m_Name: Truck
+  m_EditorClassIdentifier: 
+  unitName: Truck
+  storeDescription: Resource-focused support unit with limited combat capabilities.
+  isPurchasable: 1
+  price: 10
+  isBoss: 0
+  maxHealth: 5
+  travelType: 2
+  travelRange: 1
+  attackRange: 1
+  meleeDamage: 1
+  rangedDamage: 1
+  counterRange: 1
+  armorValue: 0
+  unitIcon: {fileID: 21300000, guid: bf4633e50b01e9c4ea1e57316f601e88, type: 3}
+  player1: {fileID: 21300000, guid: 12edc3fa421c1d24abac2daed98b0c3a, type: 3}
+  player2: {fileID: 21300000, guid: cd0afe8dbe72c714284e93a1ffefaf45, type: 3}

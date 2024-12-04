@@ -13,6 +13,10 @@ PrefabInstance:
       value: 15
       objectReference: {fileID: 0}
     - target: {fileID: -6445893663157460783, guid: 00504ce9cffd64f48a5ad14057f86302, type: 3}
+      propertyPath: unitStats
+      value: 
+      objectReference: {fileID: 11400000, guid: d94ff74935a6dc9479eeccab6905ed70, type: 2}
+    - target: {fileID: -6445893663157460783, guid: 00504ce9cffd64f48a5ad14057f86302, type: 3}
       propertyPath: armorValue
       value: 1
       objectReference: {fileID: 0}
