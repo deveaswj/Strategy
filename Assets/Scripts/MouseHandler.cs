@@ -6,6 +6,8 @@ public class MouseHandler : MonoBehaviour
     [SerializeField] LayerMask tileLayer; // Set this to the Tile layer in the Inspector
     [SerializeField] GameMaster gm;
 
+    Tile focusTile = null;
+
     private void Update()
     {
         if (!gm.IsMousable()) return;
@@ -19,9 +21,11 @@ public class MouseHandler : MonoBehaviour
         bool mouseClicked = Input.GetMouseButtonDown(0);
 
         // Tile hover effect
-        if (foundTile)
+        if (foundTile && tile != focusTile)
         {
-            tile.SetMouseOver(true);
+            // tile.SetMouseOver(true);
+            gm.SetTileFocus(tile.transform);
+            focusTile = tile;
         }
 
         // Unit click (overrides tile click)

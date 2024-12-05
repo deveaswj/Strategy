@@ -43,8 +43,11 @@ public class GameMaster : MonoBehaviour
 
     public GameInputMode GameInputMode { get { return gameInputMode; } }
 
+    SelectionIndicator selectionIndicator;
+
     void Awake()
     {
+        selectionIndicator = FindObjectOfType<SelectionIndicator>();
         LoadPlayers();
         SetCurrentPlayer(1);
     }
@@ -261,6 +264,12 @@ public class GameMaster : MonoBehaviour
             tile.ResetTile();
             tile.SetMouseOver(false);
         }
+    }
+
+    public void SetTileFocus(Transform tileTransform)
+    {
+        // move the SelectionIndicator to the tile
+        selectionIndicator.MoveTo(tileTransform.position);
     }
 
     void ResetUnits()

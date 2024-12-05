@@ -18,7 +18,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8041933717795700036, guid: 5c22f7b3bb6afb4418180e38a3f6ac63, type: 3}
       propertyPath: m_Name
-      value: P2 Lorry
+      value: P2 Kei
       objectReference: {fileID: 0}
     - target: {fileID: 8041933717795700036, guid: 5c22f7b3bb6afb4418180e38a3f6ac63, type: 3}
       propertyPath: m_TagString
@@ -26,7 +26,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8484802069674371773, guid: 5c22f7b3bb6afb4418180e38a3f6ac63, type: 3}
       propertyPath: m_LocalScale.x
-      value: -1
+      value: -0.8
       objectReference: {fileID: 0}
     - target: {fileID: 8484802069674371773, guid: 5c22f7b3bb6afb4418180e38a3f6ac63, type: 3}
       propertyPath: m_LocalPosition.x

@@ -21,8 +21,8 @@ public class Tile : MonoBehaviour
 
     private SpriteRenderer sr;
     private Vector3 defaultScale;
-    private GameObject selectionIndicator;
-    private SpriteRenderer siSR;
+    // private GameObject selectionIndicator;
+    // private SpriteRenderer siSR;
 
     GameMaster gm;
     bool isWalkable = false;
@@ -34,14 +34,15 @@ public class Tile : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
         defaultScale = transform.localScale;
         defaultColor = sr.color;
-        selectionIndicator = transform.Find("SelectionIndicator").gameObject;
-        siSR = selectionIndicator.GetComponent<SpriteRenderer>();
+        // ~selectionIndicator = transform.Find("SelectionIndicator").gameObject;
+        // ~siSR = selectionIndicator.GetComponent<SpriteRenderer>();
     }
 
     void Update()
     {
         sr.color = isWalkable ? highlightColor : defaultColor;
-        siSR.enabled = isMouseOver;
+
+        // ~siSR.enabled = isMouseOver;
     }
 
     public void SetMouseOver(bool mouseOver)
@@ -68,19 +69,18 @@ public class Tile : MonoBehaviour
         }
     }
 
-    // void OnMouseEnter()
-    // {
-    //     // transform.localScale += Vector3.one * hoverAmount;
-    //     // spriteRenderer.color = hoverColor;
-    //     isMouseOver = true;
-    // }
-
-    void OnMouseExit()
+    void OnMouseEnter()
     {
-        // transform.localScale = defaultScale;
-        // spriteRenderer.color = isWalkable ? highlightColor : defaultColor;
-        isMouseOver = false;
+        // isMouseOver = true;
+
+        // call a function to show the tile indicator at this tile
+        // gm.SetTileFocus(transform);
     }
+
+    // void OnMouseExit()
+    // {
+    //     isMouseOver = false;
+    // }
 
     public bool IsRoadTile() => (roadNorth || roadSouth || roadEast || roadWest);
 

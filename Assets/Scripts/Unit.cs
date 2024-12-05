@@ -14,17 +14,17 @@ public class Unit : MonoBehaviour
     [SerializeField] PlayerID playerID;
     [SerializeField] UnitStats unitStats;
 
-    [Header("Stats")]
-    [SerializeField] int maxHealth = 5;
-    [SerializeField] int travelRange = 1;     // How many tiles the unit moves per turn
-    [SerializeField] UnitTravelType travelType = UnitTravelType.RoadPrefer;
-    [SerializeField] int attackRange = 1;
-    [Tooltip("Damage when attacking from 1 tile away")]
-    [SerializeField] int meleeDamage = 1;   // damage to deal when initiating melee attack
-    [Tooltip("Damage when attacking from 2+ tiles away")]
-    [SerializeField] int rangedDamage = 1;  // damage to deal when initiating ranged attack
-    [SerializeField] int counterRange = 1;  // halve counter-damage if outside this range
-    [SerializeField] int armorValue = 0;    // damage reduction when defending
+    // [Header("Stats")]
+    // [SerializeField] int maxHealth = 5;
+    // [SerializeField] int travelRange = 1;     // How many tiles the unit moves per turn
+    // [SerializeField] UnitTravelType travelType = UnitTravelType.RoadPrefer;
+    // [SerializeField] int attackRange = 1;
+    // [Tooltip("Damage when attacking from 1 tile away")]
+    // [SerializeField] int meleeDamage = 1;   // damage to deal when initiating melee attack
+    // [Tooltip("Damage when attacking from 2+ tiles away")]
+    // [SerializeField] int rangedDamage = 1;  // damage to deal when initiating ranged attack
+    // [SerializeField] int counterRange = 1;  // halve counter-damage if outside this range
+    // [SerializeField] int armorValue = 0;    // damage reduction when defending
 
     [Header("UI")]
     [SerializeField] float hoverAmount = 1.1f;
@@ -34,8 +34,8 @@ public class Unit : MonoBehaviour
     [Header("Effects")]
     [SerializeField] DamageIcon damageIconPrefab;
 
-    [Header("Boss")]
-    [SerializeField] bool isBoss = false;
+    // [Header("Boss")]
+    // [SerializeField] bool isBoss = false;
 
     private int health;
 
@@ -68,7 +68,7 @@ public class Unit : MonoBehaviour
     {
         walkableTiles = new();
         gm = FindObjectOfType<GameMaster>();
-        health = maxHealth;
+        health = unitStats.maxHealth;
         if (hoverAmount < 1) hoverAmount += 1;
         explosionPoolManager = FindObjectOfType<ExplosionPoolManager>();
     }
@@ -214,7 +214,7 @@ public class Unit : MonoBehaviour
         {
             float distanceX = Mathf.Abs(tile.transform.position.x - transform.position.x);
             float distanceY = Mathf.Abs(tile.transform.position.y - transform.position.y);
-            if (distanceX + distanceY <= travelRange)
+            if (distanceX + distanceY <= unitStats.travelRange)
             {
                 if (tile.IsClear())
                 {
@@ -253,7 +253,7 @@ public class Unit : MonoBehaviour
                 float distanceX = Mathf.Abs(unit.transform.position.x - transform.position.x);
                 float distanceY = Mathf.Abs(unit.transform.position.y - transform.position.y);
                 float unitDistance = distanceX + distanceY;
-                if (unitDistance <= attackRange)
+                if (unitDistance <= unitStats.attackRange)
                 {
                     enemiesInRange.Add(unit);
                     unit.attackable = true;
@@ -266,18 +266,18 @@ public class Unit : MonoBehaviour
     public int GetAttackDamageByDistance(float distance)
     {
         // return melee if distance is 1
-        if (distance == 1) return meleeDamage;
+        if (distance == 1) return unitStats.meleeDamage;
         // if distance is greater than counterRange, return half rangedDamage (or 1 at minimum)
         // else return full rangedDamage
-        if (distance > counterRange)
+        if (distance > unitStats.counterRange)
         {
             // return half rangedDamage -- rounded, but at least 1
-            return Mathf.Max(Mathf.RoundToInt(rangedDamage * 0.5f), 1);
+            return Mathf.Max(Mathf.RoundToInt(unitStats.rangedDamage * 0.5f), 1);
         }
         else
         {
             // return full rangedDamage
-            return rangedDamage;
+            return unitStats.rangedDamage;
         }
     }
 
@@ -307,6 +307,7 @@ public class Unit : MonoBehaviour
 
     void TakeDamage(int damage = 0)
     {
+        int armorValue = unitStats.armorValue;
         damage = Mathf.Max(damage - armorValue, 0);
         health -= damage;
         Debug.Log("... " + gameObject.name + " takes " + damage + " damage!");
@@ -319,7 +320,7 @@ public class Unit : MonoBehaviour
 
         if (health <= 0)
         {
-            if (isBoss)
+            if (unitStats.isBoss)
             {
                 gm.GameOver(playerID);
             }
@@ -350,7 +351,7 @@ public class Unit : MonoBehaviour
 
     public void UpdateBossHealth()
     {
-        if (isBoss)
+        if (unitStats.isBoss)
         {
             Debug.Log("Updating " + playerID + " boss health: " + health);
             gm.SetHealth(health, playerID);

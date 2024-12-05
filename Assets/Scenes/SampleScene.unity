@@ -6602,6 +6602,23 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 96b8535224050d045b1fd7414502b4f0, type: 3}
+--- !u!1 &801380130 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8312404544334990579, guid: 6404435f1dfcee34698cd7bde0227742, type: 3}
+  m_PrefabInstance: {fileID: 845599877}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &801380133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 801380130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e346ab423ddac746a4896af6acc6587, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &804242586 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3075766802734256997, guid: 96b8535224050d045b1fd7414502b4f0, type: 3}
@@ -7340,14 +7357,33 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6036515959511940879, guid: 6404435f1dfcee34698cd7bde0227742, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6036515959511940879, guid: 6404435f1dfcee34698cd7bde0227742, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8312404544334990579, guid: 6404435f1dfcee34698cd7bde0227742, type: 3}
       propertyPath: m_Name
       value: SelectionIndicator
       objectReference: {fileID: 0}
+    - target: {fileID: 8312404544334990579, guid: 6404435f1dfcee34698cd7bde0227742, type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8312404544334990579, guid: 6404435f1dfcee34698cd7bde0227742, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8312404544334990579, guid: 6404435f1dfcee34698cd7bde0227742, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 801380133}
   m_SourcePrefab: {fileID: 100100000, guid: 6404435f1dfcee34698cd7bde0227742, type: 3}
 --- !u!4 &848388649 stripped
 Transform:

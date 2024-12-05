@@ -21,6 +21,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: de57b10eee6df974199a4c098a3fb290, type: 2}
     - target: {fileID: -6445893663157460783, guid: 00504ce9cffd64f48a5ad14057f86302, type: 3}
+      propertyPath: armorValue
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -6445893663157460783, guid: 00504ce9cffd64f48a5ad14057f86302, type: 3}
       propertyPath: travelType
       value: 3
       objectReference: {fileID: 0}
@@ -35,6 +39,14 @@ PrefabInstance:
     - target: {fileID: -6445893663157460783, guid: 00504ce9cffd64f48a5ad14057f86302, type: 3}
       propertyPath: rangedDamage
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 945976345540408888, guid: 00504ce9cffd64f48a5ad14057f86302, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 945976345540408888, guid: 00504ce9cffd64f48a5ad14057f86302, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 945976345540408888, guid: 00504ce9cffd64f48a5ad14057f86302, type: 3}
       propertyPath: m_LocalPosition.x

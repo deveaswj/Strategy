@@ -18,14 +18,14 @@ MonoBehaviour:
   isPurchasable: 1
   price: 10
   isBoss: 0
-  maxHealth: 5
+  maxHealth: 25
   travelType: 3
-  travelRange: 1
+  travelRange: 2
   attackRange: 1
-  meleeDamage: 1
-  rangedDamage: 1
+  meleeDamage: 6
+  rangedDamage: 0
   counterRange: 1
-  armorValue: 0
+  armorValue: 2
   unitIcon: {fileID: 21300000, guid: 12386b7789f91cc4db6b4dc0f062574b, type: 3}
   player1: {fileID: 21300000, guid: 6d2b8675f42a98546960f65291f0514b, type: 3}
   player2: {fileID: 21300000, guid: 4b72e29fe0db69d44b762f2775d52b80, type: 3}

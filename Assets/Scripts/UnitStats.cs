@@ -26,4 +26,22 @@ public class UnitStats : ScriptableObject
     public Sprite unitIcon;
     public Sprite player1;
     public Sprite player2;
+
+    public int GetAttackDamageByDistance(float distance)
+    {
+        // return melee if distance is 1
+        if (distance == 1) return meleeDamage;
+        // if distance is greater than counterRange, return half rangedDamage (or 1 at minimum)
+        // else return full rangedDamage
+        if (distance > counterRange)
+        {
+            // return half rangedDamage -- rounded, but at least 1
+            return Mathf.Max(Mathf.RoundToInt(rangedDamage * 0.5f), 1);
+        }
+        else
+        {
+            // return full rangedDamage
+            return rangedDamage;
+        }
+    }
 }
