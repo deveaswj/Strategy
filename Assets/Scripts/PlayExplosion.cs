@@ -12,14 +12,14 @@ public class PlayExplosion : MonoBehaviour
 
     void Awake()
     {
-        Debug.Log("Awake " + gameObject.name);
+        // Debug.Log("Awake " + gameObject.name);
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     void OnEnable()
     {
-        Debug.Log("OnEnable " + gameObject.name);
+        // Debug.Log("OnEnable " + gameObject.name);
         animationLength = animator.GetCurrentAnimatorStateInfo(0).length;
         ResetExplosion();
     }

@@ -41,10 +41,11 @@ public class Unit : MonoBehaviour
 
     private List<Unit> enemiesInRange = new();
 
+    private bool selected = false;
+
     [Header("Public")]
     public bool hasMoved = false;
     public bool hasAttacked = false;
-    public bool selected = false;
     public bool attackable = false;
     public float attackableRange = 0;
 
@@ -89,6 +90,11 @@ public class Unit : MonoBehaviour
         aiSR.enabled = attackable;
     }
 
+    public void Select()
+    {
+        selected = true;
+    }
+
     public void Deselect()
     {
         ClearEnemies();
@@ -122,19 +128,16 @@ public class Unit : MonoBehaviour
             // this unit is friendly
             if (selected)
             {
-                selected = false;
+                // deselect this unit (return to idle state)
                 gm.DeselectUnit();
             }
             else
             {
-                if (playerID == gm.CurrentPlayer)
-                {
-                    gm.DeselectUnit();
-                    selected = true;
-                    gm.SelectUnit(this);
-                    GetEnemiesInRange();
-                    GetWalkableTiles();
-                }
+                // deselect any other selected unit, and select this one
+                gm.DeselectUnit();
+                gm.SelectUnit(this);
+                GetEnemiesInRange();
+                GetWalkableTiles();
             }
         }
         else
@@ -188,7 +191,10 @@ public class Unit : MonoBehaviour
     protected void OnMouseEnter()
     {
         if (!gm.IsMousable()) return;
-        transform.localScale *= hoverAmount;
+        if (playerID == gm.CurrentPlayer || attackable)
+        {
+            transform.localScale *= hoverAmount;
+        }
     }
 
     protected void OnMouseExit()

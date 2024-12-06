@@ -135,6 +135,10 @@ public class GameMaster : MonoBehaviour
         {
             // CancelNewUnitPlacement();
         }
+        else if (gameInputMode == GameInputMode.BuyNewUnit)
+        {
+            // 
+        }
     }
 
     void OnSelectNext()
@@ -284,6 +288,9 @@ public class GameMaster : MonoBehaviour
     {
         Debug.Log("Selecting unit: " + unit.name);
         selectedUnit = unit;
+        selectedUnit.Select();
+        gameInputMode = GameInputMode.UnitActive;
+        Debug.Log("Game Input Mode: " + gameInputMode);
     }
 
     public Unit GetSelectedUnit()
@@ -298,6 +305,8 @@ public class GameMaster : MonoBehaviour
             Debug.Log("Deselecting unit: " + selectedUnit.name);
             selectedUnit.Deselect();
             selectedUnit = null;
+            gameInputMode = GameInputMode.Idle;
+            Debug.Log("Game Input Mode: " + gameInputMode);
         }
     }
 
