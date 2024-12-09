@@ -67,6 +67,17 @@ public class Tile : MonoBehaviour
                 selectedUnit.MoveToTile(this);
             }
         }
+        else
+        {
+            if (gm.GameInputMode == GameInputMode.UnitActive)
+            {
+                gm.DeselectUnit();
+            }
+            else if (gm.GameInputMode == GameInputMode.Idle)
+            {
+                // gm.ShowStoreUI();
+            }
+        }
     }
 
     void OnMouseEnter()

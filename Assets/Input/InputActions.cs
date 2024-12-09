@@ -246,39 +246,6 @@ namespace UnityEngine.InputSystem
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""Shift-Tab [Keyboard]"",
-                    ""id"": ""e0968151-18b0-4f42-83b2-d7fa85729ca8"",
-                    ""path"": ""OneModifier"",
-                    ""interactions"": ""Press"",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""SelectNext"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""c4ec7698-b358-4f13-b5d1-2cff67cea383"",
-                    ""path"": ""<Keyboard>/shift"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""SelectNext"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""binding"",
-                    ""id"": ""a864684f-9367-4cf3-84d2-7a9de8e35be9"",
-                    ""path"": ""<Keyboard>/tab"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""SelectNext"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
                     ""name"": """",
                     ""id"": ""5d10292b-7719-49d7-ad84-2c745abe11b8"",
                     ""path"": ""<Keyboard>/tab"",
@@ -817,6 +784,34 @@ namespace UnityEngine.InputSystem
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Store"",
+            ""id"": ""d2994fce-d218-422b-b02d-2ebe517646cd"",
+            ""actions"": [
+                {
+                    ""name"": ""New action"",
+                    ""type"": ""Button"",
+                    ""id"": ""753bbc13-2243-4461-a5a9-bbd9ed2134c7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""66b321bd-7aaf-477c-94b0-5e765ae0ff1b"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""New action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -899,6 +894,9 @@ namespace UnityEngine.InputSystem
             m_UI_RightClick = m_UI.FindAction("RightClick", throwIfNotFound: true);
             m_UI_TrackedDevicePosition = m_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
             m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
+            // Store
+            m_Store = asset.FindActionMap("Store", throwIfNotFound: true);
+            m_Store_Newaction = m_Store.FindAction("New action", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -1136,6 +1134,52 @@ namespace UnityEngine.InputSystem
             }
         }
         public UIActions @UI => new UIActions(this);
+
+        // Store
+        private readonly InputActionMap m_Store;
+        private List<IStoreActions> m_StoreActionsCallbackInterfaces = new List<IStoreActions>();
+        private readonly InputAction m_Store_Newaction;
+        public struct StoreActions
+        {
+            private @InputActions m_Wrapper;
+            public StoreActions(@InputActions wrapper) { m_Wrapper = wrapper; }
+            public InputAction @Newaction => m_Wrapper.m_Store_Newaction;
+            public InputActionMap Get() { return m_Wrapper.m_Store; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(StoreActions set) { return set.Get(); }
+            public void AddCallbacks(IStoreActions instance)
+            {
+                if (instance == null || m_Wrapper.m_StoreActionsCallbackInterfaces.Contains(instance)) return;
+                m_Wrapper.m_StoreActionsCallbackInterfaces.Add(instance);
+                @Newaction.started += instance.OnNewaction;
+                @Newaction.performed += instance.OnNewaction;
+                @Newaction.canceled += instance.OnNewaction;
+            }
+
+            private void UnregisterCallbacks(IStoreActions instance)
+            {
+                @Newaction.started -= instance.OnNewaction;
+                @Newaction.performed -= instance.OnNewaction;
+                @Newaction.canceled -= instance.OnNewaction;
+            }
+
+            public void RemoveCallbacks(IStoreActions instance)
+            {
+                if (m_Wrapper.m_StoreActionsCallbackInterfaces.Remove(instance))
+                    UnregisterCallbacks(instance);
+            }
+
+            public void SetCallbacks(IStoreActions instance)
+            {
+                foreach (var item in m_Wrapper.m_StoreActionsCallbackInterfaces)
+                    UnregisterCallbacks(item);
+                m_Wrapper.m_StoreActionsCallbackInterfaces.Clear();
+                AddCallbacks(instance);
+            }
+        }
+        public StoreActions @Store => new StoreActions(this);
         private int m_KeyboardMouseSchemeIndex = -1;
         public InputControlScheme KeyboardMouseScheme
         {
@@ -1199,6 +1243,10 @@ namespace UnityEngine.InputSystem
             void OnRightClick(InputAction.CallbackContext context);
             void OnTrackedDevicePosition(InputAction.CallbackContext context);
             void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
+        }
+        public interface IStoreActions
+        {
+            void OnNewaction(InputAction.CallbackContext context);
         }
     }
 }

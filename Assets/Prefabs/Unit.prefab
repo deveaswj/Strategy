@@ -152,7 +152,6 @@ MonoBehaviour:
   damageIconPrefab: {fileID: 2340956460900129625, guid: 61c88f7fcbd78364bb17643b21a32967, type: 3}
   hasMoved: 0
   hasAttacked: 0
-  selected: 0
   attackable: 0
   attackableRange: 0
 --- !u!1 &5700393306668320220
@@ -228,8 +227,8 @@ SpriteRenderer:
   m_SortingLayerID: 1560342307
   m_SortingLayer: 4
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: a1a94c21e175b984eb16e060c67f7798, type: 3}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 3caf008414ddcb343b160109043ea493, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

@@ -37,6 +37,8 @@ public class Unit : MonoBehaviour
     // [Header("Boss")]
     // [SerializeField] bool isBoss = false;
 
+    [SerializeField] int healthOverride = 0;
+
     private int health;
 
     private List<Unit> enemiesInRange = new();
@@ -64,12 +66,12 @@ public class Unit : MonoBehaviour
 
     private List<Tile> walkableTiles;
 
-
     protected void Awake()
     {
         walkableTiles = new();
         gm = FindObjectOfType<GameMaster>();
         health = unitStats.maxHealth;
+        if (healthOverride > 0) health = healthOverride;
         if (hoverAmount < 1) hoverAmount += 1;
         explosionPoolManager = FindObjectOfType<ExplosionPoolManager>();
     }
@@ -123,9 +125,8 @@ public class Unit : MonoBehaviour
 
         ClearEnemies();
 
-        if (playerID == gm.CurrentPlayer)
+        if (playerID == gm.CurrentPlayer) // this unit is friendly
         {
-            // this unit is friendly
             if (selected)
             {
                 // deselect this unit (return to idle state)
@@ -140,16 +141,18 @@ public class Unit : MonoBehaviour
                 GetWalkableTiles();
             }
         }
-        else
+        else // this unit is enemy
         {
-            // this unit is enemy
             if (attackable)
             {
-                // attack if we can
+                // selected unit attacks if it can
                 Unit selectedUnit = gm.GetSelectedUnit();
-                if (selectedUnit == null) return;
-                if (selectedUnit.hasAttacked) return;
-                gm.AttackUnit(this);
+                if (selectedUnit != null && !selectedUnit.hasAttacked)
+                {
+                    selectedUnit.Attack(this);
+                    CounterAttack(selectedUnit);
+                    // gm.AttackUnit(this);
+                }
             }
         }
     }
@@ -296,6 +299,8 @@ public class Unit : MonoBehaviour
             Debug.Log(gameObject.name + " attacks " + target.name + " for " + attackDamage + " ...");
             target.TakeDamage(attackDamage);
             hasAttacked = true;
+            // we can't attack again this turn
+            ClearEnemies();
         }
         else
         {
@@ -305,6 +310,11 @@ public class Unit : MonoBehaviour
 
     public void CounterAttack(Unit target)
     {
+        if (health <= 0)
+        {
+            Debug.Log("CounterAttack: Unit " + gameObject.name + " is dead!");
+            return;
+        }
         // check our own attackableRange to determine damage
         int counterDamage = GetAttackDamageByDistance(attackableRange);
         Debug.Log(gameObject.name + " counters " + target.name + " for " + counterDamage  + " ...");
@@ -315,7 +325,7 @@ public class Unit : MonoBehaviour
     {
         int armorValue = unitStats.armorValue;
         damage = Mathf.Max(damage - armorValue, 0);
-        health -= damage;
+        health -= Mathf.Min(damage, health);    // don't take more damage than health
         Debug.Log("... " + gameObject.name + " takes " + damage + " damage!");
         ShowDamage(damage);
         UpdateBossHealth();

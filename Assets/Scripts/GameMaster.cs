@@ -45,9 +45,19 @@ public class GameMaster : MonoBehaviour
 
     SelectionIndicator selectionIndicator;
 
+    private StoreDialog storeDialog;
+
+// public enum GameInputMode { None, Idle, UnitActive, BuyNewUnit, PlaceNewUnit, GameOver };
+    bool InIdleMode() => (gameInputMode == GameInputMode.Idle);
+    bool InUnitActiveMode() => (gameInputMode == GameInputMode.UnitActive);
+    bool InBuyNewUnitMode() => (gameInputMode == GameInputMode.BuyNewUnit);
+    bool InPlaceNewUnitMode() => (gameInputMode == GameInputMode.PlaceNewUnit);
+
+
     void Awake()
     {
         selectionIndicator = FindObjectOfType<SelectionIndicator>();
+        storeDialog = FindObjectOfType<StoreDialog>();
         LoadPlayers();
         SetCurrentPlayer(1);
     }
@@ -92,6 +102,7 @@ public class GameMaster : MonoBehaviour
     {
         gameInputMode = GameInputMode.GameOver;
         winningPlayer = playerID;
+        Debug.Log("Game Over! Winning player: " + winningPlayer);
         StartCoroutine(GameOverRoutine());
     }
 
@@ -100,7 +111,7 @@ public class GameMaster : MonoBehaviour
         // Pause for 1 second
         // then show the Game Over canvas
         yield return new WaitForSeconds(1.0f);
-
+        Debug.Log("(Here's where we would show the Game Over canvas)");
     }
 
     public bool IsMousable()
@@ -113,16 +124,19 @@ public class GameMaster : MonoBehaviour
 
     void ShowStoreUI()
     {
-    // gameInputMode = GameInputMode.PlaceNewUnit;
+        // gameInputMode = GameInputMode.BuyNewUnit;
+        storeDialog.ShowDialog();
     }
 
     void OnSubmit()
     {
         // End Turn (if idle)
-        if (gameInputMode == GameInputMode.Idle)
+        if (gameInputMode == GameInputMode.Idle || gameInputMode == GameInputMode.UnitActive)
         {
             EndTurn();
         }
+        if (gameInputMode == GameInputMode.PlaceNewUnit) {}
+        if (gameInputMode == GameInputMode.BuyNewUnit) {}
     }
 
     void OnCancel()
@@ -146,22 +160,31 @@ public class GameMaster : MonoBehaviour
         // Select Next/Prev behavior:
         // If no unit is selected, select the active player's first unit
         // If a unit is selected, select the active player's next or previous unit
+        string debugPrefix = "OnSelectNext (Player " + currentPlayer + "): ";
         if (selectedUnit == null)
         {
-            //
-        }
-
-        bool shiftModifier = Keyboard.current.shiftKey.isPressed;
-        if (shiftModifier)
-        {
-            // Select Previous
-            Debug.Log("Select Previous");
+            // Select First
+            Debug.Log(debugPrefix + "Select First");
         }
         else
-        {
-            // Select Next
-            Debug.Log("Select Next");
+            {
+            bool shiftModifier = Keyboard.current.shiftKey.isPressed;
+            if (shiftModifier)
+            {
+                // Select Previous
+                Debug.Log(debugPrefix + "Select Previous");
+            }
+            else
+            {
+                // Select Next
+                Debug.Log(debugPrefix + "Select Next");
+            }
         }
+    }
+
+    void OnMove(Vector2 direction)
+    {
+        
     }
 
     void UpdateSelectionUI()
