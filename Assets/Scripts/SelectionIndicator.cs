@@ -12,6 +12,12 @@ public class SelectionIndicator : MonoBehaviour
     public void MoveTo(Vector2 position)
     {
         // move this object to the given position
+        Debug.Log("Moving selection indicator to " + position);
         transform.position = position;
+    }
+
+    public Vector2 GetPosition()
+    {
+        return transform.position;
     }
 }

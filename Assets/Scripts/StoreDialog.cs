@@ -36,7 +36,7 @@ public class StoreDialog : MonoBehaviour
     {
         dialogCanvas.SetActive(true);
 
-        // Switch action maps: Disable Player and keep UI enabled
+        // Switch action maps: Disable Player and enable UI
         playerInput.actions.FindActionMap("Player").Disable();
         playerInput.actions.FindActionMap("UI").Enable();
 
@@ -48,8 +48,9 @@ public class StoreDialog : MonoBehaviour
     {
         dialogCanvas.SetActive(false);
 
-        // Re-enable the Player action map
+        // Switch action maps: Disable UI and enable Player
         playerInput.actions.FindActionMap("Player").Enable();
+        playerInput.actions.FindActionMap("UI").Disable();
 
         // Re-enable MouseHandler
         mouseHandler.enabled = true;
@@ -76,7 +77,30 @@ public class StoreDialog : MonoBehaviour
     private void UpdateUnitDetails()
     {
         statsText.text = $"Unit: {availableUnits[currentUnitIndex]}";
+        Debug.Log($"Unit: {availableUnits[currentUnitIndex]}");
     }
 
+    public void OnUICancel(InputAction.CallbackContext context)
+    {
+        CloseDialog();
+    }
+
+    public void OnUISubmit(InputAction.CallbackContext context)
+    {
+        BuyUnit();
+    }
+
+    public void OnScrollWheel(InputAction.CallbackContext context)
+    {
+        float scrollDelta = context.ReadValue<float>();
+        if (scrollDelta > 0)
+        {
+            NextUnit();
+        }
+        else if (scrollDelta < 0)
+        {
+            PreviousUnit();
+        }
+    }
 
 }

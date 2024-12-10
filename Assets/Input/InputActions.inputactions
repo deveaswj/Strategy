@@ -25,12 +25,30 @@
                 },
                 {
                     "name": "SelectNext",
-                    "type": "Button",
+                    "type": "PassThrough",
                     "id": "17966312-0491-4de9-8611-7d3966ee5c9a",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "EndTurn",
+                    "type": "Button",
+                    "id": "14618d44-6114-4e84-bc82-56d34a484f31",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Escape",
+                    "type": "Button",
+                    "id": "2fdb1e7f-37ce-4a55-bac2-8a07641b0df4",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -231,6 +249,39 @@
                     "action": "SelectNext",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6369db4c-bbf2-4a2e-8fde-713869c3e1f0",
+                    "path": "<Mouse>/scroll",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "SelectNext",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1967fd77-b6c0-400b-9870-cdc68f56ce85",
+                    "path": "*/{Submit}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "EndTurn",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6b4e9356-4e28-4ec3-b7e0-a2f26edbb033",
+                    "path": "*/{Cancel}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Escape",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -239,7 +290,7 @@
             "id": "272f6d14-89ba-496f-b7ff-215263d3219f",
             "actions": [
                 {
-                    "name": "Navigate",
+                    "name": "UINavigate",
                     "type": "PassThrough",
                     "id": "c95b2375-e6d9-4b88-9c4c-c5e76515df4b",
                     "expectedControlType": "Vector2",
@@ -248,7 +299,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Submit",
+                    "name": "UISubmit",
                     "type": "Button",
                     "id": "7607c7b6-cd76-4816-beef-bd0341cfe950",
                     "expectedControlType": "Button",
@@ -257,7 +308,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Cancel",
+                    "name": "UICancel",
                     "type": "Button",
                     "id": "15cef263-9014-4fd5-94d9-4e4a6234a6ef",
                     "expectedControlType": "Button",
@@ -337,7 +388,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Navigate",
+                    "action": "UINavigate",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -348,7 +399,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "Navigate",
+                    "action": "UINavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -359,7 +410,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "Navigate",
+                    "action": "UINavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -370,7 +421,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "Navigate",
+                    "action": "UINavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -381,7 +432,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "Navigate",
+                    "action": "UINavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -392,7 +443,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "Navigate",
+                    "action": "UINavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -403,7 +454,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "Navigate",
+                    "action": "UINavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -414,7 +465,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "Navigate",
+                    "action": "UINavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -425,7 +476,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "Navigate",
+                    "action": "UINavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -436,7 +487,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "Navigate",
+                    "action": "UINavigate",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -447,7 +498,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Navigate",
+                    "action": "UINavigate",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -458,7 +509,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Joystick",
-                    "action": "Navigate",
+                    "action": "UINavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -469,7 +520,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Joystick",
-                    "action": "Navigate",
+                    "action": "UINavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -480,7 +531,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Joystick",
-                    "action": "Navigate",
+                    "action": "UINavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -491,7 +542,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Joystick",
-                    "action": "Navigate",
+                    "action": "UINavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -502,7 +553,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Navigate",
+                    "action": "UINavigate",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -513,7 +564,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Navigate",
+                    "action": "UINavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -524,7 +575,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Navigate",
+                    "action": "UINavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -535,7 +586,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Navigate",
+                    "action": "UINavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -546,7 +597,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Navigate",
+                    "action": "UINavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -557,7 +608,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Navigate",
+                    "action": "UINavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -568,7 +619,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Navigate",
+                    "action": "UINavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -579,7 +630,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Navigate",
+                    "action": "UINavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -590,7 +641,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Navigate",
+                    "action": "UINavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -601,7 +652,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse;Gamepad;Touch;Joystick;XR",
-                    "action": "Submit",
+                    "action": "UISubmit",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -612,7 +663,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse;Gamepad;Touch;Joystick;XR",
-                    "action": "Cancel",
+                    "action": "UICancel",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -756,34 +807,6 @@
                     "processors": "",
                     "groups": "XR",
                     "action": "TrackedDeviceOrientation",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "Store",
-            "id": "d2994fce-d218-422b-b02d-2ebe517646cd",
-            "actions": [
-                {
-                    "name": "New action",
-                    "type": "Button",
-                    "id": "753bbc13-2243-4461-a5a9-bbd9ed2134c7",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "",
-                    "id": "66b321bd-7aaf-477c-94b0-5e765ae0ff1b",
-                    "path": "",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "New action",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

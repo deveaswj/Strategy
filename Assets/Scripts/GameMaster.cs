@@ -29,6 +29,9 @@ public class GameMaster : MonoBehaviour
     [SerializeField] TextMeshProUGUI turnText;
     [SerializeField] GameObject centerTile;
 
+    [SerializeField] LayerMask tileLayer; // Set this to the Tile layer in the Inspector
+    [SerializeField] float tileSize = 64;
+
     public PlayerID CurrentPlayer { get { return currentPlayer; } }
     private PlayerID currentPlayer = PlayerID.Player1;
     private int playerTurn = 1;
@@ -128,7 +131,7 @@ public class GameMaster : MonoBehaviour
         storeDialog.ShowDialog();
     }
 
-    void OnSubmit()
+    public void OnEndTurn()
     {
         // End Turn (if idle)
         if (gameInputMode == GameInputMode.Idle || gameInputMode == GameInputMode.UnitActive)
@@ -139,7 +142,7 @@ public class GameMaster : MonoBehaviour
         if (gameInputMode == GameInputMode.BuyNewUnit) {}
     }
 
-    void OnCancel()
+    public void OnEscape()
     {
         if (gameInputMode == GameInputMode.UnitActive)
         {
@@ -155,7 +158,7 @@ public class GameMaster : MonoBehaviour
         }
     }
 
-    void OnSelectNext()
+    public void OnSelectNext()
     {
         // Select Next/Prev behavior:
         // If no unit is selected, select the active player's first unit
@@ -182,9 +185,25 @@ public class GameMaster : MonoBehaviour
         }
     }
 
-    void OnMove(Vector2 direction)
+    public void OnMove(InputAction.CallbackContext context)
     {
-        
+        if (context.performed)
+        {
+            Vector2 direction = context.ReadValue<Vector2>();
+            Debug.Log("OnMove: " + direction);
+
+            // Calculate the new position based on the direction vector
+            Vector3 targetPosition = selectionIndicator.transform.position + new Vector3(direction.x, direction.y, 0) * tileSize;
+
+            Debug.Log("Target Position: " + targetPosition);
+
+            // Check if the target position contains a valid tile
+            if (Physics2D.OverlapCircle(targetPosition, 0.1f, tileLayer) != null)
+            {
+                selectionIndicator.MoveTo(targetPosition);
+                // selectionIndicator.transform.position = targetPosition;
+            }
+        }
     }
 
     void UpdateSelectionUI()
