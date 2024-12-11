@@ -31,7 +31,6 @@ public class StoreDialog : MonoBehaviour
         dialogCanvas.SetActive(false);
     }
 
-
     public void ShowDialog()
     {
         dialogCanvas.SetActive(true);
@@ -90,7 +89,7 @@ public class StoreDialog : MonoBehaviour
         BuyUnit();
     }
 
-    public void OnScrollWheel(InputAction.CallbackContext context)
+    public void OnUIScrollWheel(InputAction.CallbackContext context)
     {
         float scrollDelta = context.ReadValue<float>();
         if (scrollDelta > 0)

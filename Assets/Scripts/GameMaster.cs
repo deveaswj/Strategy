@@ -29,9 +29,6 @@ public class GameMaster : MonoBehaviour
     [SerializeField] TextMeshProUGUI turnText;
     [SerializeField] GameObject centerTile;
 
-    [SerializeField] LayerMask tileLayer; // Set this to the Tile layer in the Inspector
-    [SerializeField] float tileSize = 64;
-
     public PlayerID CurrentPlayer { get { return currentPlayer; } }
     private PlayerID currentPlayer = PlayerID.Player1;
     private int playerTurn = 1;
@@ -133,7 +130,7 @@ public class GameMaster : MonoBehaviour
 
     public void OnEndTurn()
     {
-        // End Turn (if idle)
+        // End Turn (if idle or UnitActive)
         if (gameInputMode == GameInputMode.Idle || gameInputMode == GameInputMode.UnitActive)
         {
             EndTurn();
@@ -185,26 +182,23 @@ public class GameMaster : MonoBehaviour
         }
     }
 
-    public void OnMove(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            Vector2 direction = context.ReadValue<Vector2>();
-            Debug.Log("OnMove: " + direction);
+    // public void OnMove(InputAction.CallbackContext context)
+    // {
+    //     Debug.Log(context.phase);
+    //     if (context.performed)
+    //     {
+    //         Vector2 direction = context.ReadValue<Vector2>();
+    //         selectionIndicator.TryMove(direction);
+    //     }
+    // }
 
-            // Calculate the new position based on the direction vector
-            Vector3 targetPosition = selectionIndicator.transform.position + new Vector3(direction.x, direction.y, 0) * tileSize;
+    // public void OnFire(InputAction.CallbackContext context)
+    // {
+    //     if (context.performed)
+    //     {
 
-            Debug.Log("Target Position: " + targetPosition);
-
-            // Check if the target position contains a valid tile
-            if (Physics2D.OverlapCircle(targetPosition, 0.1f, tileLayer) != null)
-            {
-                selectionIndicator.MoveTo(targetPosition);
-                // selectionIndicator.transform.position = targetPosition;
-            }
-        }
-    }
+    //     }
+    // }
 
     void UpdateSelectionUI()
     {

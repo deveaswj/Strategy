@@ -648,7 +648,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &53066332
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -688,7 +688,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 531852655
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 6d339bdcd64ab5944bc4aa11ab220f3c, type: 3}
   m_Color: {r: 0.7, g: 0.7, b: 0.7, a: 1}
@@ -1382,8 +1382,8 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 834096454}
-        m_TargetAssemblyTypeName: GameMaster, Assembly-CSharp
+      - m_Target: {fileID: 801380136}
+        m_TargetAssemblyTypeName: FocusHandler, Assembly-CSharp
         m_MethodName: OnMove
         m_Mode: 0
         m_Arguments:
@@ -1397,7 +1397,19 @@ MonoBehaviour:
     m_ActionId: 351f2ccd-1f9f-44bf-9bec-d62ac5c5f408
     m_ActionName: Player/Move[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 801380136}
+        m_TargetAssemblyTypeName: FocusHandler, Assembly-CSharp
+        m_MethodName: OnFire
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 6c2ab1b8-8984-453a-af3d-a3c78ae1679a
     m_ActionName: Player/Fire[/Mouse/leftButton]
   - m_PersistentCalls:
@@ -1464,7 +1476,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 880379072}
         m_TargetAssemblyTypeName: StoreDialog, Assembly-CSharp
-        m_MethodName: OnScrollWheel
+        m_MethodName: OnUIScrollWheel
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1512,7 +1524,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 834096454}
         m_TargetAssemblyTypeName: GameMaster, Assembly-CSharp
-        m_MethodName: OnEndTurn
+        m_MethodName: OnEscape
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2179,7 +2191,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &215424275
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2612,7 +2624,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &263797768
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2652,7 +2664,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 531852655
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 850488266a0796e4389fafd4111be265, type: 3}
   m_Color: {r: 0.79607844, g: 0.79607844, b: 0.79607844, a: 1}
@@ -3622,7 +3634,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 277807645
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 5096dff634dcb3642a5c5c5480bb8c2b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -6729,7 +6741,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8312404544334990579, guid: 6404435f1dfcee34698cd7bde0227742, type: 3}
   m_PrefabInstance: {fileID: 845599877}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &801380133
+--- !u!114 &801380136
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6738,13 +6750,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 801380130}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e346ab423ddac746a4896af6acc6587, type: 3}
+  m_Script: {fileID: 11500000, guid: e077b515c77aa724fbb82dd1bbbff3c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectionSprite: {fileID: 21300000, guid: 5096dff634dcb3642a5c5c5480bb8c2b, type: 3}
-  targetingSprite: {fileID: 21300000, guid: a1a94c21e175b984eb16e060c67f7798, type: 3}
-  targetingColor: {r: 1, g: 0, b: 0, a: 1}
-  defaultColor: {r: 1, g: 1, b: 1, a: 0}
+  unitLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  tileLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  gm: {fileID: 834096454}
 --- !u!4 &804242586 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3075766802734256997, guid: 96b8535224050d045b1fd7414502b4f0, type: 3}
@@ -7227,10 +7242,6 @@ MonoBehaviour:
   selectedUnitSquare: {fileID: 334618104}
   turnText: {fileID: 1939569851}
   centerTile: {fileID: 1074573906}
-  tileLayer:
-    serializedVersion: 2
-    m_Bits: 8
-  tileSize: 1
   gameInputMode: 1
 --- !u!4 &834096455
 Transform:
@@ -7408,6 +7419,10 @@ PrefabInstance:
       propertyPath: m_Color.g
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6036515959511940879, guid: 6404435f1dfcee34698cd7bde0227742, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8312404544334990579, guid: 6404435f1dfcee34698cd7bde0227742, type: 3}
       propertyPath: m_Name
       value: SelectionIndicator
@@ -7426,7 +7441,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8312404544334990579, guid: 6404435f1dfcee34698cd7bde0227742, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 801380133}
+      addedObject: {fileID: 801380136}
   m_SourcePrefab: {fileID: 100100000, guid: 6404435f1dfcee34698cd7bde0227742, type: 3}
 --- !u!4 &848388649 stripped
 Transform:
@@ -8048,7 +8063,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 531852655
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: d865f2474c64c6e418b8f9d1d02daa87, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -15582,7 +15597,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 531852655
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: db37e1a646ee7344687c77f44b75478e, type: 3}
   m_Color: {r: 0.79607844, g: 0.79607844, b: 0.79607844, a: 1}
@@ -16641,6 +16656,7 @@ SceneRoots:
   - {fileID: 519420032}
   - {fileID: 111043363}
   - {fileID: 834096455}
+  - {fileID: 845599877}
   - {fileID: 215424276}
   - {fileID: 1669506233}
   - {fileID: 1705104561}
@@ -16654,4 +16670,3 @@ SceneRoots:
   - {fileID: 263797769}
   - {fileID: 53066333}
   - {fileID: 1865058366}
-  - {fileID: 845599877}

@@ -17,7 +17,7 @@ TagManager:
   - UI
   - Obstacle
   - Unit
-  - 
+  - Road
   - 
   - 
   - 
@@ -47,6 +47,9 @@ TagManager:
     locked: 0
   - name: Tiles
     uniqueID: 2774792069
+    locked: 0
+  - name: Roads
+    uniqueID: 4130374543
     locked: 0
   - name: Selection
     uniqueID: 277807645

@@ -241,6 +241,17 @@
                 },
                 {
                     "name": "",
+                    "id": "d067cbef-d658-44a8-ab76-7011d5791cda",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Fire",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "5d10292b-7719-49d7-ad84-2c745abe11b8",
                     "path": "<Keyboard>/tab",
                     "interactions": "Press",
@@ -335,7 +346,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "ScrollWheel",
+                    "name": "UIScrollWheel",
                     "type": "PassThrough",
                     "id": "0489e84a-4833-4c40-bfae-cea84b696689",
                     "expectedControlType": "Vector2",
@@ -762,7 +773,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
-                    "action": "ScrollWheel",
+                    "action": "UIScrollWheel",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

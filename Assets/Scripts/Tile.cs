@@ -80,13 +80,13 @@ public class Tile : MonoBehaviour
         }
     }
 
-    void OnMouseEnter()
-    {
-        // isMouseOver = true;
+    // void OnMouseEnter()
+    // {
+    //     // isMouseOver = true;
 
-        // call a function to show the tile indicator at this tile
-        // gm.SetTileFocus(transform);
-    }
+    //     // call a function to show the tile indicator at this tile
+    //     // gm.SetTileFocus(transform);
+    // }
 
     // void OnMouseExit()
     // {

@@ -191,16 +191,26 @@ public class Unit : MonoBehaviour
         GetEnemiesInRange();
     }
 
-    protected void OnMouseEnter()
+    // protected void OnMouseEnter()
+    // {
+    //     if (!gm.IsMousable()) return;
+    //     GainFocus();
+    // }
+
+    // protected void OnMouseExit()
+    // {
+    //     LoseFocus();
+    // }
+
+    public void GainFocus()
     {
-        if (!gm.IsMousable()) return;
         if (playerID == gm.CurrentPlayer || attackable)
         {
             transform.localScale *= hoverAmount;
         }
     }
 
-    protected void OnMouseExit()
+    public void LoseFocus()
     {
         transform.localScale = defaultScale;
     }
