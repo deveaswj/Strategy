@@ -108,14 +108,19 @@ public class FocusHandler : MonoBehaviour
         if (mouseHasFocus)
         {
             // Tile hover effect
-            if (tile != null && tile != focusTile)
+            if (tile != null)
             {
-                Debug.Log("FH: Update: Tile hover / assign new Focus objects");
-                // tile.SetMouseOver(true);
-                MoveTo(tile.transform.position);
-                // gm.SetTileFocus(tile.transform);
-                SetFocusTile(tile);
-                SetFocusUnit(unit);
+                if (tile != focusTile)
+                {
+                    Debug.Log("FH: Update: Tile hover / assign new Focus objects");
+                    // tile.SetMouseOver(true);
+                    MoveTo(tile.transform.position);
+                    // gm.SetTileFocus(tile.transform);
+                    SetFocusTile(tile);
+                    
+                    unit = GetUnit(tile.transform.position);
+                    SetFocusUnit(unit);
+                }
             }
         }
     }
