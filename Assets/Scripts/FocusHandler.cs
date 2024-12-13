@@ -42,17 +42,34 @@ public class FocusHandler : MonoBehaviour
         // Debug.Log(context.phase);
         if (context.performed)
         {
+            // Get the raw input direction
             Vector2 direction = context.ReadValue<Vector2>();
-            if (TryMove(direction))
+
+            // Normalize to ensure the result is either cardinal or diagonal
+            float x = Mathf.RoundToInt(direction.x);
+            float y = Mathf.RoundToInt(direction.y);
+            Vector2 snappedDirection = new(x, y);
+
+            // Ensure only cardinal directions are processed
+            if (x != 0 && y != 0)
             {
-                // update focusTile and focusUnit
-                SetFocusTile(GetTile(transform.position));
-                SetFocusUnit(GetUnit(transform.position));
-                // keyboard now has focus control
-                // mouse may or may not be within the focus tile
-                // if it is, that'll get resolved in Update()
-                Debug.Log("FH: OnMove: Keyboard has focus");
-                mouseHasFocus = false;
+                Debug.Log("FH: OnMove: Ignoring diagonal input: " + snappedDirection);
+            }
+            else
+            {
+                Debug.Log("FH: OnMove: Direction = " + direction + ", Snapped = " + snappedDirection);
+
+                if (TryMove(snappedDirection))
+                {
+                    // update focusTile and focusUnit
+                    SetFocusTile(GetTile(transform.position));
+                    SetFocusUnit(GetUnit(transform.position));
+                    // keyboard now has focus control
+                    // mouse may or may not be within the focus tile
+                    // if it is, that'll get resolved in Update()
+                    Debug.Log("FH: OnMove: Keyboard has focus");
+                    mouseHasFocus = false;
+                }
             }
         }
     }

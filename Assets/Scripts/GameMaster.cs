@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public enum PlayerID { None, Player1, Player2 };
 
@@ -28,6 +29,8 @@ public class GameMaster : MonoBehaviour
 
     [SerializeField] TextMeshProUGUI turnText;
     [SerializeField] GameObject centerTile;
+    [SerializeField] GameObject victoryPanel;
+    [SerializeField] TextMeshProUGUI playerWonText;
 
     public PlayerID CurrentPlayer { get { return currentPlayer; } }
     private PlayerID currentPlayer = PlayerID.Player1;
@@ -98,10 +101,10 @@ public class GameMaster : MonoBehaviour
         UpdateSelectionUI();
     }
 
-    public void GameOver(PlayerID playerID)
+    public void GameOver()
     {
         gameInputMode = GameInputMode.GameOver;
-        winningPlayer = playerID;
+        winningPlayer = currentPlayer;
         Debug.Log("Game Over! Winning player: " + winningPlayer);
         StartCoroutine(GameOverRoutine());
     }
@@ -112,6 +115,8 @@ public class GameMaster : MonoBehaviour
         // then show the Game Over canvas
         yield return new WaitForSeconds(1.0f);
         Debug.Log("(Here's where we would show the Game Over canvas)");
+        playerWonText.text = "Player " + playerTurn.ToString() + " wins!";
+        victoryPanel.SetActive(true);
     }
 
     public bool IsMousable()
@@ -358,5 +363,16 @@ public class GameMaster : MonoBehaviour
                 target.CounterAttack(selectedUnit);
             }
         }
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void ExitGame()
+    {
+        Debug.Log("Exiting game...");
+        Application.Quit();
     }
 }

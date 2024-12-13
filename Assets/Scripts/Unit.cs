@@ -348,7 +348,7 @@ public class Unit : MonoBehaviour
         {
             if (unitStats.isBoss)
             {
-                gm.GameOver(playerID);
+                gm.GameOver();
             }
             Die();
         }

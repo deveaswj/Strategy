@@ -17,7 +17,7 @@ MonoBehaviour:
   isPurchasable: 0
   price: 0
   isBoss: 1
-  maxHealth: 30
+  maxHealth: 20
   travelType: 3
   travelRange: 3
   attackRange: 2
