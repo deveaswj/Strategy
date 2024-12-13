@@ -1,30 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
-public enum UnitTravelType { None, RoadOnly, RoadPrefer, Offroad };
-// RoadOnly: can only move on roads
-// RoadPrefer: Movement penalty when offroad
-// Offroad: No movement penalty
 
 public class Unit : MonoBehaviour
 {
     [SerializeField] PlayerID playerID;
     [SerializeField] UnitStats unitStats;
-
-    // [Header("Stats")]
-    // [SerializeField] int maxHealth = 5;
-    // [SerializeField] int travelRange = 1;     // How many tiles the unit moves per turn
-    // [SerializeField] UnitTravelType travelType = UnitTravelType.RoadPrefer;
-    // [SerializeField] int attackRange = 1;
-    // [Tooltip("Damage when attacking from 1 tile away")]
-    // [SerializeField] int meleeDamage = 1;   // damage to deal when initiating melee attack
-    // [Tooltip("Damage when attacking from 2+ tiles away")]
-    // [SerializeField] int rangedDamage = 1;  // damage to deal when initiating ranged attack
-    // [SerializeField] int counterRange = 1;  // halve counter-damage if outside this range
-    // [SerializeField] int armorValue = 0;    // damage reduction when defending
 
     [Header("UI")]
     [SerializeField] float hoverAmount = 1.1f;
@@ -33,6 +15,10 @@ public class Unit : MonoBehaviour
 
     [Header("Effects")]
     [SerializeField] DamageIcon damageIconPrefab;
+
+    [Header("Other Layers")]
+    [SerializeField] LayerMask roadLayer;
+    [SerializeField] float layerCheckRadius = 0.2f;
 
     // [Header("Boss")]
     // [SerializeField] bool isBoss = false;
@@ -44,9 +30,10 @@ public class Unit : MonoBehaviour
     private List<Unit> enemiesInRange = new();
 
     private bool selected = false;
+    private bool hasMoved = false;
+    private bool movedLastTurn = false;
 
     [Header("Public")]
-    public bool hasMoved = false;
     public bool hasAttacked = false;
     public bool attackable = false;
     public float attackableRange = 0;
@@ -109,9 +96,14 @@ public class Unit : MonoBehaviour
         Deselect();
     }
 
-    public void ResetUnit()
+    public void ResetUnit(PlayerID currentPlayer)
     {
         ClearWalkableTiles();
+        if (playerID == currentPlayer)
+        {
+            // save the last hasMoved state
+            movedLastTurn = hasMoved;
+        }
         hasMoved = false;
         hasAttacked = false;
         selected = false;
@@ -228,6 +220,9 @@ public class Unit : MonoBehaviour
     {
         if (hasMoved) return;
 
+        bool isOnRoad = IsOnRoad();
+        bool getsRoadBonus = unitStats.GetsRoadBonus();
+
         walkableTiles.Clear();
         foreach (Tile tile in gm.GetTiles())
         {
@@ -239,6 +234,21 @@ public class Unit : MonoBehaviour
                 {
                     tile.Highlight();
                     walkableTiles.Add(tile);
+                }
+            }
+            // calculate +1 bonus movement if eligible:
+            // 1) the unit must be on the road and be eligible for the road bonus
+            // 2) the distance between the unit and the tile must be 1 beyond the unit's travel range
+            // 3) the tile must also have a road and be clear
+            if (getsRoadBonus && isOnRoad)
+            {
+                if (distanceX + distanceY == (unitStats.travelRange + 1))
+                {
+                    if (tile.HasRoad() && tile.IsClear())
+                    {
+                        tile.Highlight();
+                        walkableTiles.Add(tile);
+                    }
                 }
             }
         }
@@ -352,6 +362,11 @@ public class Unit : MonoBehaviour
             }
             Die();
         }
+    }
+
+    public bool IsOnRoad()
+    {
+        return Physics2D.OverlapCircle(transform.position, layerCheckRadius, roadLayer);
     }
 
     void ShowDamage(int damage)

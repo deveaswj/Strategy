@@ -1,5 +1,10 @@
 using UnityEngine;
 
+public enum UnitTravelType { None, RoadOnly, RoadPrefer, Offroad };
+// RoadOnly: can only move on roads
+// RoadPrefer: Movement penalty when offroad
+// Offroad: No movement penalty
+
 [CreateAssetMenu(fileName = "NewUnitStats", menuName = "Unit/Unit Stats")]
 public class UnitStats : ScriptableObject
 {
@@ -26,6 +31,11 @@ public class UnitStats : ScriptableObject
     public Sprite unitIcon;
     public Sprite player1;
     public Sprite player2;
+
+    public bool GetsRoadBonus()
+    {
+        return (travelType == UnitTravelType.RoadOnly) || (travelType == UnitTravelType.RoadPrefer);
+    }
 
     public int GetAttackDamageByDistance(float distance)
     {

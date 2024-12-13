@@ -4,18 +4,13 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-    // [SerializeField] float hoverAmount = 0.1f;
-    [SerializeField] LayerMask obstacleLayer;
     [SerializeField] Color hoverColor;
     [SerializeField] Color highlightColor = Color.yellow;
-    [SerializeField] float isClearRadius = 0.2f;
 
-    [Header("Roads")]
-    [SerializeField] bool isRoad = false;
-    [SerializeField] bool roadNorth = false;
-    [SerializeField] bool roadSouth = false;
-    [SerializeField] bool roadEast = false;
-    [SerializeField] bool roadWest = false;
+    [Header("Other Layers")]
+    [SerializeField] LayerMask obstacleLayer;
+    [SerializeField] LayerMask roadLayer;
+    [SerializeField] float layerCheckRadius = 0.2f;
 
     private Color defaultColor;
 
@@ -80,24 +75,14 @@ public class Tile : MonoBehaviour
         }
     }
 
-    // void OnMouseEnter()
-    // {
-    //     // isMouseOver = true;
-
-    //     // call a function to show the tile indicator at this tile
-    //     // gm.SetTileFocus(transform);
-    // }
-
-    // void OnMouseExit()
-    // {
-    //     isMouseOver = false;
-    // }
-
-    public bool IsRoadTile() => (roadNorth || roadSouth || roadEast || roadWest);
+    public bool HasRoad()
+    {
+        return Physics2D.OverlapCircle(transform.position, layerCheckRadius, roadLayer);
+    }
 
     public bool IsClear()
     {
-        return !Physics2D.OverlapCircle(transform.position, isClearRadius, obstacleLayer);
+        return !Physics2D.OverlapCircle(transform.position, layerCheckRadius, obstacleLayer);
     }
 
     public void Highlight()
@@ -112,9 +97,9 @@ public class Tile : MonoBehaviour
         isWalkable = false;
     }
 
-    // draw a gizmo matching the OverlapCircle of IsClear
+    // draw a gizmo matching the OverlapCircle of layerCheckRadius
     private void OnDrawGizmosSelected()
     {
-        Gizmos.DrawWireSphere(transform.position, isClearRadius);
+        Gizmos.DrawWireSphere(transform.position, layerCheckRadius);
     }
 }
