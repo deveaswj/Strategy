@@ -75,6 +75,12 @@ public class Tile : MonoBehaviour
         }
     }
 
+    public bool IsSpawnable()
+    {
+        // isclear and gameInputMode is idle
+        return IsClear() && gm.GameInputMode == GameInputMode.Idle;
+    }
+
     public bool HasRoad()
     {
         return Physics2D.OverlapCircle(transform.position, layerCheckRadius, roadLayer);
