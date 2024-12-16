@@ -151,4 +151,7 @@ MonoBehaviour:
   roadLayer:
     serializedVersion: 2
     m_Bits: 256
+  unitLayer:
+    serializedVersion: 2
+    m_Bits: 128
   layerCheckRadius: 0.2

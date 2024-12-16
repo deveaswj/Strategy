@@ -24,7 +24,7 @@ public enum GameInputMode { None, Idle, UnitActive, BuyNewUnit, PlaceNewUnit, Ga
 
 public class GameMaster : MonoBehaviour
 {
-    [SerializeField] GameObject selectedUnitSquare;
+    [SerializeField] GameObject selectionUISquare;
     private Unit selectedUnit;
 
     [SerializeField] TextMeshProUGUI turnText;
@@ -51,11 +51,15 @@ public class GameMaster : MonoBehaviour
     private StoreDialog storeDialog;
 
 // public enum GameInputMode { None, Idle, UnitActive, BuyNewUnit, PlaceNewUnit, GameOver };
-    bool InIdleMode() => (gameInputMode == GameInputMode.Idle);
-    bool InUnitActiveMode() => (gameInputMode == GameInputMode.UnitActive);
-    bool InBuyNewUnitMode() => (gameInputMode == GameInputMode.BuyNewUnit);
-    bool InPlaceNewUnitMode() => (gameInputMode == GameInputMode.PlaceNewUnit);
+    public bool InIdleMode() => (gameInputMode == GameInputMode.Idle);
+    public bool InUnitActiveMode() => (gameInputMode == GameInputMode.UnitActive);
+    public bool InBuyNewUnitMode() => (gameInputMode == GameInputMode.BuyNewUnit);
+    public bool InPlaceNewUnitMode() => (gameInputMode == GameInputMode.PlaceNewUnit);
 
+    public void SetIdleMode() => gameInputMode = GameInputMode.Idle;
+    public void SetUnitActiveMode() => gameInputMode = GameInputMode.UnitActive;
+    public void SetBuyNewUnitMode() => gameInputMode = GameInputMode.BuyNewUnit;
+    public void SetPlaceNewUnitMode() => gameInputMode = GameInputMode.PlaceNewUnit;
 
     void Awake()
     {
@@ -69,8 +73,6 @@ public class GameMaster : MonoBehaviour
     {
         tiles = FindObjectsOfType<Tile>();
         GrantIncome();
-        // gameInputMode = GameInputMode.Idle;
-        // gameInputMode = GameInputMode.BuyNewUnit;
     }
 
     public Unit[] GetUnits() => players[currentPlayer].GetUnits();
@@ -89,15 +91,6 @@ public class GameMaster : MonoBehaviour
     void Update()
     {
         turnText.text = "Player " + playerTurn + "'s turn";
-
-        // if (gameInputMode == GameInputMode.Idle)
-        // {
-        //     if (Input.GetKeyDown(KeyCode.Space))
-        //     {
-        //         EndTurn();
-        //     }
-        // }
-
         UpdateSelectionUI();
     }
 
@@ -135,12 +128,10 @@ public class GameMaster : MonoBehaviour
 
     public void OnEndTurn()
     {
-        // End Turn (if idle or UnitActive)
-        if (gameInputMode == GameInputMode.Idle || gameInputMode == GameInputMode.UnitActive)
+        if (IsMousable())
         {
             EndTurn();
         }
-        if (gameInputMode == GameInputMode.PlaceNewUnit) {}
         if (gameInputMode == GameInputMode.BuyNewUnit) {}
     }
 
@@ -187,34 +178,16 @@ public class GameMaster : MonoBehaviour
         }
     }
 
-    // public void OnMove(InputAction.CallbackContext context)
-    // {
-    //     Debug.Log(context.phase);
-    //     if (context.performed)
-    //     {
-    //         Vector2 direction = context.ReadValue<Vector2>();
-    //         selectionIndicator.TryMove(direction);
-    //     }
-    // }
-
-    // public void OnFire(InputAction.CallbackContext context)
-    // {
-    //     if (context.performed)
-    //     {
-
-    //     }
-    // }
-
     void UpdateSelectionUI()
     {
         if (selectedUnit != null)
         {
-            selectedUnitSquare.SetActive(true);
-            selectedUnitSquare.transform.position = selectedUnit.transform.position;
+            selectionUISquare.SetActive(true);
+            selectionUISquare.transform.position = selectedUnit.transform.position;
         }
         else
         {
-            selectedUnitSquare.SetActive(false);
+            selectionUISquare.SetActive(false);
         }
     }
 
@@ -314,7 +287,7 @@ public class GameMaster : MonoBehaviour
     public void SetTileFocus(Transform tileTransform)
     {
         // move the SelectionIndicator to the tile
-        selectionIndicator.MoveTo(tileTransform.position);
+        // selectionIndicator.MoveTo(tileTransform.position);
     }
 
     void ResetUnits()

@@ -17,6 +17,10 @@ public class FocusHandler : MonoBehaviour
     [SerializeField] LayerMask unitLayer;
     [SerializeField] LayerMask tileLayer;
     [SerializeField] GameMaster gm;
+    [SerializeField] Sprite selectionSprite;
+    [SerializeField] Color selectionColor = Color.white;
+    [SerializeField] Sprite wrenchSprite;
+    [SerializeField] Color wrenchColor = Color.yellow;
 
     Tile focusTile = null;
     Unit focusUnit = null;
@@ -108,37 +112,54 @@ public class FocusHandler : MonoBehaviour
         if (!gm.IsMousable()) return;
 
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        if (mousePosition == lastMousePosition) return;
-        lastMousePosition = mousePosition;
-
-        Tile tile = GetTile(mousePosition);
-        Unit unit = GetUnit(mousePosition);
-
-        if (!mouseHasFocus && tile != null && tile == focusTile)
+        if (mousePosition != lastMousePosition)
         {
-            // mouse is inside the focus tile
-            // bring focus control back to the mouse
-            Debug.Log("FH: Update: Mouse has focus");
-            mouseHasFocus = true;
-        }
+            lastMousePosition = mousePosition;
 
-        if (mouseHasFocus)
-        {
-            // Tile hover effect
-            if (tile != null)
+            Tile tile = GetTile(mousePosition);
+            Unit unit = GetUnit(mousePosition);
+
+            if (!mouseHasFocus && tile != null && tile == focusTile)
             {
-                if (tile != focusTile)
+                // mouse is inside the focus tile
+                // bring focus control back to the mouse
+                Debug.Log("FH: Update: Mouse has focus");
+                mouseHasFocus = true;
+            }
+
+            if (mouseHasFocus)
+            {
+                // Tile hover effect
+                if (tile != null)
                 {
-                    Debug.Log("FH: Update: Tile hover / assign new Focus objects");
-                    // tile.SetMouseOver(true);
-                    MoveTo(tile.transform.position);
-                    // gm.SetTileFocus(tile.transform);
-                    SetFocusTile(tile);
-                    
-                    unit = GetUnit(tile.transform.position);
-                    SetFocusUnit(unit);
+                    if (tile != focusTile)
+                    {
+                        // Debug.Log("FH: Update: Tile hover / assign new Focus objects");
+
+                        MoveTo(tile.transform.position);
+                        SetFocusTile(tile);
+                        
+                        unit = GetUnit(tile.transform.position);
+                        SetFocusUnit(unit);
+                    }
                 }
             }
+        }
+
+        // which sprite do we display?
+        // if idle and tile is spawnable, show wrench sprite
+        // else, show selection sprite
+        if (focusTile != null && focusTile.IsSpawnTile())
+        {
+            spriteRenderer.sprite = wrenchSprite;
+            spriteRenderer.color = wrenchColor;
+            gm.SetPlaceNewUnitMode();
+        }
+        else
+        {
+            spriteRenderer.sprite = selectionSprite;
+            spriteRenderer.color = selectionColor;
+            gm.SetIdleMode();
         }
     }
 
@@ -189,20 +210,29 @@ public class FocusHandler : MonoBehaviour
         return null;
     }
 
-    void SetFocusTile(Tile tile)
+    void SetFocusTile(Tile newTile)
     {
-        focusTile = tile;
+        focusTile?.LoseFocus();
+        newTile?.GainFocus();
+        focusTile = newTile;
     }
 
     void SetFocusUnit(Unit newUnit)
     {
-        string newUnitNull = "newUnit is" + (newUnit == null ? "" : "not") + " null";
-        string focusUnitNull = "focusUnit is" + (focusUnit == null ? "" : "not") + " null";
-        Debug.Log("FH: SetFocusUnit: " + newUnitNull + ", " + focusUnitNull);
+        // string newUnitNull = "newUnit is" + (newUnit == null ? "" : "not") + " null";
+        // string focusUnitNull = "focusUnit is" + (focusUnit == null ? "" : "not") + " null";
+        // Debug.Log("FH: SetFocusUnit: " + newUnitNull + ", " + focusUnitNull);
 
         focusUnit?.LoseFocus();
         newUnit?.GainFocus();
         focusUnit = newUnit;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, 1.0f);
+        Gizmos.DrawWireSphere(transform.position, 2.0f);
     }
 
 }

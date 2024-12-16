@@ -20,10 +20,8 @@ public class Unit : MonoBehaviour
     [SerializeField] LayerMask roadLayer;
     [SerializeField] float layerCheckRadius = 0.2f;
 
-    // [Header("Boss")]
-    // [SerializeField] bool isBoss = false;
-
     [SerializeField] int healthOverride = 0;
+    [SerializeField] float spawnRadius = 0f;
 
     private int health;
 
@@ -53,10 +51,14 @@ public class Unit : MonoBehaviour
 
     private List<Tile> walkableTiles;
 
+    public float SpawnRadius => spawnRadius;
+
+    public bool BelongsToPlayer() => (playerID == gm.CurrentPlayer);
+    public bool BelongsToPlayer(PlayerID id) => (playerID == id);
+
     protected void Awake()
     {
         walkableTiles = new();
-        gm = FindObjectOfType<GameMaster>();
         health = unitStats.maxHealth;
         if (healthOverride > 0) health = healthOverride;
         if (hoverAmount < 1) hoverAmount += 1;
@@ -65,6 +67,7 @@ public class Unit : MonoBehaviour
 
     protected void Start()
     {
+        gm = FindObjectOfType<GameMaster>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         defaultScale = transform.localScale;
         defaultColor = spriteRenderer.color;
@@ -183,17 +186,6 @@ public class Unit : MonoBehaviour
         GetEnemiesInRange();
     }
 
-    // protected void OnMouseEnter()
-    // {
-    //     if (!gm.IsMousable()) return;
-    //     GainFocus();
-    // }
-
-    // protected void OnMouseExit()
-    // {
-    //     LoseFocus();
-    // }
-
     public void GainFocus()
     {
         if (playerID == gm.CurrentPlayer || attackable)
@@ -223,14 +215,20 @@ public class Unit : MonoBehaviour
         bool isOnRoad = IsOnRoad();
         bool getsRoadBonus = unitStats.GetsRoadBonus();
 
+        bool tileIsClear;
+        float distanceX, distanceY, unitDistance;
+
         walkableTiles.Clear();
         foreach (Tile tile in gm.GetTiles())
         {
-            float distanceX = Mathf.Abs(tile.transform.position.x - transform.position.x);
-            float distanceY = Mathf.Abs(tile.transform.position.y - transform.position.y);
-            if (distanceX + distanceY <= unitStats.travelRange)
+            tileIsClear = tile.IsClear();
+            distanceX = Mathf.Abs(tile.transform.position.x - transform.position.x);
+            distanceY = Mathf.Abs(tile.transform.position.y - transform.position.y);
+            unitDistance = distanceX + distanceY;
+
+            if (unitDistance <= unitStats.travelRange)
             {
-                if (tile.IsClear())
+                if (tileIsClear)
                 {
                     tile.Highlight();
                     walkableTiles.Add(tile);
@@ -240,11 +238,11 @@ public class Unit : MonoBehaviour
             // 1) the unit must be on the road and be eligible for the road bonus
             // 2) the distance between the unit and the tile must be 1 beyond the unit's travel range
             // 3) the tile must also have a road and be clear
-            if (getsRoadBonus && isOnRoad)
+            else if (getsRoadBonus && isOnRoad)
             {
-                if (distanceX + distanceY == (unitStats.travelRange + 1))
+                if (unitDistance == (unitStats.travelRange + 1))
                 {
-                    if (tile.HasRoad() && tile.IsClear())
+                    if (tile.HasRoad() && tileIsClear)
                     {
                         tile.Highlight();
                         walkableTiles.Add(tile);
@@ -274,14 +272,17 @@ public class Unit : MonoBehaviour
         enemiesInRange.Clear();
         if (hasAttacked) return;
 
+        float distanceX, distanceY, unitDistance;
+
         foreach (Unit unit in gm.GetEnemyUnits())
         {
             if (unit == null) continue;
             if (unit.playerID != playerID)
             {
-                float distanceX = Mathf.Abs(unit.transform.position.x - transform.position.x);
-                float distanceY = Mathf.Abs(unit.transform.position.y - transform.position.y);
-                float unitDistance = distanceX + distanceY;
+                distanceX = Mathf.Abs(unit.transform.position.x - transform.position.x);
+                distanceY = Mathf.Abs(unit.transform.position.y - transform.position.y);
+                unitDistance = distanceX + distanceY;
+
                 if (unitDistance <= unitStats.attackRange)
                 {
                     enemiesInRange.Add(unit);
@@ -399,4 +400,12 @@ public class Unit : MonoBehaviour
         }
     }
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        if (spawnRadius > 0)
+        {
+            Gizmos.DrawWireSphere(transform.position, spawnRadius);
+        }
+    }
 }

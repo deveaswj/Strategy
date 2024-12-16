@@ -10,18 +10,24 @@ public class Tile : MonoBehaviour
     [Header("Other Layers")]
     [SerializeField] LayerMask obstacleLayer;
     [SerializeField] LayerMask roadLayer;
+    [SerializeField] LayerMask unitLayer;
     [SerializeField] float layerCheckRadius = 0.2f;
 
     private Color defaultColor;
 
     private SpriteRenderer sr;
     private Vector3 defaultScale;
-    // private GameObject selectionIndicator;
-    // private SpriteRenderer siSR;
 
     GameMaster gm;
     bool isWalkable = false;
     bool isMouseOver = false;
+    bool isEdgeTile = false;
+    bool isSpawnTile = false;
+
+    public bool IsSpawnTile()
+    {
+        return isSpawnTile;
+    }
 
     void Start()
     {
@@ -29,8 +35,6 @@ public class Tile : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
         defaultScale = transform.localScale;
         defaultColor = sr.color;
-        // ~selectionIndicator = transform.Find("SelectionIndicator").gameObject;
-        // ~siSR = selectionIndicator.GetComponent<SpriteRenderer>();
     }
 
     void Update()
@@ -51,11 +55,11 @@ public class Tile : MonoBehaviour
 
     public void HandleMouseClick()
     {
-        if (isWalkable)
-        {
-            if (gm == null) gm = FindObjectOfType<GameMaster>();
-            if (gm == null) Debug.LogError("GameMaster not found");
+        if (gm == null) gm = FindObjectOfType<GameMaster>();
+        if (gm == null) Debug.LogError("GameMaster not found");
 
+        if (isWalkable) // highlighted
+        {
             Unit selectedUnit = gm.GetSelectedUnit();
             if (selectedUnit != null)
             {
@@ -64,21 +68,66 @@ public class Tile : MonoBehaviour
         }
         else
         {
-            if (gm.GameInputMode == GameInputMode.UnitActive)
+            if (gm.InUnitActiveMode())
             {
                 gm.DeselectUnit();
             }
-            else if (gm.GameInputMode == GameInputMode.Idle)
+            else if (gm.InIdleMode())
             {
-                // gm.ShowStoreUI();
+                // 
+            }
+            else if (gm.InPlaceNewUnitMode())
+            {
+                // 
             }
         }
     }
 
-    public bool IsSpawnable()
+    public void GainFocus()
     {
-        // isclear and gameInputMode is idle
-        return IsClear() && gm.GameInputMode == GameInputMode.Idle;
+        isSpawnTile = FindSpawnable();
+    }
+
+    public void LoseFocus()
+    {
+        isSpawnTile = false;
+    }
+
+    bool FindSpawnable()
+    {
+        if (!IsClear()) return false;
+        if (isEdgeTile) return true;
+        // if(!(gm.InIdleMode() || gm.InPlaceNewUnitMode())) return false;
+        // Debug.Log("FindSpawnable: GIM = " + gm.GameInputMode);
+
+        bool foundSpawnableUnit = false;
+        // use OverlapCircle to get a list of Units within a 2 unit radius of this tile
+        Collider2D[] unitColliders = Physics2D.OverlapCircleAll(transform.position, 2.0f, unitLayer);
+        // test the Unit of each collider
+        Unit testUnit = null;
+        for (int i = 0; i < unitColliders.Length; i++)
+        {
+            testUnit = unitColliders[i].GetComponent<Unit>();
+            if (testUnit != null)
+            {
+                if (testUnit.BelongsToPlayer())
+                {
+                    if (testUnit.SpawnRadius > 0)
+                    {
+                        float distanceX = Mathf.Abs(testUnit.transform.position.x - transform.position.x);
+                        float distanceY = Mathf.Abs(testUnit.transform.position.y - transform.position.y);
+                        float unitDistance = distanceX + distanceY;
+                        if (unitDistance <= testUnit.SpawnRadius)
+                        {
+                            foundSpawnableUnit = true;
+                            Debug.Log("Spawnable tile: " + gameObject.name);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return foundSpawnableUnit;
     }
 
     public bool HasRoad()

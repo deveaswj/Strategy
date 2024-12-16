@@ -8,7 +8,7 @@ using TMPro;
 public class StoreDialog : MonoBehaviour
 {
     [SerializeField] GameObject dialogCanvas; // Reference to the Store dialog
-    [SerializeField] MonoBehaviour mouseHandler; // Reference to your MouseHandler script
+    [SerializeField] MonoBehaviour focusHandler; // Reference to your FocusHandler script
 
     private PlayerInput playerInput; // PlayerInput component reference
 
@@ -39,8 +39,8 @@ public class StoreDialog : MonoBehaviour
         playerInput.actions.FindActionMap("Player").Disable();
         playerInput.actions.FindActionMap("UI").Enable();
 
-        // Disable MouseHandler
-        mouseHandler.enabled = false;
+        // Disable FocusHandler
+        focusHandler.enabled = false;
     }
 
     public void CloseDialog()
@@ -51,8 +51,8 @@ public class StoreDialog : MonoBehaviour
         playerInput.actions.FindActionMap("Player").Enable();
         playerInput.actions.FindActionMap("UI").Disable();
 
-        // Re-enable MouseHandler
-        mouseHandler.enabled = true;
+        // Re-enable FocusHandler
+        focusHandler.enabled = true;
     }
 
     public void BuyUnit()
