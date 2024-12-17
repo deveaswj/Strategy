@@ -75,10 +75,12 @@ public class Tile : MonoBehaviour
             else if (gm.InIdleMode())
             {
                 // 
+                Debug.Log("Nothing to do here!");
             }
             else if (gm.InPlaceNewUnitMode())
             {
                 // 
+                Debug.Log("Placing new unit on tile: " + gameObject.name);
             }
         }
     }

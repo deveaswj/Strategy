@@ -18,8 +18,8 @@ MonoBehaviour:
   price: 10
   isBoss: 0
   maxHealth: 40
-  travelType: 3
   travelRange: 1
+  roadsBonus: 1
   attackRange: 4
   meleeDamage: 4
   rangedDamage: 8

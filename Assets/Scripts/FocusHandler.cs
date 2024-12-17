@@ -149,7 +149,9 @@ public class FocusHandler : MonoBehaviour
         // which sprite do we display?
         // if idle and tile is spawnable, show wrench sprite
         // else, show selection sprite
-        if (focusTile != null && focusTile.IsSpawnTile())
+        bool wrenchable = (gm.InIdleMode() || gm.InPlaceNewUnitMode());
+        // Debug.Log("Wrenchable? " + wrenchable + ", GameInputMode: " + gm.GameInputMode);
+        if (wrenchable && focusTile != null && focusTile.IsSpawnTile())
         {
             spriteRenderer.sprite = wrenchSprite;
             spriteRenderer.color = wrenchColor;
@@ -159,7 +161,10 @@ public class FocusHandler : MonoBehaviour
         {
             spriteRenderer.sprite = selectionSprite;
             spriteRenderer.color = selectionColor;
-            gm.SetIdleMode();
+            if (gm.InPlaceNewUnitMode())
+            {
+                gm.SetIdleMode();
+            }
         }
     }
 

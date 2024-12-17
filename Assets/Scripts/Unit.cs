@@ -49,7 +49,7 @@ public class Unit : MonoBehaviour
 
     private ExplosionPoolManager explosionPoolManager;
 
-    private List<Tile> walkableTiles;
+    private List<Tile> traversableTiles;
 
     public float SpawnRadius => spawnRadius;
 
@@ -58,7 +58,7 @@ public class Unit : MonoBehaviour
 
     protected void Awake()
     {
-        walkableTiles = new();
+        traversableTiles = new();
         health = unitStats.maxHealth;
         if (healthOverride > 0) health = healthOverride;
         if (hoverAmount < 1) hoverAmount += 1;
@@ -90,7 +90,7 @@ public class Unit : MonoBehaviour
     public void Deselect()
     {
         ClearEnemies();
-        ClearWalkableTiles();
+        ClearTraversableTiles();
         selected = false;
     }
 
@@ -101,7 +101,7 @@ public class Unit : MonoBehaviour
 
     public void ResetUnit(PlayerID currentPlayer)
     {
-        ClearWalkableTiles();
+        ClearTraversableTiles();
         if (playerID == currentPlayer)
         {
             // save the last hasMoved state
@@ -133,7 +133,7 @@ public class Unit : MonoBehaviour
                 gm.DeselectUnit();
                 gm.SelectUnit(this);
                 GetEnemiesInRange();
-                GetWalkableTiles();
+                GetTraversableTiles();
             }
         }
         else // this unit is enemy
@@ -154,7 +154,7 @@ public class Unit : MonoBehaviour
 
     public void MoveTo(Vector2 position)
     {
-        ClearWalkableTiles();
+        ClearTraversableTiles();
         StartCoroutine(StartMovement(position));
         // transform.position = position;
         // hasMoved = true;
@@ -199,26 +199,26 @@ public class Unit : MonoBehaviour
         transform.localScale = defaultScale;
     }
 
-    void ClearWalkableTiles()
+    void ClearTraversableTiles()
     {
-        foreach (Tile tile in walkableTiles)
+        foreach (Tile tile in traversableTiles)
         {
             tile.ResetTile();
         }
-        walkableTiles.Clear();
+        traversableTiles.Clear();
     }
 
-    public void GetWalkableTiles()
+    public void GetTraversableTiles()
     {
         if (hasMoved) return;
 
         bool isOnRoad = IsOnRoad();
-        bool getsRoadBonus = unitStats.GetsRoadBonus();
+        int roadsBonus = unitStats.roadsBonus;
 
         bool tileIsClear;
         float distanceX, distanceY, unitDistance;
 
-        walkableTiles.Clear();
+        traversableTiles.Clear();
         foreach (Tile tile in gm.GetTiles())
         {
             tileIsClear = tile.IsClear();
@@ -231,22 +231,16 @@ public class Unit : MonoBehaviour
                 if (tileIsClear)
                 {
                     tile.Highlight();
-                    walkableTiles.Add(tile);
+                    traversableTiles.Add(tile);
                 }
             }
-            // calculate +1 bonus movement if eligible:
-            // 1) the unit must be on the road and be eligible for the road bonus
-            // 2) the distance between the unit and the tile must be 1 beyond the unit's travel range
-            // 3) the tile must also have a road and be clear
-            else if (getsRoadBonus && isOnRoad)
+            // calculate +1 bonus movement if eligible
+            else if (roadsBonus > 0 && unitDistance <= (unitStats.travelRange + roadsBonus))
             {
-                if (unitDistance == (unitStats.travelRange + 1))
+                if (isOnRoad && tileIsClear && tile.HasRoad())
                 {
-                    if (tile.HasRoad() && tileIsClear)
-                    {
-                        tile.Highlight();
-                        walkableTiles.Add(tile);
-                    }
+                    tile.Highlight();
+                    traversableTiles.Add(tile);
                 }
             }
         }
@@ -293,30 +287,12 @@ public class Unit : MonoBehaviour
         }
     }
 
-    public int GetAttackDamageByDistance(float distance)
-    {
-        // return melee if distance is 1
-        if (distance == 1) return unitStats.meleeDamage;
-        // if distance is greater than counterRange, return half rangedDamage (or 1 at minimum)
-        // else return full rangedDamage
-        if (distance > unitStats.counterRange)
-        {
-            // return half rangedDamage -- rounded, but at least 1
-            return Mathf.Max(Mathf.RoundToInt(unitStats.rangedDamage * 0.5f), 1);
-        }
-        else
-        {
-            // return full rangedDamage
-            return unitStats.rangedDamage;
-        }
-    }
-
     public void Attack(Unit target)
     {
         if (target.attackable)
         {
             // check target's attackableRange to determine damage
-            int attackDamage = GetAttackDamageByDistance(target.attackableRange);
+            int attackDamage = unitStats.GetAttackDamageByDistance(target.attackableRange);
             Debug.Log(gameObject.name + " attacks " + target.name + " for " + attackDamage + " ...");
             target.TakeDamage(attackDamage);
             hasAttacked = true;
@@ -337,7 +313,7 @@ public class Unit : MonoBehaviour
             return;
         }
         // check our own attackableRange to determine damage
-        int counterDamage = GetAttackDamageByDistance(attackableRange);
+        int counterDamage = unitStats.GetAttackDamageByDistance(attackableRange, countering: true);
         Debug.Log(gameObject.name + " counters " + target.name + " for " + counterDamage  + " ...");
         target.TakeDamage(counterDamage);
     }

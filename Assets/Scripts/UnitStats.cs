@@ -1,10 +1,5 @@
 using UnityEngine;
 
-public enum UnitTravelType { None, RoadOnly, RoadPrefer, Offroad };
-// RoadOnly: can only move on roads
-// RoadPrefer: Movement penalty when offroad
-// Offroad: No movement penalty
-
 [CreateAssetMenu(fileName = "NewUnitStats", menuName = "Unit/Unit Stats")]
 public class UnitStats : ScriptableObject
 {
@@ -17,8 +12,8 @@ public class UnitStats : ScriptableObject
     [Header("Stats")]
     public bool isBoss = false;
     public int maxHealth = 5;
-    public UnitTravelType travelType = UnitTravelType.None;
     public int travelRange = 1;     // How many tiles the unit moves per turn
+    public int roadsBonus = 0;      // Bonus movement while on roads
     public int attackRange = 1;
     [Tooltip("Damage when attacking from 1 tile away")]
     public int meleeDamage = 1;   // damage to deal when initiating melee attack
@@ -34,22 +29,27 @@ public class UnitStats : ScriptableObject
 
     public bool GetsRoadBonus()
     {
-        return (travelType == UnitTravelType.RoadOnly) || (travelType == UnitTravelType.RoadPrefer);
+        return (roadsBonus > 0);
     }
 
-    public int GetAttackDamageByDistance(float distance)
+    public int GetAttackDamageByDistance(float distance, bool countering = false)
     {
         // return melee if distance is 1
         if (distance == 1) return meleeDamage;
-        // if distance is greater than counterRange, return half rangedDamage (or 1 at minimum)
-        // else return full rangedDamage
-        if (distance > counterRange)
+
+        // else it's a ranged attack
+
+        if (rangedDamage == 0) return 0;
+
+        // countering? check for out of range
+        if (countering && distance > counterRange)
         {
             // return half rangedDamage -- rounded, but at least 1
             return Mathf.Max(Mathf.RoundToInt(rangedDamage * 0.5f), 1);
         }
         else
         {
+            // intiating attack, or countering within range
             // return full rangedDamage
             return rangedDamage;
         }
