@@ -16,6 +16,7 @@ MonoBehaviour:
   storeDescription: Resource-generating utility unit, better kept out of combat zones.
   isPurchasable: 1
   price: 10
+  prefab: {fileID: 1535656414789918590, guid: 93e28e19f3e6c7d409274589b1084b39, type: 3}
   isBoss: 0
   maxHealth: 20
   travelRange: 1

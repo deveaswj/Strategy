@@ -17,6 +17,7 @@ MonoBehaviour:
     paths.
   isPurchasable: 1
   price: 10
+  prefab: {fileID: 8673687255537622235, guid: 4bbf98aaefc3e2444b524408e267d2f6, type: 3}
   isBoss: 0
   maxHealth: 25
   travelRange: 2

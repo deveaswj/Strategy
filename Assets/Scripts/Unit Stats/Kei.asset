@@ -16,6 +16,7 @@ MonoBehaviour:
   storeDescription: Utility unit with balanced attack options and strong range adaptability.
   isPurchasable: 1
   price: 10
+  prefab: {fileID: 8041933717795700036, guid: 5c22f7b3bb6afb4418180e38a3f6ac63, type: 3}
   isBoss: 0
   maxHealth: 12
   travelRange: 2

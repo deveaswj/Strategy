@@ -16,6 +16,7 @@ MonoBehaviour:
   storeDescription: Fast harasser with good short-ranged attacks.
   isPurchasable: 1
   price: 10
+  prefab: {fileID: 7089555821491911324, guid: ce1cf66480650054b8851944949d02e1, type: 3}
   isBoss: 0
   maxHealth: 15
   travelRange: 1

@@ -8,6 +8,7 @@ public class UnitStats : ScriptableObject
     [TextArea] public string storeDescription = "Unit Description (for the Store)";
     public bool isPurchasable = true;
     public int price = 10;
+    public GameObject prefab;
 
     [Header("Stats")]
     public bool isBoss = false;

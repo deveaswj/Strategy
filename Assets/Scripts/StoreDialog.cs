@@ -24,11 +24,17 @@ public class StoreDialog : MonoBehaviour
     [SerializeField] Button buyButton;
     [SerializeField] Button closeButton;
 
+    InputActionMap playerInputMap;
+    InputActionMap uiInputMap;
+
     void Start()
     {
         playerInput = FindObjectOfType<PlayerInput>();
+        playerInputMap = playerInput.actions.FindActionMap("Player");
+        uiInputMap = playerInput.actions.FindActionMap("UI");
         // Ensure the dialog starts disabled
         dialogCanvas.SetActive(false);
+        uiInputMap.Disable();
     }
 
     public void ShowDialog()
@@ -36,8 +42,8 @@ public class StoreDialog : MonoBehaviour
         dialogCanvas.SetActive(true);
 
         // Switch action maps: Disable Player and enable UI
-        playerInput.actions.FindActionMap("Player").Disable();
-        playerInput.actions.FindActionMap("UI").Enable();
+        playerInputMap.Disable();
+        uiInputMap.Enable();
 
         // Disable FocusHandler
         focusHandler.enabled = false;
@@ -48,8 +54,8 @@ public class StoreDialog : MonoBehaviour
         dialogCanvas.SetActive(false);
 
         // Switch action maps: Disable UI and enable Player
-        playerInput.actions.FindActionMap("Player").Enable();
-        playerInput.actions.FindActionMap("UI").Disable();
+        playerInputMap.Enable();
+        uiInputMap.Disable();
 
         // Re-enable FocusHandler
         focusHandler.enabled = true;

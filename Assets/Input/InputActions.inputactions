@@ -25,9 +25,9 @@
                 },
                 {
                     "name": "SelectNext",
-                    "type": "PassThrough",
+                    "type": "Button",
                     "id": "17966312-0491-4de9-8611-7d3966ee5c9a",
-                    "expectedControlType": "",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -255,17 +255,6 @@
                     "id": "5d10292b-7719-49d7-ad84-2c745abe11b8",
                     "path": "<Keyboard>/tab",
                     "interactions": "Press",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "SelectNext",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "6369db4c-bbf2-4a2e-8fde-713869c3e1f0",
-                    "path": "<Mouse>/scroll",
-                    "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "SelectNext",

@@ -53,13 +53,15 @@ public class GameMaster : MonoBehaviour
 // public enum GameInputMode { None, Idle, UnitActive, BuyNewUnit, PlaceNewUnit, GameOver };
     public bool InIdleMode() => (gameInputMode == GameInputMode.Idle);
     public bool InUnitActiveMode() => (gameInputMode == GameInputMode.UnitActive);
-    public bool InBuyNewUnitMode() => (gameInputMode == GameInputMode.BuyNewUnit);
-    public bool InPlaceNewUnitMode() => (gameInputMode == GameInputMode.PlaceNewUnit);
+    public bool InBuyMode() => (gameInputMode == GameInputMode.BuyNewUnit);
+    public bool InPlaceMode() => (gameInputMode == GameInputMode.PlaceNewUnit);
+    public bool InGameOverMode() => (gameInputMode == GameInputMode.GameOver);
 
     public void SetIdleMode() => gameInputMode = GameInputMode.Idle;
     public void SetUnitActiveMode() => gameInputMode = GameInputMode.UnitActive;
-    public void SetBuyNewUnitMode() => gameInputMode = GameInputMode.BuyNewUnit;
-    public void SetPlaceNewUnitMode() => gameInputMode = GameInputMode.PlaceNewUnit;
+    public void SetBuyMode() => gameInputMode = GameInputMode.BuyNewUnit;
+    public void SetPlaceMode() => gameInputMode = GameInputMode.PlaceNewUnit;
+    public void SetGameOverMode() => gameInputMode = GameInputMode.GameOver;
 
     void Awake()
     {
@@ -114,15 +116,12 @@ public class GameMaster : MonoBehaviour
 
     public bool IsMousable()
     {
-        return (gameInputMode == GameInputMode.Idle 
-        || gameInputMode == GameInputMode.UnitActive
-        || gameInputMode == GameInputMode.PlaceNewUnit);
+        return (InIdleMode() || InUnitActiveMode() || InPlaceMode());
     }
 
 
-    void ShowStoreUI()
+    public void ShowStoreUI()
     {
-        // gameInputMode = GameInputMode.BuyNewUnit;
         storeDialog.ShowDialog();
     }
 
@@ -132,49 +131,51 @@ public class GameMaster : MonoBehaviour
         {
             EndTurn();
         }
-        if (gameInputMode == GameInputMode.BuyNewUnit) {}
     }
 
     public void OnEscape()
     {
-        if (gameInputMode == GameInputMode.UnitActive)
+        if (InUnitActiveMode())
         {
             DeselectUnit();
         }
-        else if (gameInputMode == GameInputMode.PlaceNewUnit)
+        else if (InPlaceMode())
         {
             // CancelNewUnitPlacement();
-        }
-        else if (gameInputMode == GameInputMode.BuyNewUnit)
-        {
-            // 
         }
     }
 
     public void OnSelectNext()
     {
-        // Select Next/Prev behavior:
-        // If no unit is selected, select the active player's first unit
-        // If a unit is selected, select the active player's next or previous unit
-        string debugPrefix = "OnSelectNext (Player " + currentPlayer + "): ";
-        if (selectedUnit == null)
+        if (InIdleMode() || InUnitActiveMode() || InPlaceMode())
         {
-            // Select First
-            Debug.Log(debugPrefix + "Select First");
-        }
-        else
+            // Select Next/Prev behavior:
+            // If no unit is selected, select the active player's first unit
+            // If a unit is selected, select the active player's next or previous unit
+            string debugPrefix = "OnSelectNext (Player " + currentPlayer + "): ";
+            if (selectedUnit == null)
             {
-            bool shiftModifier = Keyboard.current.shiftKey.isPressed;
-            if (shiftModifier)
-            {
-                // Select Previous
-                Debug.Log(debugPrefix + "Select Previous");
+                // Select First
+                Debug.Log(debugPrefix + "Select First");
             }
             else
-            {
-                // Select Next
-                Debug.Log(debugPrefix + "Select Next");
+                {
+                bool shiftModifier = Keyboard.current.shiftKey.isPressed;
+                if (shiftModifier)
+                {
+                    // Select Previous
+                    Debug.Log(debugPrefix + "Select Previous");
+                }
+                else
+                {
+                    // Select Next
+                    Debug.Log(debugPrefix + "Select Next");
+                }
             }
+        }
+        else
+        {
+            // Do nothing
         }
     }
 
@@ -303,7 +304,7 @@ public class GameMaster : MonoBehaviour
         Debug.Log("Selecting unit: " + unit.name);
         selectedUnit = unit;
         selectedUnit.Select();
-        gameInputMode = GameInputMode.UnitActive;
+        SetUnitActiveMode();
         Debug.Log("Game Input Mode: " + gameInputMode);
     }
 
@@ -319,7 +320,7 @@ public class GameMaster : MonoBehaviour
             Debug.Log("Deselecting unit: " + selectedUnit.name);
             selectedUnit.Deselect();
             selectedUnit = null;
-            gameInputMode = GameInputMode.Idle;
+            SetIdleMode();
             Debug.Log("Game Input Mode: " + gameInputMode);
         }
     }

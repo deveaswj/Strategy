@@ -16,6 +16,7 @@ MonoBehaviour:
   storeDescription: Long-range powerhouse with devastating attacks but low mobility.
   isPurchasable: 1
   price: 10
+  prefab: {fileID: 8819945547607639625, guid: 018d0cee653d6c94eb6ad7ea0f6e9096, type: 3}
   isBoss: 0
   maxHealth: 40
   travelRange: 1

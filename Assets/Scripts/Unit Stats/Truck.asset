@@ -16,6 +16,7 @@ MonoBehaviour:
   storeDescription: Resource-focused support unit with limited combat capabilities.
   isPurchasable: 1
   price: 10
+  prefab: {fileID: 4693030929176469094, guid: ba8d249ad68b18d4990cdd3be531647b, type: 3}
   isBoss: 0
   maxHealth: 30
   travelRange: 1

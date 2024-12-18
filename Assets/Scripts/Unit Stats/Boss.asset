@@ -16,6 +16,7 @@ MonoBehaviour:
   storeDescription: (Not for sale)
   isPurchasable: 0
   price: 0
+  prefab: {fileID: 4413137157214048299, guid: c285a46f6b555484ca4871a0e3a801f8, type: 3}
   isBoss: 1
   maxHealth: 20
   travelRange: 3
