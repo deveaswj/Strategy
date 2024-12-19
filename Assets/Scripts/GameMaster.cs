@@ -119,10 +119,9 @@ public class GameMaster : MonoBehaviour
         return (InIdleMode() || InUnitActiveMode() || InPlaceMode());
     }
 
-
-    public void ShowStoreUI()
+    public void OpenStore(Vector3 position)
     {
-        storeDialog.ShowDialog();
+        storeDialog.OpenStore(GetPlayer(), position);
     }
 
     public void OnEndTurn()
@@ -240,9 +239,10 @@ public class GameMaster : MonoBehaviour
     }
     public Player GetPlayer(int playerNumber)
     {
-        if (playerNumber == 1) return GetPlayer(PlayerID.Player1);
-        if (playerNumber == 2) return GetPlayer(PlayerID.Player2);
-        return null;
+        PlayerID playerID = PlayerID.None;
+        if (playerNumber == 1) playerID = PlayerID.Player1;
+        if (playerNumber == 2) playerID = PlayerID.Player2;
+        return GetPlayer(playerID);
     }
 
     public void GrantIncome() => GrantIncome(currentPlayer);
@@ -329,7 +329,7 @@ public class GameMaster : MonoBehaviour
     {
         if (selectedUnit != null)
         {
-            if (target != null && target.attackable)
+            if (target != null && target.IsAttackable())
             {
                 selectedUnit.Attack(target);
 

@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Kei
   m_EditorClassIdentifier: 
   unitName: Kei
-  storeDescription: Utility unit with balanced attack options and strong range adaptability.
+  storeDescription: A balanced utility unit with decent mobility and attack versatility.
   isPurchasable: 1
-  price: 10
-  prefab: {fileID: 8041933717795700036, guid: 5c22f7b3bb6afb4418180e38a3f6ac63, type: 3}
+  price: 50
+  unitPrefab: {fileID: 8041933717795700036, guid: 5c22f7b3bb6afb4418180e38a3f6ac63, type: 3}
   isBoss: 0
   maxHealth: 12
   travelRange: 2
@@ -26,6 +26,6 @@ MonoBehaviour:
   rangedDamage: 2
   counterRange: 3
   armorValue: 0
-  unitIcon: {fileID: 21300000, guid: b86e58a535914814899d877b1bf729fb, type: 3}
-  player1: {fileID: 21300000, guid: 214eeb2bccc264c46820e28d34293b1d, type: 3}
-  player2: {fileID: 21300000, guid: fc5230c208ecdcf499d1cc5e1376df82, type: 3}
+  iconGeneric: {fileID: 21300000, guid: b86e58a535914814899d877b1bf729fb, type: 3}
+  iconPlayer1: {fileID: 21300000, guid: 214eeb2bccc264c46820e28d34293b1d, type: 3}
+  iconPlayer2: {fileID: 21300000, guid: fc5230c208ecdcf499d1cc5e1376df82, type: 3}

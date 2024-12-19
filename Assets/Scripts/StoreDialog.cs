@@ -14,11 +14,16 @@ public class StoreDialog : MonoBehaviour
 
     [SerializeField] UnitStats[] availableUnits;
     private int currentUnitIndex = 0;
+    UnitStats userPurchase = null;
+
+    Player customer;
+    Vector3 targetPosition;
 
     [Header("UI Elements")]
     [SerializeField] TextMeshProUGUI unitNameText;
     [SerializeField] Image iconImage;
     [SerializeField] TextMeshProUGUI statsText;
+    [SerializeField] TextMeshProUGUI descriptionText;
     [SerializeField] Button prevButton;
     [SerializeField] Button nextButton;
     [SerializeField] Button buyButton;
@@ -37,8 +42,17 @@ public class StoreDialog : MonoBehaviour
         uiInputMap.Disable();
     }
 
+    public void OpenStore(Player player, Vector3 position)
+    {
+        customer = player;
+        targetPosition = position;
+        userPurchase = null;
+        ShowDialog();
+    }
+
     public void ShowDialog()
     {
+        UpdateUnitDetails();
         dialogCanvas.SetActive(true);
 
         // Switch action maps: Disable Player and enable UI
@@ -63,8 +77,12 @@ public class StoreDialog : MonoBehaviour
 
     public void BuyUnit()
     {
-        Debug.Log($"Bought {availableUnits[currentUnitIndex]}!");
-        // Implement purchase logic here
+        userPurchase = availableUnits[currentUnitIndex];
+        Debug.Log($"Buying {userPurchase.unitName}!");
+
+        customer.BuyUnit(userPurchase, targetPosition);
+
+        CloseDialog();
     }
 
     public void NextUnit()
@@ -81,8 +99,28 @@ public class StoreDialog : MonoBehaviour
 
     private void UpdateUnitDetails()
     {
-        statsText.text = $"Unit: {availableUnits[currentUnitIndex]}";
-        Debug.Log($"Unit: {availableUnits[currentUnitIndex]}");
+        UnitStats unitStats = availableUnits[currentUnitIndex];
+        unitNameText.text = unitStats.unitName;
+        iconImage.sprite = unitStats.iconGeneric;
+        int onRoadMovement = unitStats.travelRange + unitStats.roadsBonus;
+        statsText.text =
+            "Price: " + unitStats.price + "\n\n" +
+            "Hit Points: " + unitStats.maxHealth + "\n" +
+            "Armor: " + unitStats.armorValue + "\n" +
+            "Off-road Moves: " + unitStats.travelRange + "\n" +
+            "On-road Moves: " + onRoadMovement + "\n" +
+            "Melee Damage: " + unitStats.meleeDamage + "\n";
+
+        if (unitStats.attackRange > 1)
+        {
+            statsText.text +=
+                "Arms Damage: " + unitStats.rangedDamage + "\n" +
+                "Arms Range: " + unitStats.attackRange;
+        }
+
+        descriptionText.text = unitStats.storeDescription;
+
+        Debug.Log($"Unit: {unitStats.unitName}");
     }
 
     public void OnUICancel(InputAction.CallbackContext context)
@@ -97,14 +135,18 @@ public class StoreDialog : MonoBehaviour
 
     public void OnUIScrollWheel(InputAction.CallbackContext context)
     {
-        float scrollDelta = context.ReadValue<float>();
-        if (scrollDelta > 0)
+        if (context.performed)
         {
-            NextUnit();
-        }
-        else if (scrollDelta < 0)
-        {
-            PreviousUnit();
+            Vector2 scrollValue = context.ReadValue<Vector2>();
+            float scrollAmount = scrollValue.y;
+            if (scrollAmount < 0)
+            {
+                NextUnit();
+            }
+            else if (scrollAmount > 0)
+            {
+                PreviousUnit();
+            }
         }
     }
 

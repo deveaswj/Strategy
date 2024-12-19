@@ -30,11 +30,8 @@ public class Unit : MonoBehaviour
     private bool selected = false;
     private bool hasMoved = false;
     private bool movedLastTurn = false;
-
-    [Header("Public")]
-    public bool hasAttacked = false;
-    public bool attackable = false;
-    public float attackableRange = 0;
+    private float attackableRange = 0;
+    private bool hasAttacked = false;
 
     private GameObject attackIndicator;
     private SpriteRenderer aiSR;
@@ -45,13 +42,17 @@ public class Unit : MonoBehaviour
     private Vector3 defaultScale;
 
     GameMaster gm;
-    public PlayerID PlayerID => playerID;
+
 
     private ExplosionPoolManager explosionPoolManager;
 
     private List<Tile> traversableTiles;
 
+    public PlayerID PlayerID => playerID;
     public float SpawnRadius => spawnRadius;
+    public bool HasAttacked => hasAttacked;
+    public bool IsAttackable() => (attackableRange > 0);
+    public float AttackableRange => attackableRange;
 
     public bool BelongsToPlayer() => (playerID == gm.CurrentPlayer);
     public bool BelongsToPlayer(PlayerID id) => (playerID == id);
@@ -63,12 +64,12 @@ public class Unit : MonoBehaviour
         if (healthOverride > 0) health = healthOverride;
         if (hoverAmount < 1) hoverAmount += 1;
         explosionPoolManager = FindObjectOfType<ExplosionPoolManager>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     protected void Start()
     {
         gm = FindObjectOfType<GameMaster>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
         defaultScale = transform.localScale;
         defaultColor = spriteRenderer.color;
         attackIndicator = transform.Find("AttackIndicator").gameObject;
@@ -79,7 +80,7 @@ public class Unit : MonoBehaviour
     protected void Update()
     {
         spriteRenderer.color = selected ? highlightColor : defaultColor;
-        aiSR.enabled = attackable;
+        aiSR.enabled = IsAttackable();
     }
 
     public void Select()
@@ -110,7 +111,7 @@ public class Unit : MonoBehaviour
         hasMoved = false;
         hasAttacked = false;
         selected = false;
-        attackable = false;
+        ClearAttackable();
     }
 
     public void HandleMouseClick()
@@ -138,11 +139,11 @@ public class Unit : MonoBehaviour
         }
         else // this unit is enemy
         {
-            if (attackable)
+            if (IsAttackable())
             {
                 // selected unit attacks if it can
                 Unit selectedUnit = gm.GetSelectedUnit();
-                if (selectedUnit != null && !selectedUnit.hasAttacked)
+                if (selectedUnit != null && !selectedUnit.HasAttacked)
                 {
                     selectedUnit.Attack(this);
                     CounterAttack(selectedUnit);
@@ -188,7 +189,7 @@ public class Unit : MonoBehaviour
 
     public void GainFocus()
     {
-        if (playerID == gm.CurrentPlayer || attackable)
+        if (playerID == gm.CurrentPlayer || IsAttackable())
         {
             transform.localScale *= hoverAmount;
         }
@@ -248,17 +249,11 @@ public class Unit : MonoBehaviour
 
     void ClearEnemies()
     {
-        ResetAttackables();
-        enemiesInRange.Clear();
-    }
-
-    void ResetAttackables()
-    {
         foreach (Unit unit in enemiesInRange)
         {
-            unit.attackable = false;
-            unit.attackableRange = 0;
+            unit.ClearAttackable();
         }
+        enemiesInRange.Clear();
     }
 
     void GetEnemiesInRange()
@@ -279,20 +274,29 @@ public class Unit : MonoBehaviour
 
                 if (unitDistance <= unitStats.attackRange)
                 {
+                    unit.SetAttackable(unitDistance);
                     enemiesInRange.Add(unit);
-                    unit.attackable = true;
-                    unit.attackableRange = unitDistance;
                 }
             }
         }
     }
 
+    public void SetAttackable(float distance)
+    {
+        attackableRange = distance;
+    }
+
+    public void ClearAttackable()
+    {
+        attackableRange = 0;
+    }
+
     public void Attack(Unit target)
     {
-        if (target.attackable)
+        if (target.IsAttackable())
         {
-            // check target's attackableRange to determine damage
-            int attackDamage = unitStats.GetAttackDamageByDistance(target.attackableRange);
+            // check target's AttackableRange to determine damage
+            int attackDamage = unitStats.GetAttackDamageByDistance(target.AttackableRange);
             Debug.Log(gameObject.name + " attacks " + target.name + " for " + attackDamage + " ...");
             target.TakeDamage(attackDamage);
             hasAttacked = true;
@@ -312,8 +316,8 @@ public class Unit : MonoBehaviour
             Debug.Log("CounterAttack: Unit " + gameObject.name + " is dead!");
             return;
         }
-        // check our own attackableRange to determine damage
-        int counterDamage = unitStats.GetAttackDamageByDistance(attackableRange, countering: true);
+        // check our own AttackableRange to determine damage
+        int counterDamage = unitStats.GetAttackDamageByDistance(AttackableRange, countering: true);
         Debug.Log(gameObject.name + " counters " + target.name + " for " + counterDamage  + " ...");
         target.TakeDamage(counterDamage);
     }
@@ -375,6 +379,18 @@ public class Unit : MonoBehaviour
             gm.SetHealth(health, playerID);
         }
     }
+
+    public void SetPlayerID(PlayerID newPlayerID)
+    {
+        playerID = newPlayerID;
+        Debug.Log("Player ID: " + playerID);
+        // set the icon according to unitStats
+        spriteRenderer.sprite = unitStats.GetSpriteForPlayer(playerID);
+        // Player2 units are flipped
+        spriteRenderer.flipX = (playerID == PlayerID.Player2);
+    }
+
+    public void SetUnitStats(UnitStats newUnitStats) => unitStats = newUnitStats;
 
     private void OnDrawGizmos()
     {

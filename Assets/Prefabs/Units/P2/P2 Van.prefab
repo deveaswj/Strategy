@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1086807612337948807, guid: 93e28e19f3e6c7d409274589b1084b39, type: 3}
       propertyPath: m_LocalScale.x
-      value: -0.8
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 1086807612337948807, guid: 93e28e19f3e6c7d409274589b1084b39, type: 3}
       propertyPath: m_LocalPosition.x
@@ -63,6 +63,10 @@ PrefabInstance:
     - target: {fileID: 2647624446274002542, guid: 93e28e19f3e6c7d409274589b1084b39, type: 3}
       propertyPath: playerID
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3424707272651329925, guid: 93e28e19f3e6c7d409274589b1084b39, type: 3}
+      propertyPath: m_FlipX
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3424707272651329925, guid: 93e28e19f3e6c7d409274589b1084b39, type: 3}
       propertyPath: m_Sprite

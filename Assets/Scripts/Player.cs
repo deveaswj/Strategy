@@ -50,6 +50,22 @@ public class Player : MonoBehaviour
         return units;
     }
 
+    public Unit CreateUnit(UnitStats unitStats, Vector3 position)
+    {
+        GameObject newUnit = Instantiate(unitStats.unitPrefab, position, Quaternion.identity);
+        newUnit.transform.parent = unitsContainer.transform;
+        Unit unit = newUnit.GetComponent<Unit>();
+        unit.SetPlayerID(playerID);
+        unit.SetUnitStats(unitStats);
+        return unit;
+    }
+
+    public Unit BuyUnit(UnitStats unitStats, Vector3 position)
+    {
+        Unit unit = CreateUnit(unitStats, position);
+        AddCurrency(-unitStats.price);
+        return unit;
+    }
 
     public void SetHealth(int newHealth)
     {

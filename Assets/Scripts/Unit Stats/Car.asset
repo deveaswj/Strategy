@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Car
   m_EditorClassIdentifier: 
   unitName: Car
-  storeDescription: Fast harasser with good short-ranged attacks.
+  storeDescription: A highly mobile harasser with good short-ranged attacks.
   isPurchasable: 1
-  price: 10
-  prefab: {fileID: 7089555821491911324, guid: ce1cf66480650054b8851944949d02e1, type: 3}
+  price: 20
+  unitPrefab: {fileID: 7089555821491911324, guid: ce1cf66480650054b8851944949d02e1, type: 3}
   isBoss: 0
   maxHealth: 15
   travelRange: 1
@@ -26,6 +26,6 @@ MonoBehaviour:
   rangedDamage: 2
   counterRange: 2
   armorValue: 1
-  unitIcon: {fileID: 21300000, guid: 2114faf3d420642469f43e8302d46891, type: 3}
-  player1: {fileID: 21300000, guid: de5c08f6d06611c4da6451c22eee5d41, type: 3}
-  player2: {fileID: 21300000, guid: 005a808b6be97e949aa6beadb0050f9c, type: 3}
+  iconGeneric: {fileID: 21300000, guid: 2114faf3d420642469f43e8302d46891, type: 3}
+  iconPlayer1: {fileID: 21300000, guid: de5c08f6d06611c4da6451c22eee5d41, type: 3}
+  iconPlayer2: {fileID: 21300000, guid: 005a808b6be97e949aa6beadb0050f9c, type: 3}

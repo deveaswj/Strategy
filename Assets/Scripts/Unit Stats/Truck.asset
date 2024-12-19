@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Truck
   m_EditorClassIdentifier: 
   unitName: Truck
-  storeDescription: Resource-focused support unit with limited combat capabilities.
+  storeDescription: Defensive support unit with moderate mobility.
   isPurchasable: 1
-  price: 10
-  prefab: {fileID: 4693030929176469094, guid: ba8d249ad68b18d4990cdd3be531647b, type: 3}
+  price: 50
+  unitPrefab: {fileID: 4693030929176469094, guid: ba8d249ad68b18d4990cdd3be531647b, type: 3}
   isBoss: 0
   maxHealth: 30
   travelRange: 1
@@ -26,6 +26,6 @@ MonoBehaviour:
   rangedDamage: 1
   counterRange: 2
   armorValue: 3
-  unitIcon: {fileID: 21300000, guid: bf4633e50b01e9c4ea1e57316f601e88, type: 3}
-  player1: {fileID: 21300000, guid: 12edc3fa421c1d24abac2daed98b0c3a, type: 3}
-  player2: {fileID: 21300000, guid: cd0afe8dbe72c714284e93a1ffefaf45, type: 3}
+  iconGeneric: {fileID: 21300000, guid: bf4633e50b01e9c4ea1e57316f601e88, type: 3}
+  iconPlayer1: {fileID: 21300000, guid: 12edc3fa421c1d24abac2daed98b0c3a, type: 3}
+  iconPlayer2: {fileID: 21300000, guid: cd0afe8dbe72c714284e93a1ffefaf45, type: 3}

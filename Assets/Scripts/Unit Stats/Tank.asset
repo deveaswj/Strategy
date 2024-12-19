@@ -15,8 +15,8 @@ MonoBehaviour:
   unitName: Tank
   storeDescription: Long-range powerhouse with devastating attacks but low mobility.
   isPurchasable: 1
-  price: 10
-  prefab: {fileID: 8819945547607639625, guid: 018d0cee653d6c94eb6ad7ea0f6e9096, type: 3}
+  price: 200
+  unitPrefab: {fileID: 8819945547607639625, guid: 018d0cee653d6c94eb6ad7ea0f6e9096, type: 3}
   isBoss: 0
   maxHealth: 40
   travelRange: 1
@@ -26,6 +26,6 @@ MonoBehaviour:
   rangedDamage: 8
   counterRange: 4
   armorValue: 4
-  unitIcon: {fileID: 21300000, guid: 4de0d41f241778c45bbba1390b02c18b, type: 3}
-  player1: {fileID: 21300000, guid: 152fecd3c86fe164ab728e3b98660eee, type: 3}
-  player2: {fileID: 21300000, guid: 2f36f45100263664fbceebdfee59774c, type: 3}
+  iconGeneric: {fileID: 21300000, guid: 4de0d41f241778c45bbba1390b02c18b, type: 3}
+  iconPlayer1: {fileID: 21300000, guid: 152fecd3c86fe164ab728e3b98660eee, type: 3}
+  iconPlayer2: {fileID: 21300000, guid: 2f36f45100263664fbceebdfee59774c, type: 3}

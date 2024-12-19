@@ -8,7 +8,7 @@ public class UnitStats : ScriptableObject
     [TextArea] public string storeDescription = "Unit Description (for the Store)";
     public bool isPurchasable = true;
     public int price = 10;
-    public GameObject prefab;
+    public GameObject unitPrefab;
 
     [Header("Stats")]
     public bool isBoss = false;
@@ -24,13 +24,22 @@ public class UnitStats : ScriptableObject
     public int armorValue = 0;    // damage reduction when defending
 
     [Header("Visuals")]
-    public Sprite unitIcon;
-    public Sprite player1;
-    public Sprite player2;
+    public Sprite iconGeneric;
+    public Sprite iconPlayer1;
+    public Sprite iconPlayer2;
 
     public bool GetsRoadBonus()
     {
         return (roadsBonus > 0);
+    }
+
+    public Sprite GetSpriteForPlayer(PlayerID playerID)
+    {
+        Sprite returnSprite = iconGeneric;
+        if (playerID == PlayerID.Player1) returnSprite = iconPlayer1;
+        if (playerID == PlayerID.Player2) returnSprite = iconPlayer2;
+        Debug.Log("Returning sprite " + returnSprite.name + " for player " + playerID);
+        return returnSprite;
     }
 
     public int GetAttackDamageByDistance(float distance, bool countering = false)
