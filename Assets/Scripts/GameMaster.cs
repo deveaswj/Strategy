@@ -124,9 +124,9 @@ public class GameMaster : MonoBehaviour
         storeDialog.OpenStore(GetPlayer(), position);
     }
 
-    public void OnEndTurn()
+    public void OnEndTurn(InputAction.CallbackContext context)
     {
-        if (IsMousable())
+        if (IsMousable() && context.performed)
         {
             EndTurn();
         }
@@ -253,10 +253,15 @@ public class GameMaster : MonoBehaviour
         GameObject playerUnits = player.Units;
         IncomeGenerator[] incomeGenerators = playerUnits.GetComponentsInChildren<IncomeGenerator>();
 
+        Debug.Log("Granting income to player " + playerID + " who has " + player.GetCurrency() + " currency");
+
         int currencyThisTurn = 0;
         foreach (IncomeGenerator incomeGenerator in incomeGenerators)
         {
-            currencyThisTurn += incomeGenerator.GetIncome();
+            int income = incomeGenerator.GetIncome();
+            currencyThisTurn += income;
+            Debug.Log("Granting " + income + " from " + incomeGenerator.name);
+            Debug.Log("Total so far: " + currencyThisTurn);
         }
         player.AddCurrency(currencyThisTurn);
     }
@@ -269,6 +274,7 @@ public class GameMaster : MonoBehaviour
 
     public void EndTurn()
     {
+        Debug.Log("End Turn for player " + currentPlayer);
         DeselectUnit();
         ResetUnits();
         ResetTiles();

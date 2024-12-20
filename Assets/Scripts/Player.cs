@@ -81,6 +81,8 @@ public class Player : MonoBehaviour
         OnCurrencyChanged?.Invoke(playerID, currency);
     }
 
+    public int GetCurrency() => currency;
+
     public void AddCurrency(int amount)
     {
         SetCurrency(currency + amount);
