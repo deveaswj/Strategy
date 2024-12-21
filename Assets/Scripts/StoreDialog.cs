@@ -4,9 +4,16 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using TMPro;
+using System.Linq;
 
 public class StoreDialog : MonoBehaviour
 {
+    public class StoreItem
+    {
+        public UnitStats unitStats;
+        public bool enabled;
+    }
+
     [SerializeField] GameObject dialogCanvas; // Reference to the Store dialog
     [SerializeField] MonoBehaviour focusHandler; // Reference to your FocusHandler script
 
@@ -15,6 +22,7 @@ public class StoreDialog : MonoBehaviour
     [SerializeField] UnitStats[] availableUnits;
     private int currentUnitIndex = 0;
     UnitStats userPurchase = null;
+    StoreItem[] storeItems;
 
     Player customer;
     Vector3 targetPosition;
@@ -42,11 +50,27 @@ public class StoreDialog : MonoBehaviour
         uiInputMap.Disable();
     }
 
+    void PopulateStoreUnits()
+    {
+        int budget = customer.GetCurrency();
+        storeItems = new StoreItem[availableUnits.Length];
+        for (int i = 0; i < availableUnits.Length; i++)
+        {
+            storeItems[i] = new StoreItem();
+            UnitStats unitStats = availableUnits[i];
+            storeItems[i].unitStats = unitStats;
+            storeItems[i].enabled = (unitStats.price <= budget);
+        }
+    }
+
+
     public void OpenStore(Player player, Vector3 position)
     {
         customer = player;
         targetPosition = position;
         userPurchase = null;
+        PopulateStoreUnits();
+        FirstUnit();
         ShowDialog();
     }
 
@@ -77,7 +101,7 @@ public class StoreDialog : MonoBehaviour
 
     public void BuyUnit()
     {
-        userPurchase = availableUnits[currentUnitIndex];
+        userPurchase = storeItems[currentUnitIndex].unitStats;
         Debug.Log($"Buying {userPurchase.unitName}!");
 
         customer.BuyUnit(userPurchase, targetPosition);
@@ -85,21 +109,27 @@ public class StoreDialog : MonoBehaviour
         CloseDialog();
     }
 
+    public void FirstUnit()
+    {
+        currentUnitIndex = 0;
+        UpdateUnitDetails();
+    }
+
     public void NextUnit()
     {
-        currentUnitIndex = (currentUnitIndex + 1) % availableUnits.Length;
+        currentUnitIndex = (currentUnitIndex + 1) % storeItems.Length;
         UpdateUnitDetails();
     }
 
     public void PreviousUnit()
     {
-        currentUnitIndex = (currentUnitIndex - 1 + availableUnits.Length) % availableUnits.Length;
+        currentUnitIndex = (currentUnitIndex - 1 + storeItems.Length) % storeItems.Length;
         UpdateUnitDetails();
     }
 
     private void UpdateUnitDetails()
     {
-        UnitStats unitStats = availableUnits[currentUnitIndex];
+        UnitStats unitStats = storeItems[currentUnitIndex].unitStats;
         unitNameText.text = unitStats.unitName;
         iconImage.sprite = unitStats.iconGeneric;
         int onRoadMovement = unitStats.travelRange + unitStats.roadsBonus;
