@@ -53,6 +53,7 @@ public class Player : MonoBehaviour
     public Unit CreateUnit(UnitStats unitStats, Vector3 position)
     {
         GameObject newUnit = Instantiate(unitStats.unitPrefab, position, Quaternion.identity);
+        // move the new unit under unitsContainer
         newUnit.transform.parent = unitsContainer.transform;
         Unit unit = newUnit.GetComponent<Unit>();
         unit.SetPlayerID(playerID);

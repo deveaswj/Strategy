@@ -145,8 +145,9 @@ public class Unit : MonoBehaviour
                 Unit selectedUnit = gm.GetSelectedUnit();
                 if (selectedUnit != null && !selectedUnit.HasAttacked)
                 {
-                    selectedUnit.Attack(this);
-                    CounterAttack(selectedUnit);
+                    float range = AttackableRange;
+                    selectedUnit.Attack(this, range);
+                    CounterAttack(selectedUnit, range);
                     // gm.AttackUnit(this);
                 }
             }
@@ -291,16 +292,18 @@ public class Unit : MonoBehaviour
         attackableRange = 0;
     }
 
-    public void Attack(Unit target)
+    public void Attack(Unit target, float range)
     {
         if (target.IsAttackable())
         {
             // check target's AttackableRange to determine damage
-            int attackDamage = unitStats.GetAttackDamageByDistance(target.AttackableRange);
+            int attackDamage = unitStats.GetAttackDamageByDistance(range);
             Debug.Log(gameObject.name + " attacks " + target.name + " for " + attackDamage + " ...");
             target.TakeDamage(attackDamage);
             hasAttacked = true;
             // we can't attack again this turn
+            // #NOTE: #BUG - This clears out AttackableRange before the Counterattack (which relies on AttackableRange) can happen
+            // #NOTE: Trying to fix bug by passing in range instead (maybe it'll work)
             ClearEnemies();
         }
         else
@@ -309,15 +312,15 @@ public class Unit : MonoBehaviour
         }
     }
 
-    public void CounterAttack(Unit target)
+    public void CounterAttack(Unit target, float range)
     {
         if (health <= 0)
         {
             Debug.Log("CounterAttack: Unit " + gameObject.name + " is dead!");
             return;
         }
-        // check our own AttackableRange to determine damage
-        int counterDamage = unitStats.GetAttackDamageByDistance(AttackableRange, countering: true);
+        // check our AttackableRange to determine damage
+        int counterDamage = unitStats.GetAttackDamageByDistance(range, countering: true);
         Debug.Log(gameObject.name + " counters " + target.name + " for " + counterDamage  + " ...");
         target.TakeDamage(counterDamage);
     }
@@ -332,8 +335,11 @@ public class Unit : MonoBehaviour
         UpdateBossHealth();
 
         // every hit takes out 1 armor, regardless of damage taken
-        if (armorValue > 0) armorValue--;
-        Debug.Log(gameObject.name + " has " + armorValue + " armor left!");
+        if (armorValue > 0)
+        {
+            armorValue--;
+            Debug.Log(gameObject.name + " has " + armorValue + " armor left!");
+        }
 
         if (health <= 0)
         {

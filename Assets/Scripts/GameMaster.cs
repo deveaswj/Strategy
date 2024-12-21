@@ -331,19 +331,20 @@ public class GameMaster : MonoBehaviour
         }
     }
 
-    public void AttackUnit(Unit target)
-    {
-        if (selectedUnit != null)
-        {
-            if (target != null && target.IsAttackable())
-            {
-                selectedUnit.Attack(target);
+    // public void AttackUnit(Unit target)
+    // {
+    //     if (selectedUnit != null)
+    //     {
+    //         if (target != null && target.IsAttackable())
+    //         {
+    //             float range = target.AttackableRange;
+    //             selectedUnit.Attack(target, range);
 
-                if (target == null) return;     // null if target unit died
-                target.CounterAttack(selectedUnit);
-            }
-        }
-    }
+    //             if (target == null) return;     // null if target unit died
+    //             target.CounterAttack(selectedUnit, range);
+    //         }
+    //     }
+    // }
 
     public void RestartGame()
     {

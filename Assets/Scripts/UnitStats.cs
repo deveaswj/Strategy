@@ -44,6 +44,8 @@ public class UnitStats : ScriptableObject
 
     public int GetAttackDamageByDistance(float distance, bool countering = false)
     {
+        Debug.Log((countering ? "Countering " : "Attacking ") + distance + " tiles away");
+
         // return melee if distance is 1
         if (distance == 1) return meleeDamage;
 

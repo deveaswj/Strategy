@@ -20,7 +20,7 @@ public class FocusHandler : MonoBehaviour
     [SerializeField] Sprite selectionSprite;
     [SerializeField] Color selectionColor = Color.white;
     [SerializeField] Sprite wrenchSprite;
-    [SerializeField] Color wrenchColor = Color.yellow;
+    [SerializeField] Color wrenchColor = Color.white;
 
     Tile focusTile = null;
     Unit focusUnit = null;
@@ -217,8 +217,8 @@ public class FocusHandler : MonoBehaviour
 
     void SetFocusTile(Tile newTile)
     {
-        focusTile?.LoseFocus();
-        newTile?.GainFocus();
+        if (focusTile != null) { focusTile.LoseFocus(); }
+        if (newTile   != null) { newTile.GainFocus(); }
         focusTile = newTile;
     }
 
@@ -228,8 +228,8 @@ public class FocusHandler : MonoBehaviour
         // string focusUnitNull = "focusUnit is" + (focusUnit == null ? "" : "not") + " null";
         // Debug.Log("FH: SetFocusUnit: " + newUnitNull + ", " + focusUnitNull);
 
-        focusUnit?.LoseFocus();
-        newUnit?.GainFocus();
+        if (focusUnit != null) { focusUnit.LoseFocus(); }
+        if (newUnit   != null) { newUnit.GainFocus(); }
         focusUnit = newUnit;
     }
 
