@@ -50,6 +50,8 @@ public class GameMaster : MonoBehaviour
 
     private StoreDialog storeDialog;
 
+    private FocusHandler focusHandler;
+
 // public enum GameInputMode { None, Idle, UnitActive, BuyNewUnit, PlaceNewUnit, GameOver };
     public bool InIdleMode() => (gameInputMode == GameInputMode.Idle);
     public bool InUnitActiveMode() => (gameInputMode == GameInputMode.UnitActive);
@@ -65,15 +67,18 @@ public class GameMaster : MonoBehaviour
 
     void Awake()
     {
-        selectionIndicator = FindObjectOfType<SelectionIndicator>();
-        storeDialog = FindObjectOfType<StoreDialog>();
         LoadPlayers();
         SetCurrentPlayer(1);
     }
 
     void Start()
     {
+        selectionIndicator = FindObjectOfType<SelectionIndicator>();
+        storeDialog = FindObjectOfType<StoreDialog>();
+        focusHandler = FindObjectOfType<FocusHandler>();
+
         tiles = FindObjectsOfType<Tile>();
+
         GrantIncome();
     }
 
@@ -144,38 +149,121 @@ public class GameMaster : MonoBehaviour
         }
     }
 
-    public void OnSelectNext()
+    void FocusUnitRelative(int relativeIndex)
     {
-        if (InIdleMode() || InUnitActiveMode() || InPlaceMode())
+        Debug.Log("FocusUnitRelative(" + relativeIndex + ")");
+
+        Unit[] units = players[currentPlayer].GetUnitsInOrder();
+        if (units.Length == 0)
         {
-            // Select Next/Prev behavior:
-            // If no unit is selected, select the active player's first unit
-            // If a unit is selected, select the active player's next or previous unit
-            string debugPrefix = "OnSelectNext (Player " + currentPlayer + "): ";
-            if (selectedUnit == null)
-            {
-                // Select First
-                Debug.Log(debugPrefix + "Select First");
-            }
-            else
-                {
-                bool shiftModifier = Keyboard.current.shiftKey.isPressed;
-                if (shiftModifier)
-                {
-                    // Select Previous
-                    Debug.Log(debugPrefix + "Select Previous");
-                }
-                else
-                {
-                    // Select Next
-                    Debug.Log(debugPrefix + "Select Next");
-                }
-            }
+            Debug.LogWarning("No units to select");
+            return;
+        }
+
+        int unitToFocusIndex = 0;
+        if (relativeIndex == 0)
+        {
+            // Select First
+            unitToFocusIndex = 0;
         }
         else
         {
-            // Do nothing
+            int focusUnitIndex = -1;
+            Unit focusUnit = focusHandler.FocusUnit;
+
+            bool useFirstLast = false;
+
+            if (focusUnit != null)
+            {
+                focusUnitIndex = System.Array.IndexOf(units, focusUnit);
+                if (focusUnitIndex == -1)
+                {
+                    // focusUnit is not in the list of units
+                    // (e.g. one of the other player's units)
+                    useFirstLast = true;
+                }
+            }
+
+            Debug.Log("FocusUnitRelative: useFirstLast: " + useFirstLast);
+
+            if (useFirstLast)
+            {
+                if (relativeIndex > 0)
+                {
+                    // Next from null is first
+                    unitToFocusIndex = 0;
+                }
+                else
+                {
+                    // Previous from null is last
+                    unitToFocusIndex = units.Length;
+                }
+            }
+            else
+            {
+                if (relativeIndex > 0)
+                {
+                    // Select Next
+                    unitToFocusIndex = (focusUnitIndex + 1) % units.Length;
+                }
+                else
+                {
+                    // Select Previous
+                    unitToFocusIndex = (focusUnitIndex - 1 + units.Length) % units.Length;
+                }
+            }
         }
+
+        Debug.Log("FocusUnitRelative: Unit to select index: " + unitToFocusIndex);
+
+        Unit unitToSelect = units[unitToFocusIndex];
+        if (unitToSelect == null)
+        {
+            Debug.LogError("Error: unitToSelect is null");
+            return;
+        }
+        // SelectUnit(unitToSelect);
+        focusHandler.SetFocusByUnit(unitToSelect);
+    }
+
+    public void OnScrollWheel(InputAction.CallbackContext context)
+    {
+        if (IsMousable() && context.performed)
+        {
+            if (InIdleMode() || InUnitActiveMode() || InPlaceMode())
+            {
+                Vector2 scrollValue = context.ReadValue<Vector2>();
+                float scrollAmount = scrollValue.y;
+                if (scrollAmount < 0)
+                {
+                    FocusUnitRelative(-1);
+                }
+                else if (scrollAmount > 0)
+                {
+                    FocusUnitRelative(1);
+                }
+            }
+        }
+        // else do nothing
+    }
+
+    public void OnFocusNext(InputAction.CallbackContext context)
+    {
+        if ((InIdleMode() || InUnitActiveMode() || InPlaceMode()) && context.performed)
+        {
+            bool shiftModifier = Keyboard.current.shiftKey.isPressed;
+            if (shiftModifier)
+            {
+                // Select Previous
+                FocusUnitRelative(-1);
+            }
+            else
+            {
+                // Select Next
+                FocusUnitRelative(1);
+            }
+        }
+        // else do nothing
     }
 
     void UpdateSelectionUI()

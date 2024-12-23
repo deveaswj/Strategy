@@ -168,6 +168,17 @@ public class FocusHandler : MonoBehaviour
         }
     }
 
+    public void SetFocusByUnit(Unit unit)
+    {
+        // called by GameMaster.FocusUnitRelative()
+        // which triggers by Tab or ScrollWheel
+        Tile tile = GetTile(unit.transform.position);
+        SetFocusTile(tile);
+        MoveTo(tile.transform.position);
+        SetFocusUnit(unit);
+        mouseHasFocus = false;
+    }
+
     public bool TryMove(Vector2 direction)
     {
         bool success = false;

@@ -18,7 +18,7 @@ TagManager:
   - Obstacle
   - Unit
   - Road
-  - 
+  - Rubble
   - 
   - 
   - 
@@ -53,6 +53,9 @@ TagManager:
     locked: 0
   - name: Selection
     uniqueID: 277807645
+    locked: 0
+  - name: Rubble
+    uniqueID: 1131873215
     locked: 0
   - name: Obstacles
     uniqueID: 531852655
