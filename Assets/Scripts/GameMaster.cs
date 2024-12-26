@@ -333,6 +333,21 @@ public class GameMaster : MonoBehaviour
         return GetPlayer(playerID);
     }
 
+    public void CollectResources() => CollectResources(currentPlayer);
+    public void CollectResources(PlayerID playerID)
+    {
+        Player player = GetPlayer(playerID);
+        GameObject playerUnits = player.Units;
+        ResourceCollector[] resourceCollectors = playerUnits.GetComponentsInChildren<ResourceCollector>();
+        int amount = 0;
+        foreach (ResourceCollector resourceCollector in resourceCollectors)
+        {
+            amount += resourceCollector.Collect();
+        }
+        player.AddCurrency(amount);
+    }
+
+
     public void GrantIncome() => GrantIncome(currentPlayer);
     public void GrantIncome(PlayerID playerID)
     {
