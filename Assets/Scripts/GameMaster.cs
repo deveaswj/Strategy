@@ -381,6 +381,7 @@ public class GameMaster : MonoBehaviour
         DeselectUnit();
         ResetUnits();
         ResetTiles();
+        CollectResources();
         SwitchPlayer();
         GrantIncome();
     }
