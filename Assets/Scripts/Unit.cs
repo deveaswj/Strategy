@@ -18,6 +18,7 @@ public class Unit : MonoBehaviour
 
     [Header("Other Layers")]
     [SerializeField] LayerMask roadLayer;
+    [SerializeField] LayerMask tileLayer;
     [SerializeField] float layerCheckRadius = 0.2f;
 
     [SerializeField] int healthOverride = 0;
@@ -219,8 +220,39 @@ public class Unit : MonoBehaviour
 
         bool tileIsClear;
         float distanceX, distanceY, unitDistance;
+        int searchRadius = (unitStats.travelRange + roadsBonus);
 
         traversableTiles.Clear();
+
+        // Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, searchRadius, tileLayer);
+        // foreach (Collider2D collider in colliders)
+        // {
+        //     Tile tile = collider.GetComponent<Tile>();
+        //     if (tile != null)
+        //     {
+        //         tileIsClear = tile.IsClear();
+        //         distanceX = Mathf.Abs(tile.transform.position.x - transform.position.x);
+        //         distanceY = Mathf.Abs(tile.transform.position.y - transform.position.y);
+        //         unitDistance = distanceX + distanceY;
+        //         if (unitDistance <= unitStats.travelRange)
+        //         {
+        //             if (tileIsClear)
+        //             {
+        //                 tile.Highlight();
+        //                 traversableTiles.Add(tile);
+        //             }
+        //         }
+        //         else if (roadsBonus > 0 && unitDistance <= (unitStats.travelRange + roadsBonus))
+        //         {
+        //             if (isOnRoad && tileIsClear && tile.HasRoad())
+        //             {
+        //                 tile.Highlight();
+        //                 traversableTiles.Add(tile);
+        //             }
+        //         }
+        //     }
+        // }
+
         foreach (Tile tile in gm.GetTiles())
         {
             tileIsClear = tile.IsClear();
