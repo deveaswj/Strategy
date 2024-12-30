@@ -4,12 +4,14 @@ From a Udemy course: [The Ultimate Guide to Making a 2D Strategy Game in Unity](
 This project has a *lot* of sprite assets, because when I started this, I wasn't sure which ones I would be using.
 
 Features I plan to implement:
-- [ ] Hand-designed maps, not randomized as the tutorial has.
-- [ ] A roads system that allows for bonus movement.
+- [x] A roads system that allows for bonus movement.
+- [x] Scattered rubble, and units (e.g. Trucks) that can collect it.
+- [ ] Let Dozers run into obstacles to convert them into rubble.
+- [ ] Let Dozers create dirt roads on bare terrain.
 
 Ideas for future improvements:
-- [ ] Use Unity's built-in Tilemap System and Rule Tiles
-- [ ] Generate roads and terrain procedurally.
+- [ ] Use Unity's built-in Tilemap System and Rule Tiles.
+- [ ] Generate initial roads and terrain procedurally.
 
 Graphics: [KenneyNL](https://www.kenney.nl/assets)
 
