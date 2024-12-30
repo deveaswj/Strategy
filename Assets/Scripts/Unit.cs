@@ -18,7 +18,6 @@ public class Unit : MonoBehaviour
 
     [Header("Other Layers")]
     [SerializeField] LayerMask roadLayer;
-    [SerializeField] LayerMask tileLayer;
     [SerializeField] float layerCheckRadius = 0.2f;
 
     [SerializeField] int healthOverride = 0;
@@ -255,13 +254,13 @@ public class Unit : MonoBehaviour
 
         foreach (Tile tile in gm.GetTiles())
         {
-            tileIsClear = tile.IsClear();
             distanceX = Mathf.Abs(tile.transform.position.x - transform.position.x);
             distanceY = Mathf.Abs(tile.transform.position.y - transform.position.y);
             unitDistance = distanceX + distanceY;
 
             if (unitDistance <= unitStats.travelRange)
             {
+                tileIsClear = tile.IsClear(unitStats.blockedLayersMask);
                 if (tileIsClear)
                 {
                     tile.Highlight();
@@ -271,6 +270,7 @@ public class Unit : MonoBehaviour
             // calculate +1 bonus movement if eligible
             else if (roadsBonus > 0 && unitDistance <= (unitStats.travelRange + roadsBonus))
             {
+                tileIsClear = tile.IsClear(unitStats.blockedLayersMask);
                 if (isOnRoad && tileIsClear && tile.HasRoad())
                 {
                     tile.Highlight();

@@ -143,11 +143,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f371422ea3c67f42aa6923bc5a88e54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sprites:
+  - {fileID: 21300000, guid: 9ca91d58d1665da4984c358fb42ae857, type: 3}
+  - {fileID: 21300000, guid: f446622edbac06f4d8c0f5f8f192c40c, type: 3}
+  - {fileID: 21300000, guid: 65b458c9f5b30b14f98aaa09d20c166f, type: 3}
+  - {fileID: 21300000, guid: 2d04d422ba3c4b1499e27877805c45fd, type: 3}
+  - {fileID: 21300000, guid: 605e134849db04e4c9df930c583ef212, type: 3}
+  - {fileID: 21300000, guid: 3c79cae8cc052e946990efd94b58f11e, type: 3}
+  - {fileID: 21300000, guid: 12735fde78c9ccf4e9400e61538677e8, type: 3}
+  - {fileID: 21300000, guid: df593408b83135548b5e6216aa71d1c6, type: 3}
+  - {fileID: 21300000, guid: df593408b83135548b5e6216aa71d1c6, type: 3}
   hoverColor: {r: 1, g: 1, b: 1, a: 1}
   highlightColor: {r: 0.8, g: 0.9636363, b: 1, a: 1}
-  obstacleLayer:
+  occupyingLayers:
     serializedVersion: 2
-    m_Bits: 192
+    m_Bits: 1728
   roadLayer:
     serializedVersion: 2
     m_Bits: 256

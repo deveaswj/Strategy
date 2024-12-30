@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
+    [SerializeField] Sprite[] sprites;
+
     [SerializeField] Color hoverColor;
     [SerializeField] Color highlightColor = Color.yellow;
 
     [Header("Other Layers")]
-    [SerializeField] LayerMask obstacleLayer;
+    [SerializeField] LayerMask occupyingLayers;
     [SerializeField] LayerMask roadLayer;
     [SerializeField] LayerMask unitLayer;
     [SerializeField] float layerCheckRadius = 0.2f;
@@ -35,6 +37,11 @@ public class Tile : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
         defaultScale = transform.localScale;
         defaultColor = sr.color;
+        // select a random sprite
+        if (sprites.Length > 0)
+        {
+            sr.sprite = sprites[Random.Range(0, sprites.Length)];
+        }
     }
 
     void Update()
@@ -68,16 +75,16 @@ public class Tile : MonoBehaviour
         }
         else
         {
-            if (gm.InUnitActiveMode())
+            if (gm.InModeUnitActive())
             {
                 gm.DeselectUnit();
             }
-            else if (gm.InIdleMode())
+            else if (gm.InModeIdle())
             {
                 // 
                 Debug.Log("Nothing to do here!");
             }
-            else if (gm.InPlaceMode())
+            else if (gm.InModePlaceUnit())
             {
                 Debug.Log("Placing new unit on tile: " + gameObject.name);
                 gm.OpenStore(transform.position);
@@ -137,9 +144,11 @@ public class Tile : MonoBehaviour
         return Physics2D.OverlapCircle(transform.position, layerCheckRadius, roadLayer);
     }
 
-    public bool IsClear()
+    public bool IsClear() => IsClear(occupyingLayers);
+
+    public bool IsClear(LayerMask layerMask)
     {
-        return !Physics2D.OverlapCircle(transform.position, layerCheckRadius, obstacleLayer);
+        return !Physics2D.OverlapCircle(transform.position, layerCheckRadius, layerMask);
     }
 
     public void Highlight()

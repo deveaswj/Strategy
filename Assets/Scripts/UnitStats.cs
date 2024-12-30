@@ -22,6 +22,7 @@ public class UnitStats : ScriptableObject
     public int rangedDamage = 1;  // damage to deal when initiating ranged attack
     public int counterRange = 1;  // halve counter-damage if outside this range
     public int armorValue = 0;    // damage reduction when defending
+    public LayerMask blockedLayersMask;
 
     [Header("Visuals")]
     public Sprite iconGeneric;

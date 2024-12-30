@@ -7,20 +7,12 @@ using UnityEngine.SceneManagement;
 
 public enum PlayerID { None, Player1, Player2 };
 
-public enum GameInputMode { None, Idle, UnitActive, BuyNewUnit, PlaceNewUnit, GameOver };
+public enum GameInputMode { None, Idle, UnitActive, PlaceNewUnit, GameOver };
 // None -- should never be used
-// Idle -- select unit, buy new unit, or end turn
-//      Buy Unit: Yes
-//      Select:   Yes
-//      End Turn: Yes
-// UnitActive -- unit selected -- use it, select something else, deselect it, or end turn
-//      Buy Unit: No
-//      Select:   Yes
-//      End Turn: Yes
-// PlaceNewUnit -- place new unit -- cannot do anything else until done
-//      Buy Unit: No
-//      Select:   No
-//      End Turn: No
+// Idle -- no unit selected
+// UnitActive -- a unit is selected
+// PlaceNewUnit -- player is placing a new unit
+// GameOver -- game is over
 
 public class GameMaster : MonoBehaviour
 {
@@ -52,16 +44,14 @@ public class GameMaster : MonoBehaviour
 
     private FocusHandler focusHandler;
 
-// public enum GameInputMode { None, Idle, UnitActive, BuyNewUnit, PlaceNewUnit, GameOver };
-    public bool InIdleMode() => (gameInputMode == GameInputMode.Idle);
-    public bool InUnitActiveMode() => (gameInputMode == GameInputMode.UnitActive);
-    public bool InBuyMode() => (gameInputMode == GameInputMode.BuyNewUnit);
-    public bool InPlaceMode() => (gameInputMode == GameInputMode.PlaceNewUnit);
-    public bool InGameOverMode() => (gameInputMode == GameInputMode.GameOver);
+// public enum GameInputMode { None, Idle, UnitActive, PlaceNewUnit, GameOver };
+    public bool InModeIdle() => (gameInputMode == GameInputMode.Idle);
+    public bool InModeUnitActive() => (gameInputMode == GameInputMode.UnitActive);
+    public bool InModePlaceUnit() => (gameInputMode == GameInputMode.PlaceNewUnit);
+    public bool InModeGameOver() => (gameInputMode == GameInputMode.GameOver);
 
     public void SetIdleMode() => gameInputMode = GameInputMode.Idle;
     public void SetUnitActiveMode() => gameInputMode = GameInputMode.UnitActive;
-    public void SetBuyMode() => gameInputMode = GameInputMode.BuyNewUnit;
     public void SetPlaceMode() => gameInputMode = GameInputMode.PlaceNewUnit;
     public void SetGameOverMode() => gameInputMode = GameInputMode.GameOver;
 
@@ -103,7 +93,7 @@ public class GameMaster : MonoBehaviour
 
     public void GameOver()
     {
-        gameInputMode = GameInputMode.GameOver;
+        SetGameOverMode();
         winningPlayer = currentPlayer;
         Debug.Log("Game Over! Winning player: " + winningPlayer);
         StartCoroutine(GameOverRoutine());
@@ -121,7 +111,7 @@ public class GameMaster : MonoBehaviour
 
     public bool IsMousable()
     {
-        return (InIdleMode() || InUnitActiveMode() || InPlaceMode());
+        return (InModeIdle() || InModeUnitActive() || InModePlaceUnit());
     }
 
     public void OpenStore(Vector3 position)
@@ -139,11 +129,11 @@ public class GameMaster : MonoBehaviour
 
     public void OnEscape()
     {
-        if (InUnitActiveMode())
+        if (InModeUnitActive())
         {
             DeselectUnit();
         }
-        else if (InPlaceMode())
+        else if (InModePlaceUnit())
         {
             // CancelNewUnitPlacement();
         }
@@ -230,7 +220,7 @@ public class GameMaster : MonoBehaviour
     {
         if (IsMousable() && context.performed)
         {
-            if (InIdleMode() || InUnitActiveMode() || InPlaceMode())
+            if (InModeIdle() || InModeUnitActive() || InModePlaceUnit())
             {
                 Vector2 scrollValue = context.ReadValue<Vector2>();
                 float scrollAmount = scrollValue.y;
@@ -249,7 +239,7 @@ public class GameMaster : MonoBehaviour
 
     public void OnFocusNext(InputAction.CallbackContext context)
     {
-        if ((InIdleMode() || InUnitActiveMode() || InPlaceMode()) && context.performed)
+        if ((InModeIdle() || InModeUnitActive() || InModePlaceUnit()) && context.performed)
         {
             bool shiftModifier = Keyboard.current.shiftKey.isPressed;
             if (shiftModifier)

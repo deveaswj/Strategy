@@ -27,6 +27,9 @@ MonoBehaviour:
   rangedDamage: 1
   counterRange: 2
   armorValue: 0
+  blockedLayersMask:
+    serializedVersion: 2
+    m_Bits: 1152
   iconGeneric: {fileID: 21300000, guid: 161a2ea877b6bc7428d9fade2fbf2ecb, type: 3}
   iconPlayer1: {fileID: 21300000, guid: 804a21e88b1057b4085b297d58221d8b, type: 3}
   iconPlayer2: {fileID: 21300000, guid: 7f3251bd3006e2c44b0c04a7c4ba61aa, type: 3}
