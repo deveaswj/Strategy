@@ -150,6 +150,9 @@ public class StoreDialog : MonoBehaviour
 
         descriptionText.text = unitStats.storeDescription;
 
+        // check the unit's affordability and enable/disable the buyButton
+        buyButton.interactable = (unitStats.price <= customer.GetCurrency());
+
         Debug.Log($"Unit: {unitStats.unitName}");
     }
 

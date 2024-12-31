@@ -26,9 +26,11 @@ MonoBehaviour:
   rangedDamage: 3
   counterRange: 99
   armorValue: 2
+  criticalAttackOdds: 50
+  criticalCounterOdds: 50
   blockedLayersMask:
     serializedVersion: 2
-    m_Bits: 1152
+    m_Bits: 128
   iconGeneric: {fileID: 21300000, guid: ca98d2ea21e7e984ca82363dd324dd9a, type: 3}
   iconPlayer1: {fileID: 21300000, guid: 94210483bc3394a4cabc641331e5232a, type: 3}
   iconPlayer2: {fileID: 21300000, guid: f4e0c33bde4d7fd47bccb97733444ce7, type: 3}

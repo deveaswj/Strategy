@@ -8068,7 +8068,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.78431374, g: 0.39215687, b: 0.39215687, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -8976,12 +8976,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2de9d27d7ce671b41b3cd7ec4e0fe6e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rubblePrefabs:
-  - {fileID: 3252930490373352438, guid: 98adcd27d96da4d49a6c3299bf85808b, type: 3}
-  - {fileID: 4876920506693745124, guid: 672b6642b9626184b9024795cf9fd74f, type: 3}
-  - {fileID: 7516121397561420707, guid: 6caf3e184a81ed94292fc02dc13595ae, type: 3}
-  - {fileID: 7463348909542788136, guid: 6a1137a18ed61ac4dae72333fd2f707d, type: 3}
-  rubbleParent: {fileID: 0}
+  rubbleChance: 0.1
+  rubbleTypes:
+  - prefab: {fileID: 7516121397561420707, guid: 6caf3e184a81ed94292fc02dc13595ae, type: 3}
+    chance: 0.1
+  - prefab: {fileID: 4876920506693745124, guid: 672b6642b9626184b9024795cf9fd74f, type: 3}
+    chance: 0.45
+  - prefab: {fileID: 3252930490373352438, guid: 98adcd27d96da4d49a6c3299bf85808b, type: 3}
+    chance: 0.45
+  rubbleParent: {fileID: 1728281874}
 --- !u!1001 &836744715
 PrefabInstance:
   m_ObjectHideFlags: 0

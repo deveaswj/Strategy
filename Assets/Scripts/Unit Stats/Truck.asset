@@ -15,7 +15,7 @@ MonoBehaviour:
   unitName: Truck
   storeDescription: Defensive support unit with moderate mobility.
   isPurchasable: 1
-  price: 50
+  price: 60
   unitPrefab: {fileID: 4693030929176469094, guid: ba8d249ad68b18d4990cdd3be531647b, type: 3}
   isBoss: 0
   maxHealth: 30
@@ -26,6 +26,8 @@ MonoBehaviour:
   rangedDamage: 1
   counterRange: 2
   armorValue: 3
+  criticalAttackOdds: 0
+  criticalCounterOdds: 0
   blockedLayersMask:
     serializedVersion: 2
     m_Bits: 1216

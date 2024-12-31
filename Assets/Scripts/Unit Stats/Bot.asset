@@ -16,7 +16,7 @@ MonoBehaviour:
   storeDescription: Agile skirmisher, useful for light attacks and countering nearby
     threats.
   isPurchasable: 1
-  price: 10
+  price: 15
   unitPrefab: {fileID: 7310653715098141440, guid: 7abf3cb705e1eaf41b8be259017d6664, type: 3}
   isBoss: 0
   maxHealth: 10
@@ -27,9 +27,11 @@ MonoBehaviour:
   rangedDamage: 1
   counterRange: 2
   armorValue: 0
+  criticalAttackOdds: 0
+  criticalCounterOdds: 0
   blockedLayersMask:
     serializedVersion: 2
-    m_Bits: 1152
+    m_Bits: 128
   iconGeneric: {fileID: 21300000, guid: 161a2ea877b6bc7428d9fade2fbf2ecb, type: 3}
   iconPlayer1: {fileID: 21300000, guid: 804a21e88b1057b4085b297d58221d8b, type: 3}
   iconPlayer2: {fileID: 21300000, guid: 7f3251bd3006e2c44b0c04a7c4ba61aa, type: 3}
