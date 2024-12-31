@@ -430,12 +430,12 @@ public class Unit : MonoBehaviour
 
     public void SetUnitStats(UnitStats newUnitStats) => unitStats = newUnitStats;
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        if (spawnRadius > 0)
-        {
-            Gizmos.DrawWireSphere(transform.position, spawnRadius);
-        }
-    }
+    // private void OnDrawGizmos()
+    // {
+    //     Gizmos.color = Color.red;
+    //     if (spawnRadius > 0)
+    //     {
+    //         Gizmos.DrawWireSphere(transform.position, spawnRadius);
+    //     }
+    // }
 }

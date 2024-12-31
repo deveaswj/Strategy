@@ -24,6 +24,7 @@ public class RubbleDistributor : MonoBehaviour
 
     GameMaster gm;
 
+    private float lastTotalOdds = 0f;
 
     // Start is called before the first frame update
     void Start()
@@ -74,9 +75,17 @@ public class RubbleDistributor : MonoBehaviour
             totalOdds += rubbleType.chance;
         }
 
-        if (Mathf.Abs(totalOdds - 1f) > 0.01f)
+        if (lastTotalOdds != totalOdds)
         {
-            Debug.LogWarning("Total odds should sum to 1.0!");
+            if (Mathf.Abs(totalOdds - 1f) > 0.01f)
+            {
+                Debug.LogWarning("Total odds should sum to 1.0!");
+            }
+            else
+            {
+                Debug.Log("Total odds: " + totalOdds);
+            }
+            lastTotalOdds = totalOdds;
         }
     }
 
