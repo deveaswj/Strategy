@@ -323,11 +323,13 @@ public class GameMaster : MonoBehaviour
         return GetPlayer(playerID);
     }
 
-    public void CollectResources() => CollectResources(currentPlayer);
-    public void CollectResources(PlayerID playerID)
+    public void ManageUnitsEndOfTurn() => ManageUnitsEndOfTurn(currentPlayer);
+    public void ManageUnitsEndOfTurn(PlayerID playerID)
     {
         Player player = GetPlayer(playerID);
         GameObject playerUnits = player.Units;
+
+        // Collect resources
         ResourceCollector[] resourceCollectors = playerUnits.GetComponentsInChildren<ResourceCollector>();
         int amount = 0;
         foreach (ResourceCollector resourceCollector in resourceCollectors)
@@ -335,6 +337,13 @@ public class GameMaster : MonoBehaviour
             amount += resourceCollector.Collect();
         }
         player.AddCurrency(amount);
+
+        // Break obstacles
+        ObstacleBreaker[] obstacleBreakers = playerUnits.GetComponentsInChildren<ObstacleBreaker>();
+        foreach (ObstacleBreaker obstacleBreaker in obstacleBreakers)
+        {
+            obstacleBreaker.BreakObstacles();
+        }
     }
 
 
@@ -371,7 +380,7 @@ public class GameMaster : MonoBehaviour
         DeselectUnit();
         ResetUnits();
         ResetTiles();
-        CollectResources();
+        ManageUnitsEndOfTurn();
         SwitchPlayer();
         GrantIncome();
     }

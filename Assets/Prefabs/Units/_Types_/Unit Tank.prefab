@@ -103,5 +103,29 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1691782146070012353, guid: 00504ce9cffd64f48a5ad14057f86302, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -4738240040003251905}
   m_SourcePrefab: {fileID: 100100000, guid: 00504ce9cffd64f48a5ad14057f86302, type: 3}
+--- !u!1 &8819945547607639625 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1691782146070012353, guid: 00504ce9cffd64f48a5ad14057f86302, type: 3}
+  m_PrefabInstance: {fileID: 7862395836039751560}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &-4738240040003251905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8819945547607639625}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cee5ce423e78cb44a85ef42c33680a32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  layerCheckRadius: 0.2
