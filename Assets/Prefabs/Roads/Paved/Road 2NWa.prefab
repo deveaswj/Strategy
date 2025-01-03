@@ -12,9 +12,13 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 6d3c2f683ce24c1448c57979f8b9ab43, type: 3}
+    - target: {fileID: 4780036961240686941, guid: ea827d5fd1b4ab94a99303f00acc81c9, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5665468079276840264, guid: ea827d5fd1b4ab94a99303f00acc81c9, type: 3}
       propertyPath: m_Name
-      value: Road 6
+      value: Road 2NWa
       objectReference: {fileID: 0}
     - target: {fileID: 7011733291744138094, guid: ea827d5fd1b4ab94a99303f00acc81c9, type: 3}
       propertyPath: m_LocalPosition.x
