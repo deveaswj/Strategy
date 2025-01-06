@@ -43,6 +43,9 @@ public class Unit : MonoBehaviour
 
     GameMaster gm;
 
+    int totalDistance = 0;
+    int tripDistance = 0;
+    int travelRemaining = 0;
 
     private ExplosionPoolManager explosionPoolManager;
 
@@ -75,6 +78,8 @@ public class Unit : MonoBehaviour
         attackIndicator = transform.Find("AttackIndicator").gameObject;
         aiSR = attackIndicator.GetComponent<SpriteRenderer>();
         UpdateBossHealth();
+        Debug.Log(gameObject.name + " Unit Stats: " + ((unitStats == null) ? "null" : unitStats.name));
+        ResetUnit(playerID);
     }
 
     protected void Update()
@@ -108,6 +113,7 @@ public class Unit : MonoBehaviour
             // save the last hasMoved state
             movedLastTurn = hasMoved;
         }
+        travelRemaining = unitStats.travelRange;
         hasMoved = false;
         hasAttacked = false;
         selected = false;
@@ -165,7 +171,14 @@ public class Unit : MonoBehaviour
     public void MoveToTile(Tile tile)
     {
         Vector2 tilePosition = tile.transform.position;
+        UpdateOdometer(tile.GetUnitDistance());
         MoveTo(tilePosition);
+    }
+
+    void UpdateOdometer(int distance)
+    {
+        tripDistance = distance;
+        totalDistance += distance;
     }
 
     IEnumerator StartMovement(Vector2 targetPosition)
@@ -183,7 +196,12 @@ public class Unit : MonoBehaviour
             transform.position = Vector2.MoveTowards(transform.position, targetY, moveSpeed * Time.deltaTime);
             yield return null;
         }
-        hasMoved = true;
+        travelRemaining -= tripDistance;
+        tripDistance = 0;
+        hasMoved = (travelRemaining <= 0);
+
+        Debug.Log("Travel Remaining: " + travelRemaining + ", HasMoved: " + hasMoved);
+
         ClearEnemies();
         GetEnemiesInRange();
     }
@@ -219,7 +237,7 @@ public class Unit : MonoBehaviour
 
         bool tileIsClear;
         float distanceX, distanceY, unitDistance;
-        int searchRadius = (unitStats.travelRange + roadsBonus);
+        int searchRadius = (travelRemaining + roadsBonus);
 
         traversableTiles.Clear();
 
@@ -233,7 +251,7 @@ public class Unit : MonoBehaviour
         //         distanceX = Mathf.Abs(tile.transform.position.x - transform.position.x);
         //         distanceY = Mathf.Abs(tile.transform.position.y - transform.position.y);
         //         unitDistance = distanceX + distanceY;
-        //         if (unitDistance <= unitStats.travelRange)
+        //         if (unitDistance <= travelRemaining)
         //         {
         //             if (tileIsClear)
         //             {
@@ -241,7 +259,7 @@ public class Unit : MonoBehaviour
         //                 traversableTiles.Add(tile);
         //             }
         //         }
-        //         else if (roadsBonus > 0 && unitDistance <= (unitStats.travelRange + roadsBonus))
+        //         else if (roadsBonus > 0 && unitDistance <= (travelRemaining + roadsBonus))
         //         {
         //             if (isOnRoad && tileIsClear && tile.HasRoad())
         //             {
@@ -258,22 +276,22 @@ public class Unit : MonoBehaviour
             distanceY = Mathf.Abs(tile.transform.position.y - transform.position.y);
             unitDistance = distanceX + distanceY;
 
-            if (unitDistance <= unitStats.travelRange)
+            if (unitDistance <= travelRemaining)
             {
                 tileIsClear = tile.IsClear(unitStats.blockedLayersMask);
                 if (tileIsClear)
                 {
-                    tile.Highlight();
+                    tile.Highlight((int)unitDistance);
                     traversableTiles.Add(tile);
                 }
             }
             // calculate +1 bonus movement if eligible
-            else if (roadsBonus > 0 && unitDistance <= (unitStats.travelRange + roadsBonus))
+            else if (roadsBonus > 0 && unitDistance <= (travelRemaining + roadsBonus))
             {
                 tileIsClear = tile.IsClear(unitStats.blockedLayersMask);
                 if (isOnRoad && tileIsClear && tile.HasRoad())
                 {
-                    tile.Highlight();
+                    tile.Highlight((int)unitDistance);
                     traversableTiles.Add(tile);
                 }
             }

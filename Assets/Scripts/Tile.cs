@@ -25,6 +25,9 @@ public class Tile : MonoBehaviour
     bool isMouseOver = false;
     bool isEdgeTile = false;
     bool isSpawnTile = false;
+    int unitDistance = 0;
+
+    public int GetUnitDistance() => unitDistance;
 
     public bool IsSpawnTile()
     {
@@ -151,16 +154,18 @@ public class Tile : MonoBehaviour
         return !Physics2D.OverlapCircle(transform.position, layerCheckRadius, layerMask);
     }
 
-    public void Highlight()
+    public void Highlight(int distance)
     {
         // Debug.Log("Highlight tile: " + gameObject.name);
         isWalkable = true;
+        unitDistance = distance;
     }
 
     public void ResetTile()
     {
         // Debug.Log("Reset tile: " + gameObject.name);
         isWalkable = false;
+        unitDistance = 0;
     }
 
     // draw a gizmo matching the OverlapCircle of layerCheckRadius
