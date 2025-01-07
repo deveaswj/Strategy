@@ -24,6 +24,7 @@ public class Unit : MonoBehaviour
     [SerializeField] float spawnRadius = 0f;
 
     private int health;
+    private int armorValue = 0;
 
     private List<Unit> enemiesInRange = new();
 
@@ -43,10 +44,6 @@ public class Unit : MonoBehaviour
 
     GameMaster gm;
 
-    int totalDistance = 0;
-    int tripDistance = 0;
-    int travelRemaining = 0;
-
     private ExplosionPoolManager explosionPoolManager;
 
     private List<Tile> traversableTiles;
@@ -64,6 +61,7 @@ public class Unit : MonoBehaviour
     {
         traversableTiles = new();
         health = unitStats.maxHealth;
+        armorValue = unitStats.armorValue;
         if (healthOverride > 0) health = healthOverride;
         if (hoverAmount < 1) hoverAmount += 1;
         explosionPoolManager = FindObjectOfType<ExplosionPoolManager>();
@@ -113,7 +111,6 @@ public class Unit : MonoBehaviour
             // save the last hasMoved state
             movedLastTurn = hasMoved;
         }
-        travelRemaining = unitStats.travelRange;
         hasMoved = false;
         hasAttacked = false;
         selected = false;
@@ -171,15 +168,9 @@ public class Unit : MonoBehaviour
     public void MoveToTile(Tile tile)
     {
         Vector2 tilePosition = tile.transform.position;
-        UpdateOdometer(tile.GetUnitDistance());
         MoveTo(tilePosition);
     }
 
-    void UpdateOdometer(int distance)
-    {
-        tripDistance = distance;
-        totalDistance += distance;
-    }
 
     IEnumerator StartMovement(Vector2 targetPosition)
     {
@@ -196,12 +187,7 @@ public class Unit : MonoBehaviour
             transform.position = Vector2.MoveTowards(transform.position, targetY, moveSpeed * Time.deltaTime);
             yield return null;
         }
-        travelRemaining -= tripDistance;
-        tripDistance = 0;
-        hasMoved = (travelRemaining <= 0);
-
-        Debug.Log("Travel Remaining: " + travelRemaining + ", HasMoved: " + hasMoved);
-
+        hasMoved = true;
         ClearEnemies();
         GetEnemiesInRange();
     }
@@ -234,10 +220,11 @@ public class Unit : MonoBehaviour
 
         bool isOnRoad = IsOnRoad();
         int roadsBonus = unitStats.roadsBonus;
+        int travelRange = unitStats.travelRange;
 
         bool tileIsClear;
         float distanceX, distanceY, unitDistance;
-        int searchRadius = (travelRemaining + roadsBonus);
+        int searchRadius = (travelRange + roadsBonus);
 
         traversableTiles.Clear();
 
@@ -251,7 +238,7 @@ public class Unit : MonoBehaviour
         //         distanceX = Mathf.Abs(tile.transform.position.x - transform.position.x);
         //         distanceY = Mathf.Abs(tile.transform.position.y - transform.position.y);
         //         unitDistance = distanceX + distanceY;
-        //         if (unitDistance <= travelRemaining)
+        //         if (unitDistance <= travelRange)
         //         {
         //             if (tileIsClear)
         //             {
@@ -259,7 +246,7 @@ public class Unit : MonoBehaviour
         //                 traversableTiles.Add(tile);
         //             }
         //         }
-        //         else if (roadsBonus > 0 && unitDistance <= (travelRemaining + roadsBonus))
+        //         else if (roadsBonus > 0 && unitDistance <= (travelRange + roadsBonus))
         //         {
         //             if (isOnRoad && tileIsClear && tile.HasRoad())
         //             {
@@ -276,22 +263,22 @@ public class Unit : MonoBehaviour
             distanceY = Mathf.Abs(tile.transform.position.y - transform.position.y);
             unitDistance = distanceX + distanceY;
 
-            if (unitDistance <= travelRemaining)
+            if (unitDistance <= travelRange)
             {
                 tileIsClear = tile.IsClear(unitStats.blockedLayersMask);
                 if (tileIsClear)
                 {
-                    tile.Highlight((int)unitDistance);
+                    tile.Highlight();
                     traversableTiles.Add(tile);
                 }
             }
             // calculate +1 bonus movement if eligible
-            else if (roadsBonus > 0 && unitDistance <= (travelRemaining + roadsBonus))
+            else if (roadsBonus > 0 && unitDistance <= (travelRange + roadsBonus))
             {
                 tileIsClear = tile.IsClear(unitStats.blockedLayersMask);
                 if (isOnRoad && tileIsClear && tile.HasRoad())
                 {
-                    tile.Highlight((int)unitDistance);
+                    tile.Highlight();
                     traversableTiles.Add(tile);
                 }
             }
@@ -377,8 +364,11 @@ public class Unit : MonoBehaviour
 
     void TakeDamage(int damage = 0)
     {
-        int armorValue = unitStats.armorValue;
-        damage = Mathf.Max(damage - armorValue, 0);
+        if (armorValue > 0)
+        {
+            Debug.Log("... " + gameObject.name + "'s armor absorbs " + armorValue + " of the damage ...");
+            damage = Mathf.Max(damage - armorValue, 0);
+        }
         health -= Mathf.Min(damage, health);    // don't take more damage than health
         Debug.Log("... " + gameObject.name + " takes " + damage + " damage!");
         ShowDamage(damage);

@@ -21,7 +21,7 @@ public class Tile : MonoBehaviour
     private Vector3 defaultScale;
 
     GameMaster gm;
-    bool isWalkable = false;
+    bool isTraversable = false;
     bool isMouseOver = false;
     bool isEdgeTile = false;
     bool isSpawnTile = false;
@@ -49,7 +49,7 @@ public class Tile : MonoBehaviour
 
     void Update()
     {
-        sr.color = isWalkable ? highlightColor : defaultColor;
+        sr.color = isTraversable ? highlightColor : defaultColor;
 
         // ~siSR.enabled = isMouseOver;
     }
@@ -68,7 +68,7 @@ public class Tile : MonoBehaviour
         if (gm == null) gm = FindObjectOfType<GameMaster>();
         if (gm == null) Debug.LogError("GameMaster not found");
 
-        if (isWalkable) // highlighted
+        if (isTraversable) // highlighted
         {
             Unit selectedUnit = gm.GetSelectedUnit();
             if (selectedUnit != null)
@@ -154,18 +154,16 @@ public class Tile : MonoBehaviour
         return !Physics2D.OverlapCircle(transform.position, layerCheckRadius, layerMask);
     }
 
-    public void Highlight(int distance)
+    public void Highlight()
     {
         // Debug.Log("Highlight tile: " + gameObject.name);
-        isWalkable = true;
-        unitDistance = distance;
+        isTraversable = true;
     }
 
     public void ResetTile()
     {
         // Debug.Log("Reset tile: " + gameObject.name);
-        isWalkable = false;
-        unitDistance = 0;
+        isTraversable = false;
     }
 
     // draw a gizmo matching the OverlapCircle of layerCheckRadius

@@ -153,9 +153,6 @@ MonoBehaviour:
   roadLayer:
     serializedVersion: 2
     m_Bits: 256
-  tileLayer:
-    serializedVersion: 2
-    m_Bits: 8
   layerCheckRadius: 0.2
   healthOverride: 0
   spawnRadius: 0
@@ -233,7 +230,7 @@ SpriteRenderer:
   m_SortingLayer: 6
   m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 3caf008414ddcb343b160109043ea493, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.852, g: 0.852, b: 0.852, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

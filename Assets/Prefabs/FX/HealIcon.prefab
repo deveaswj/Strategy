@@ -9,10 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8406828173151204488}
-  - component: {fileID: 2340956460900129625}
+  - component: {fileID: -2936478522923449071}
   - component: {fileID: 8472588212994172619}
   m_Layer: 0
-  m_Name: DamageIcon
+  m_Name: HealIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33,7 +33,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2340956460900129625
+--- !u!114 &-2936478522923449071
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,7 +42,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5623100037589858768}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5475d2f11b6b744488bd98e94e057fd1, type: 3}
+  m_Script: {fileID: 11500000, guid: d95146473fc08af45a890ca5821be744, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   numericSprites:
@@ -99,7 +99,7 @@ SpriteRenderer:
   m_SortingLayer: 8
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 592416688a7ae8b41a2eb09e63106e5b, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.7905785, g: 1, b: 0.5, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
