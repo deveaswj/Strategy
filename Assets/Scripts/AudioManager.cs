@@ -13,6 +13,8 @@ public class AudioClipData
     public int priority = 0; // Add priority here for convenience
 }
 
+public enum AudioType { HoverEmpty, HoverFriend, HoverEnemy, HoverTarget, Select, Attack, Cancel, Error };
+
 public class AudioManager : MonoBehaviour
 {
     [Header("Pool Settings")]
@@ -43,9 +45,35 @@ public class AudioManager : MonoBehaviour
     private List<AudioSourceWrapper> activeSources;
     private Dictionary<AudioSourceWrapper, Coroutine> playbackCoroutines = new Dictionary<AudioSourceWrapper, Coroutine>();
 
-    public void PlayErrorClip()
+    public void PlayAudioType(AudioType audioType)
     {
-        PlaySound(error);
+        switch (audioType)
+        {
+            case AudioType.HoverEmpty:
+                PlaySound(hover_empty);
+                break;
+            case AudioType.HoverFriend:
+                PlaySound(hover_friend);
+                break;
+            case AudioType.HoverEnemy:
+                PlaySound(hover_enemy);
+                break;
+            case AudioType.HoverTarget:
+                PlaySound(hover_target);
+                break;
+            case AudioType.Select:
+                PlaySound(select);
+                break;
+            case AudioType.Attack:
+                PlaySound(attack);
+                break;
+            case AudioType.Cancel:
+                PlaySound(cancel);
+                break;
+            case AudioType.Error:
+                PlaySound(error);
+                break;
+        }
     }
 
     void Awake()

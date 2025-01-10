@@ -11047,6 +11047,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3320580648752864047, guid: dd40d0f814aa3ea429b49463f9c6a4f7, type: 3}
+      propertyPath: attack.audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: b890ac1a307b00f41afc8a923af553e0, type: 3}
+    - target: {fileID: 3320580648752864047, guid: dd40d0f814aa3ea429b49463f9c6a4f7, type: 3}
+      propertyPath: select.audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 20ecc7033b731cc4d825cad8c62dbcc3, type: 3}
+    - target: {fileID: 3320580648752864047, guid: dd40d0f814aa3ea429b49463f9c6a4f7, type: 3}
+      propertyPath: hover_empty.audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 05a119a6f1d42ea4ca4cda471668f925, type: 3}
+    - target: {fileID: 3320580648752864047, guid: dd40d0f814aa3ea429b49463f9c6a4f7, type: 3}
+      propertyPath: hover_enemy.audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 05a119a6f1d42ea4ca4cda471668f925, type: 3}
+    - target: {fileID: 3320580648752864047, guid: dd40d0f814aa3ea429b49463f9c6a4f7, type: 3}
+      propertyPath: hover_friend.audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 05a119a6f1d42ea4ca4cda471668f925, type: 3}
+    - target: {fileID: 3320580648752864047, guid: dd40d0f814aa3ea429b49463f9c6a4f7, type: 3}
+      propertyPath: hover_target.audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 05a119a6f1d42ea4ca4cda471668f925, type: 3}
     - target: {fileID: 4348563486761213101, guid: dd40d0f814aa3ea429b49463f9c6a4f7, type: 3}
       propertyPath: m_Name
       value: AudioManager
